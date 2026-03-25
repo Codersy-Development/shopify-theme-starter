@@ -1,0 +1,85 @@
+<section class="py-12">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-bold mb-8">Your Cart</h1>
+
+    {% if cart.item_count > 0 %}
+      <form action="/cart" method="post">
+        <div class="divide-y divide-gray-200">
+          {% for item in cart.items %}
+            <div class="flex items-center gap-4 py-6">
+              <div class="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+                {% if item.image %}
+                  <img
+                    src="{{ item.image | image_url: width: 200 }}"
+                    alt="{{ item.image.alt | escape }}"
+                    class="w-full h-full object-cover"
+                    width="200"
+                    height="200"
+                  >
+                {% endif %}
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <a href="{{ item.url }}" class="text-sm font-medium text-gray-900 no-underline">
+                  {{ item.product.title }}
+                </a>
+                {% if item.variant.title != 'Default Title' %}
+                  <p class="text-sm text-gray-500 mt-1">{{ item.variant.title }}</p>
+                {% endif %}
+                <p class="text-sm text-gray-600 mt-1">{{ item.price | money }}</p>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <input
+                  type="number"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="0"
+                  class="w-16 border border-gray-300 rounded-lg px-2 py-1 text-center text-sm"
+                >
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="border-t border-gray-200 pt-6 mt-6">
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-lg font-semibold">Total</span>
+            <span class="text-lg font-semibold">{{ cart.total_price | money }}</span>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <button
+              type="submit"
+              name="update"
+              class="w-full border border-gray-300 font-semibold px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+              Update cart
+            </button>
+            <button
+              type="submit"
+              name="checkout"
+              class="w-full bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+            >
+              Checkout
+            </button>
+          </div>
+        </div>
+      </form>
+    {% else %}
+      <div class="text-center py-12">
+        <p class="text-gray-500 mb-6">Your cart is empty.</p>
+        <a href="/collections/all" class="inline-block bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors no-underline">
+          Continue shopping
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "tag": "section"
+}
+{% endschema %}

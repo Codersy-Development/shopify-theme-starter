@@ -1,0 +1,15 @@
+{
+  "name": "shopify-theme-starter",
+  "version": "1.0.0",
+  "description": "A minimal Shopify theme with Tailwind CSS",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./assets/application.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i ./src/input.css -o ./assets/application.css --watch",
+    "dev": "concurrently \"npm run watch:css\" \"shopify theme dev\"",
+    "deploy": "npm run build:css && shopify theme push"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "concurrently": "^9.0.0"
+  }
+}

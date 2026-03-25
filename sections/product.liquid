@@ -1,0 +1,73 @@
+<section class="py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-2 gap-12">
+      <!-- Product Image -->
+      <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+        {% if product.featured_image %}
+          <img
+            src="{{ product.featured_image | image_url: width: 1200 }}"
+            alt="{{ product.featured_image.alt | escape }}"
+            class="w-full h-full object-cover"
+            width="1200"
+            height="1200"
+          >
+        {% endif %}
+      </div>
+
+      <!-- Product Info -->
+      <div>
+        <h1 class="text-3xl font-bold mb-4">{{ product.title }}</h1>
+        <p class="text-2xl text-gray-700 mb-6">{{ product.price | money }}</p>
+
+        {% if product.description != blank %}
+          <div class="prose text-gray-600 mb-8">
+            {{ product.description }}
+          </div>
+        {% endif %}
+
+        {% form 'product', product %}
+          {% if product.variants.size > 1 %}
+            <div class="mb-6">
+              {% for option in product.options_with_values %}
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  {{ option.name }}
+                </label>
+                <select
+                  name="id"
+                  class="block w-full border border-gray-300 rounded-lg px-4 py-2 mb-4"
+                >
+                  {% for variant in product.variants %}
+                    <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>
+                      {{ variant.title }} — {{ variant.price | money }}
+                    </option>
+                  {% endfor %}
+                </select>
+              {% endfor %}
+            </div>
+          {% else %}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          {% endif %}
+
+          <button
+            type="submit"
+            class="w-full bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            {% unless product.available %}disabled{% endunless %}
+          >
+            {% if product.available %}
+              Add to cart
+            {% else %}
+              Sold out
+            {% endif %}
+          </button>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "tag": "section"
+}
+{% endschema %}
