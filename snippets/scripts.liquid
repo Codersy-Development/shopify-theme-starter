@@ -8,13 +8,15 @@
       "@theme/header-drawer": {{ 'header-drawer.js' | asset_url | json }},
       "@theme/predictive-search": {{ 'predictive-search.js' | asset_url | json }},
       "@theme/product-gallery": {{ 'product-gallery.js' | asset_url | json }},
-      "@theme/collection-filters": {{ 'collection-filters.js' | asset_url | json }}
+      "@theme/collection-filters": {{ 'collection-filters.js' | asset_url | json }},
+      "@theme/accordion": {{ 'accordion.js' | asset_url | json }}
     }
   }
 </script>
 
 <script type="module" src="{{ 'component.js' | asset_url }}"></script>
 <script type="module" src="{{ 'product-form.js' | asset_url }}"></script>
+<script type="module" src="{{ 'accordion.js' | asset_url }}"></script>
 
 {% if template contains 'product' %}
   <script type="module" src="{{ 'product-gallery.js' | asset_url }}"></script>

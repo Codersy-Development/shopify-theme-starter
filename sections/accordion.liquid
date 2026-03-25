@@ -1,0 +1,102 @@
+<section class="py-12 md:py-16">
+  <div class="page-width max-w-3xl">
+    {% if section.settings.heading != blank %}
+      <h2 class="text-2xl sm:text-3xl font-bold mb-8 {% if section.settings.center_heading %}text-center{% endif %}">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    <accordion-group {% if section.settings.allow_multiple %}data-allow-multiple{% endif %}>
+      {% for block in section.blocks %}
+        <div
+          class="accordion-item border-b border-gray-200"
+          data-accordion
+          {% if forloop.first and section.settings.open_first %}data-open{% endif %}
+          {{ block.shopify_attributes }}
+        >
+          <button
+            type="button"
+            data-accordion-trigger
+            class="flex justify-between items-center w-full py-5 text-left cursor-pointer gap-4"
+            aria-expanded="false"
+          >
+            <span class="text-sm font-bold uppercase tracking-wider">{{ block.settings.title }}</span>
+            <span class="accordion-icon text-gray-400 text-lg leading-none shrink-0" aria-hidden="true">
+              <span class="accordion-icon-closed">+</span>
+              <span class="accordion-icon-open">−</span>
+            </span>
+          </button>
+          <div class="accordion-content">
+            <div>
+              <div class="pb-6 prose prose-sm text-gray-600 max-w-none">
+                {{ block.settings.content }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </accordion-group>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Accordion",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "center_heading",
+      "label": "Center heading",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open first item by default",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_multiple",
+      "label": "Allow multiple items open",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Accordion item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Accordion item"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Share details about your question or topic.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Accordion",
+      "blocks": [
+        { "type": "item", "settings": { "title": "Question one", "content": "<p>Answer to question one goes here.</p>" } },
+        { "type": "item", "settings": { "title": "Question two", "content": "<p>Answer to question two goes here.</p>" } },
+        { "type": "item", "settings": { "title": "Question three", "content": "<p>Answer to question three goes here.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
