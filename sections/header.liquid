@@ -14,9 +14,21 @@
       </nav>
 
       <div class="flex items-center gap-4">
-        <a href="/cart" class="text-sm text-gray-700 hover:text-gray-900 no-underline">
-          Cart ({{ cart.item_count }})
-        </a>
+        <cart-icon>
+          {% if settings.cart_type == 'drawer' %}
+            <button
+              type="button"
+              class="text-sm text-gray-700 hover:text-gray-900 cursor-pointer"
+              onclick="document.dispatchEvent(new CustomEvent('cart:open'))"
+            >
+              Cart (<span data-cart-count>{{ cart.item_count }}</span>)
+            </button>
+          {% else %}
+            <a href="/cart" class="text-sm text-gray-700 hover:text-gray-900 no-underline">
+              Cart (<span data-cart-count>{{ cart.item_count }}</span>)
+            </a>
+          {% endif %}
+        </cart-icon>
       </div>
     </div>
   </div>

@@ -1,0 +1,19 @@
+<script type="importmap">
+  {
+    "imports": {
+      "@theme/component": {{ 'component.js' | asset_url | json }},
+      "@theme/cart-drawer": {{ 'cart-drawer.js' | asset_url | json }},
+      "@theme/cart-icon": {{ 'cart-icon.js' | asset_url | json }},
+      "@theme/product-form": {{ 'product-form.js' | asset_url | json }}
+    }
+  }
+</script>
+
+<script type="module" src="{{ 'component.js' | asset_url }}"></script>
+<script type="module" src="{{ 'product-form.js' | asset_url }}"></script>
+
+{% if settings.cart_type == 'drawer' %}
+  <script type="module" src="{{ 'cart-drawer.js' | asset_url }}"></script>
+{% endif %}
+
+<script type="module" src="{{ 'cart-icon.js' | asset_url }}"></script>

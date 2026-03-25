@@ -3,9 +3,20 @@
     "name": "theme_info",
     "theme_name": "Shopify Theme Starter",
     "theme_version": "1.0.0",
-    "theme_author": "Theme Author",
+    "theme_author": "Codersy",
     "theme_documentation_url": "https://codersy.com",
     "theme_support_url": "https://codersy.com"
+  },
+  {
+    "name": "Logo & Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32x32px .png recommended"
+      }
+    ]
   },
   {
     "name": "Colors",
@@ -21,6 +32,22 @@
         "id": "color_secondary",
         "label": "Secondary color",
         "default": "#2563eb"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "drawer", "label": "Drawer" },
+          { "value": "page", "label": "Page" }
+        ],
+        "default": "drawer",
+        "info": "Choose how the cart is displayed. Drawer slides in from the right, page navigates to /cart."
       }
     ]
   }
