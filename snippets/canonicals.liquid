@@ -1,0 +1,44 @@
+{% comment %}
+  {%- if canonical_url != blank -%}
+    {%- assign page_num = current_page | default: 1 | plus: 0 -%}
+
+    {%- if page_num > 1 -%}
+      {%- case request.page_type -%}
+
+        {%- when 'collection' -%}
+          <link rel="canonical" href="{{ shop.url }}{{ collection.url }}">
+
+        {%- when 'blog' -%}
+          <link rel="canonical" href="{{ shop.url }}{{ blog.url }}">
+
+        {%- else -%}
+          <link rel="canonical" href="{{ canonical_url }}">
+        {%- endcase -%}
+
+    {%- else -%}
+      <link rel="canonical" href="{{ canonical_url }}">
+    {%- endif -%}
+  {%- endif -%}
+{% endcomment %}
+
+{%- if canonical_url != blank -%}
+  {%- assign page_num = current_page | default: 1 | plus: 0 -%}
+
+  {%- case request.page_type -%}
+    {%- when 'collection' -%}
+      <link rel="canonical" href="{{ shop.url }}{{ collection.url }}">
+
+    {%- when 'blog' -%}
+      {%- if page_num == 1 -%}
+        <link rel="canonical" href="{{ shop.url }}{{ blog.url }}">
+      {%- else -%}
+        <link rel="canonical" href="{{ canonical_url }}">
+      {%- endif -%}
+
+    {%- when 'search' -%}
+      <link rel="canonical" href="{{ shop.url }}">
+
+    {%- else -%}
+      <link rel="canonical" href="{{ canonical_url }}">
+  {%- endcase -%}
+{%- endif -%}

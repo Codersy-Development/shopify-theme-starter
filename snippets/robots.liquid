@@ -1,0 +1,40 @@
+{%- if request.page_type == 'collection' -%}
+  {%- assign has_active_filters = false -%}
+  {%- assign has_sorting = false -%}
+
+  {%- if collection.sort_by != blank
+    and collection.default_sort_by != blank
+    and collection.sort_by != collection.default_sort_by
+  -%}
+    {%- assign has_sorting = true -%}
+  {%- endif -%}
+
+  {%- for f in collection.filters -%}
+    {%- if f.type == 'price_range' -%}
+      {%- if f.min_value.value or f.max_value.value -%}
+        {%- assign has_active_filters = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- else -%}
+      {%- if f.active_values and f.active_values.size > 0 -%}
+        {%- assign has_active_filters = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if has_sorting -%}
+    <meta name="robots" content="noindex, nofollow">
+  {%- elsif has_active_filters -%}
+    <meta name="robots" content="noindex, nofollow">
+  {%- elsif current_page > 1 -%}
+    <meta name="robots" content="noindex, follow">
+  {%- else -%}
+    <meta name="robots" content="index, follow">
+  {%- endif -%}
+
+{%- elsif request.page_type == 'search' -%}
+  <meta name="robots" content="noindex, nofollow">
+{%- else -%}
+  <meta name="robots" content="index, follow">
+{%- endif -%}
