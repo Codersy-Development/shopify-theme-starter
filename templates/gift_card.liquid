@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ 'gift_cards.issued.title' | t }} — {{ shop.name }}</title>
+
+  {{ 'application.css' | asset_url | stylesheet_tag }}
+
+  {{ content_for_header }}
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
+  <div class="max-w-md w-full text-center">
+    <h1 class="text-2xl font-bold mb-2">{{ shop.name }}</h1>
+    <p class="text-gray-500 mb-8">Here's your gift card!</p>
+
+    <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+      <img
+        src="{{ gift_card | qr_code }}"
+        alt="Gift card QR code"
+        class="mx-auto mb-6 w-40 h-40"
+      >
+
+      <p class="text-3xl font-bold mb-2">{{ gift_card.balance | money }}</p>
+
+      {% if gift_card.initial_value != gift_card.balance %}
+        <p class="text-sm text-gray-500 mb-2">Initial value: {{ gift_card.initial_value | money }}</p>
+      {% endif %}
+
+      <div class="bg-gray-100 rounded-lg px-4 py-3 mb-4">
+        <p class="text-lg font-mono tracking-wider select-all">{{ gift_card.code | format_code }}</p>
+      </div>
+
+      {% if gift_card.expires_on %}
+        <p class="text-sm text-gray-500">
+          {% if gift_card.expired %}
+            Expired on {{ gift_card.expires_on | date: '%B %d, %Y' }}
+          {% else %}
+            Expires on {{ gift_card.expires_on | date: '%B %d, %Y' }}
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+
+    {% if gift_card.pass_url %}
+      <a href="{{ gift_card.pass_url }}" class="inline-block mb-4">
+        <img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" alt="Add to Apple Wallet" width="120">
+      </a>
+    {% endif %}
+
+    <a
+      href="{{ shop.url }}"
+      class="inline-block bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors no-underline"
+    >
+      Shop now
+    </a>
+  </div>
+</body>
+</html>

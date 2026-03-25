@@ -12,6 +12,21 @@
     "settings": [
       {
         "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_max_width",
+        "label": "Logo max width",
+        "min": 50,
+        "max": 300,
+        "step": 10,
+        "unit": "px",
+        "default": 120
+      },
+      {
+        "type": "image_picker",
         "id": "favicon",
         "label": "Favicon",
         "info": "32x32px .png recommended"
@@ -48,6 +63,51 @@
         ],
         "default": "drawer",
         "info": "Choose how the cart is displayed. Drawer slides in from the right, page navigates to /cart."
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social accounts"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook",
+        "info": "https://facebook.com/your-page"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "info": "https://instagram.com/your-handle"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok",
+        "info": "https://tiktok.com/@your-handle"
+      },
+      {
+        "type": "text",
+        "id": "social_x_link",
+        "label": "X (Twitter)",
+        "info": "https://x.com/your-handle"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube",
+        "info": "https://youtube.com/your-channel"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest",
+        "info": "https://pinterest.com/your-page"
       }
     ]
   }

@@ -1,19 +1,17 @@
 /**
- * Cart drawer using simple CSS transitions (no <dialog>).
- * Slides in from the right, overlay fades in.
+ * Mobile menu drawer using simple CSS transitions (no <dialog>).
+ * Slides in from the left, overlay fades in.
  */
-class CartDrawer extends HTMLElement {
+class HeaderDrawer extends HTMLElement {
   connectedCallback() {
     this.panel = this.querySelector('[data-panel]');
     this.overlay = this.querySelector('[data-overlay]');
 
+    this.querySelector('[data-open]')?.addEventListener('click', () => this.open());
     this.querySelectorAll('[data-close]').forEach((el) =>
       el.addEventListener('click', () => this.close())
     );
     this.overlay?.addEventListener('click', () => this.close());
-
-    document.addEventListener('cart:open', () => this.open());
-    document.addEventListener('cart:refresh', () => this.refresh());
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen) this.close();
@@ -27,20 +25,17 @@ class CartDrawer extends HTMLElement {
   open() {
     this.setAttribute('aria-hidden', 'false');
 
-    // Enable overlay clicks and fade in
     this.overlay.classList.remove('pointer-events-none');
     this.overlay.classList.add('pointer-events-auto');
 
-    // Use rAF to ensure the transition triggers after the class change
     requestAnimationFrame(() => {
       this.overlay.classList.remove('bg-black/0');
       this.overlay.classList.add('bg-black/50');
-      this.panel.classList.remove('translate-x-full');
+      this.panel.classList.remove('-translate-x-full');
       this.panel.classList.add('translate-x-0');
     });
 
     document.body.style.overflow = 'hidden';
-    this.refresh();
   }
 
   close() {
@@ -51,36 +46,16 @@ class CartDrawer extends HTMLElement {
     this.overlay.classList.remove('bg-black/50');
     this.overlay.classList.add('bg-black/0');
     this.panel.classList.remove('translate-x-0');
-    this.panel.classList.add('translate-x-full');
+    this.panel.classList.add('-translate-x-full');
 
-    // After transition ends, disable overlay clicks and restore scroll
     this.panel.addEventListener('transitionend', () => {
       this.overlay.classList.remove('pointer-events-auto');
       this.overlay.classList.add('pointer-events-none');
       document.body.style.overflow = '';
     }, { once: true });
   }
-
-  async refresh() {
-    try {
-      const response = await fetch(`${window.location.pathname}?sections=cart-drawer`);
-      const data = await response.json();
-      const html = data['cart-drawer'];
-
-      if (html) {
-        const fragment = document.createRange().createContextualFragment(html);
-        const newContent = fragment.querySelector('[data-cart-drawer-content]');
-        const currentContent = this.querySelector('[data-cart-drawer-content]');
-        if (newContent && currentContent) {
-          currentContent.replaceWith(newContent);
-        }
-      }
-    } catch (error) {
-      console.error('Failed to refresh cart drawer:', error);
-    }
-  }
 }
 
-customElements.define('cart-drawer', CartDrawer);
+customElements.define('header-drawer', HeaderDrawer);
 
-export { CartDrawer };
+export { HeaderDrawer };

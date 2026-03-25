@@ -2,6 +2,9 @@
   "name": "shopify-theme-starter",
   "version": "1.0.0",
   "description": "A minimal Shopify theme with Tailwind CSS",
+  "author": "Codersy <hello@codersy.com> (https://www.codersy.com)",
+  "license": "MIT",
+  "homepage": "https://www.codersy.com",
   "scripts": {
     "build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./assets/application.css --minify",
     "watch:css": "npx @tailwindcss/cli -i ./src/input.css -o ./assets/application.css --watch",

@@ -1,0 +1,35 @@
+<header-drawer class="contents" aria-hidden="true">
+  <button
+    type="button"
+    class="md:hidden text-gray-700 hover:text-gray-900 cursor-pointer"
+    aria-label="Open menu"
+    data-open
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
+  <!-- Overlay -->
+  <div data-overlay class="fixed inset-0 bg-black/0 pointer-events-none transition-[background-color] duration-300 z-40"></div>
+
+  <!-- Drawer -->
+  <div data-panel class="fixed top-0 left-0 w-full max-w-xs h-full bg-white shadow-xl flex flex-col -translate-x-full transition-transform duration-300 ease-out z-50">
+    <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200">
+      <span class="text-lg font-semibold">Menu</span>
+      <button data-close type="button" class="text-gray-400 hover:text-gray-600 cursor-pointer" aria-label="Close menu">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto px-4 py-4">
+      {% for link in linklists[menu].links %}
+        <a href="{{ link.url }}" class="block py-3 text-gray-900 border-b border-gray-100 no-underline">
+          {{ link.title }}
+        </a>
+      {% endfor %}
+    </nav>
+  </div>
+</header-drawer>
