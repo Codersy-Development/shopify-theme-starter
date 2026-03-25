@@ -1,16 +1,17 @@
 /**
  * Cart drawer with quantity controls.
- * Just toggles .is-open — all transitions handled by CSS.
+ * Toggles .is-open on panel & overlay directly — transitions handled by CSS.
  */
 class CartDrawer extends HTMLElement {
   connectedCallback() {
     this.panel = this.querySelector('[data-panel]');
+    this.overlay = this.querySelector('[data-overlay]');
     this.triggerEl = null;
 
     this.querySelectorAll('[data-close]').forEach((el) =>
       el.addEventListener('click', () => this.close())
     );
-    this.querySelector('[data-overlay]')?.addEventListener('click', () => this.close());
+    this.overlay?.addEventListener('click', () => this.close());
 
     document.addEventListener('cart:open', () => this.open());
     document.addEventListener('cart:refresh', () => this.refresh());
@@ -24,12 +25,13 @@ class CartDrawer extends HTMLElement {
   }
 
   get isOpen() {
-    return this.classList.contains('is-open');
+    return this.panel?.classList.contains('is-open');
   }
 
   open() {
     this.triggerEl = document.activeElement;
-    this.classList.add('is-open');
+    this.panel?.classList.add('is-open');
+    this.overlay?.classList.add('is-open');
     document.body.style.overflow = 'hidden';
 
     setTimeout(() => {
@@ -42,7 +44,8 @@ class CartDrawer extends HTMLElement {
   close() {
     if (!this.isOpen) return;
 
-    this.classList.remove('is-open');
+    this.panel?.classList.remove('is-open');
+    this.overlay?.classList.remove('is-open');
     document.body.style.overflow = '';
     this.triggerEl?.focus();
   }

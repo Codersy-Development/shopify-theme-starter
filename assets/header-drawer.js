@@ -1,18 +1,18 @@
 /**
  * Mobile menu drawer.
- * Just toggles .is-open — all transitions handled by CSS.
- * No inert, no inline styles, no rAF tricks.
+ * Toggles .is-open on panel & overlay directly — transitions handled by CSS.
  */
 class HeaderDrawer extends HTMLElement {
   connectedCallback() {
     this.panel = this.querySelector('[data-panel]');
+    this.overlay = this.querySelector('[data-overlay]');
     this.openBtn = this.querySelector('[data-open]');
 
     this.openBtn?.addEventListener('click', () => this.open());
     this.querySelectorAll('[data-close]').forEach((el) =>
       el.addEventListener('click', () => this.close())
     );
-    this.querySelector('[data-overlay]')?.addEventListener('click', () => this.close());
+    this.overlay?.addEventListener('click', () => this.close());
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen) this.close();
@@ -21,11 +21,12 @@ class HeaderDrawer extends HTMLElement {
   }
 
   get isOpen() {
-    return this.classList.contains('is-open');
+    return this.panel?.classList.contains('is-open');
   }
 
   open() {
-    this.classList.add('is-open');
+    this.panel?.classList.add('is-open');
+    this.overlay?.classList.add('is-open');
     this.openBtn?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
 
@@ -37,7 +38,8 @@ class HeaderDrawer extends HTMLElement {
   close() {
     if (!this.isOpen) return;
 
-    this.classList.remove('is-open');
+    this.panel?.classList.remove('is-open');
+    this.overlay?.classList.remove('is-open');
     this.openBtn?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
     this.openBtn?.focus();

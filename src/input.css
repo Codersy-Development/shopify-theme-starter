@@ -71,44 +71,34 @@
 }
 
 /* ── Drawer transitions ── */
-cart-drawer [data-overlay],
-header-drawer [data-overlay] {
-  background-color: rgba(0, 0, 0, 0);
+[data-overlay] {
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
   pointer-events: none;
-  visibility: hidden;
-  transition: background-color 0.3s ease, visibility 0s 0.3s;
+  transition: opacity 0.3s ease;
 }
 
-cart-drawer.is-open [data-overlay],
-header-drawer.is-open [data-overlay] {
-  background-color: rgba(0, 0, 0, 0.5);
+[data-overlay].is-open {
+  opacity: 1;
   pointer-events: auto;
-  visibility: visible;
-  transition: background-color 0.3s ease, visibility 0s 0s;
 }
 
 cart-drawer [data-panel] {
   transform: translateX(100%);
-  visibility: hidden;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0.3s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-cart-drawer.is-open [data-panel] {
+cart-drawer [data-panel].is-open {
   transform: translateX(0);
-  visibility: visible;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s;
 }
 
 header-drawer [data-panel] {
   transform: translateX(-100%);
-  visibility: hidden;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0.3s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-header-drawer.is-open [data-panel] {
+header-drawer [data-panel].is-open {
   transform: translateX(0);
-  visibility: visible;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s;
 }
 
 /* ── Predictive search ── */
@@ -136,14 +126,3 @@ product-gallery [data-image-slide].is-active {
   opacity: 1;
 }
 
-/* ── Reduced motion ── */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
