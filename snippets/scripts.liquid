@@ -6,13 +6,18 @@
       "@theme/cart-icon": {{ 'cart-icon.js' | asset_url | json }},
       "@theme/product-form": {{ 'product-form.js' | asset_url | json }},
       "@theme/header-drawer": {{ 'header-drawer.js' | asset_url | json }},
-      "@theme/predictive-search": {{ 'predictive-search.js' | asset_url | json }}
+      "@theme/predictive-search": {{ 'predictive-search.js' | asset_url | json }},
+      "@theme/product-gallery": {{ 'product-gallery.js' | asset_url | json }}
     }
   }
 </script>
 
 <script type="module" src="{{ 'component.js' | asset_url }}"></script>
 <script type="module" src="{{ 'product-form.js' | asset_url }}"></script>
+
+{% if template contains 'product' %}
+  <script type="module" src="{{ 'product-gallery.js' | asset_url }}"></script>
+{% endif %}
 <script type="module" src="{{ 'header-drawer.js' | asset_url }}"></script>
 <script type="module" src="{{ 'cart-icon.js' | asset_url }}"></script>
 

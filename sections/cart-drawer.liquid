@@ -23,15 +23,13 @@
           {% for item in cart.items %}
             <li class="flex gap-4 py-4">
               <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                {% if item.image %}
-                  <img
-                    src="{{ item.image | image_url: width: 160 }}"
-                    alt="{{ item.image.alt | default: item.product.title | escape }}"
-                    class="w-full h-full object-cover"
-                    width="160"
-                    height="160"
-                  >
-                {% endif %}
+                {% render 'image',
+                  image: item.image,
+                  max_width: 200,
+                  sizes: '64px',
+                  alt: item.product.title,
+                  class: 'w-full h-full object-cover'
+                %}
               </div>
 
               <div class="flex-1 min-w-0">

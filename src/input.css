@@ -126,6 +126,16 @@ header-drawer.is-open [data-panel] {
   transition: opacity 0.2s ease, visibility 0s 0s;
 }
 
+/* ── Product gallery ── */
+product-gallery [data-image-slide] {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+product-gallery [data-image-slide].is-active {
+  opacity: 1;
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,

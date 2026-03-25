@@ -7,14 +7,13 @@
         <a href="{{ article.url }}" class="group no-underline">
           {% if article.image %}
             <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4">
-              <img
-                src="{{ article.image | image_url: width: 800 }}"
-                alt="{{ article.image.alt | escape }}"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-                width="800"
-                height="450"
-              >
+              {% render 'image',
+                image: article.image,
+                max_width: 800,
+                sizes: '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw',
+                alt: article.title,
+                class: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+              %}
             </div>
           {% endif %}
 

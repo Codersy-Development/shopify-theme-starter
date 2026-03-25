@@ -6,16 +6,13 @@
       {% for collection in collections %}
         <a href="{{ collection.url }}" class="group no-underline">
           <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
-            {% if collection.image %}
-              <img
-                src="{{ collection.image | image_url: width: 600 }}"
-                alt="{{ collection.image.alt | escape }}"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-                width="600"
-                height="600"
-              >
-            {% endif %}
+            {% render 'image',
+              image: collection.image,
+              max_width: 600,
+              sizes: '(min-width: 768px) 33vw, 50vw',
+              alt: collection.title,
+              class: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+            %}
           </div>
           <h2 class="text-sm font-medium text-gray-900">{{ collection.title }}</h2>
         </a>

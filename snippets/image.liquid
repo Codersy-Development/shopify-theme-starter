@@ -1,0 +1,58 @@
+{% comment %}
+  Renders an optimized responsive image using Shopify's native image_tag.
+  Automatically generates srcset, serves WebP with fallbacks, and handles lazy loading.
+
+  @param {image_object} image    - Shopify image object (required)
+  @param {number}       max_width     - Maximum width in px (default: 800)
+  @param {string}       widths        - Responsive widths e.g. '400, 600, 800' (auto-calculated if omitted)
+  @param {string}       sizes         - Sizes attribute (default: '100vw')
+  @param {string}       alt           - Alt text (default: image.alt)
+  @param {string}       loading       - 'lazy' or 'eager' (default: 'lazy')
+  @param {string}       fetchpriority - 'high' for LCP images (optional)
+  @param {string}       class         - CSS classes (optional)
+  @param {string}       style         - Inline styles (optional)
+
+  Usage:
+    {% render 'image', image: product.featured_image, max_width: 800, alt: product.title %}
+    {% render 'image', image: section.settings.image, max_width: 1600, loading: 'eager', fetchpriority: 'high' %}
+{% endcomment %}
+
+{%- if image != blank -%}
+  {%- liquid
+    assign img_alt = alt | default: image.alt | escape
+    assign img_loading = loading | default: 'lazy'
+    assign img_width = max_width | default: 800
+    assign img_sizes = sizes | default: '100vw'
+
+    unless widths
+      if img_width <= 400
+        assign widths = '200, 300, 400'
+      elsif img_width <= 800
+        assign widths = '400, 600, 800'
+      elsif img_width <= 1200
+        assign widths = '400, 800, 1000, 1200'
+      else
+        assign widths = '800, 1200, 1600, 2000'
+      endif
+    endunless
+  -%}
+
+  {%- if fetchpriority -%}
+    {{ image | image_url: width: img_width | image_tag:
+       loading: img_loading,
+       widths: widths,
+       sizes: img_sizes,
+       alt: img_alt,
+       class: class,
+       style: style,
+       fetchpriority: fetchpriority }}
+  {%- else -%}
+    {{ image | image_url: width: img_width | image_tag:
+       loading: img_loading,
+       widths: widths,
+       sizes: img_sizes,
+       alt: img_alt,
+       class: class,
+       style: style }}
+  {%- endif -%}
+{%- endif -%}
