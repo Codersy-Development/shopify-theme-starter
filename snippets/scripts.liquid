@@ -10,7 +10,8 @@
       "@theme/product-gallery": {{ 'product-gallery.js' | asset_url | json }},
       "@theme/collection-filters": {{ 'collection-filters.js' | asset_url | json }},
       "@theme/accordion": {{ 'accordion.js' | asset_url | json }},
-      "@theme/product-card": {{ 'product-card.js' | asset_url | json }}
+      "@theme/product-card": {{ 'product-card.js' | asset_url | json }},
+      "@theme/header-nav": {{ 'header-nav.js' | asset_url | json }}
     }
   }
 </script>
@@ -28,6 +29,7 @@
   <script type="module" src="{{ 'collection-filters.js' | asset_url }}"></script>
 {% endif %}
 <script type="module" src="{{ 'header-drawer.js' | asset_url }}"></script>
+<script type="module" src="{{ 'header-nav.js' | asset_url }}"></script>
 <script type="module" src="{{ 'cart-icon.js' | asset_url }}"></script>
 
 {% if settings.cart_type == 'drawer' %}
