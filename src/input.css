@@ -75,45 +75,55 @@ cart-drawer [data-overlay],
 header-drawer [data-overlay] {
   background-color: rgba(0, 0, 0, 0);
   pointer-events: none;
-  transition: background-color 0.3s ease;
+  visibility: hidden;
+  transition: background-color 0.3s ease, visibility 0s 0.3s;
 }
 
 cart-drawer.is-open [data-overlay],
 header-drawer.is-open [data-overlay] {
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: auto;
+  visibility: visible;
+  transition: background-color 0.3s ease, visibility 0s 0s;
 }
 
 cart-drawer [data-panel] {
   transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0.3s;
 }
 
 cart-drawer.is-open [data-panel] {
   transform: translateX(0);
+  visibility: visible;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s;
 }
 
 header-drawer [data-panel] {
   transform: translateX(-100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0.3s;
 }
 
 header-drawer.is-open [data-panel] {
   transform: translateX(0);
+  visibility: visible;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s;
 }
 
 /* ── Predictive search ── */
 .predictive-search-results {
   opacity: 0;
-  transform: translateY(-8px);
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s 0.2s;
 }
 
 .predictive-search-results.is-active {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0s 0s;
 }
 
 /* ── Reduced motion ── */

@@ -1,4 +1,4 @@
-<predictive-search class="hidden md:block relative">
+<predictive-search class="relative">
   <button
     type="button"
     class="text-gray-700 hover:text-gray-900 cursor-pointer"
@@ -10,7 +10,7 @@
     </svg>
   </button>
 
-  <div class="predictive-search-results absolute right-0 top-full mt-2 w-96 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50" role="listbox" aria-label="Search suggestions">
+  <div class="predictive-search-results fixed inset-0 z-50 bg-white flex flex-col md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 md:w-96 md:max-h-[80vh] md:rounded-xl md:shadow-2xl md:border md:border-gray-200 overflow-hidden" role="listbox" aria-label="Search suggestions">
     <form action="/search" method="get" role="search" class="border-b border-gray-100">
       <div class="flex items-center px-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -34,7 +34,7 @@
       </div>
     </form>
 
-    <div data-search-results class="max-h-96 overflow-y-auto">
+    <div data-search-results class="flex-1 overflow-y-auto md:max-h-96">
       <div class="px-4 py-8 text-center text-sm text-gray-400">
         Start typing to search...
       </div>

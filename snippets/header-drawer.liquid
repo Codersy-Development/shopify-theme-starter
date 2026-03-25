@@ -1,28 +1,3 @@
-<style>
-  header-drawer [data-overlay] {
-    background-color: rgba(0,0,0,0);
-    pointer-events: none;
-    visibility: hidden;
-    transition: background-color 0.3s ease, visibility 0s 0.3s;
-  }
-  header-drawer.is-open [data-overlay] {
-    background-color: rgba(0,0,0,0.5);
-    pointer-events: auto;
-    visibility: visible;
-    transition: background-color 0.3s ease, visibility 0s 0s;
-  }
-  header-drawer [data-panel] {
-    transform: translateX(-100%);
-    visibility: hidden;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0.3s;
-  }
-  header-drawer.is-open [data-panel] {
-    transform: translateX(0);
-    visibility: visible;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s;
-  }
-</style>
-
 <header-drawer class="contents">
   <button
     type="button"
