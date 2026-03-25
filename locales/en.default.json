@@ -22,6 +22,9 @@
     "checkout": "Checkout",
     "update": "Update cart"
   },
+  "breadcrumb": {
+    "home": "Home"
+  },
   "newsletter": {
     "label": "Email",
     "submit": "Subscribe",

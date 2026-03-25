@@ -1,0 +1,45 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-faq",
+      "blocks": {
+        "customer-service": {
+          "type": "faq_group",
+          "settings": {
+            "title": "Customer Service Operations",
+            "content": "<p><strong>How do I contact customer service?</strong><br>You can reach us via the Contact Us page or by emailing our support team directly. Our CS team will get back to you as soon as they can.</p>"
+          }
+        },
+        "shipping-ops": {
+          "type": "faq_group",
+          "settings": {
+            "title": "Shipping Operations",
+            "content": "<p><strong>How long does shipping take?</strong><br>Standard shipping takes 5–7 business days. Express shipping takes 2–3 business days.</p>"
+          }
+        },
+        "shipping-rates": {
+          "type": "faq_group",
+          "settings": {
+            "title": "Shipping & Rates",
+            "content": "<p><strong>How much does shipping cost?</strong><br>Shipping rates are calculated at checkout based on your location and the weight of your order.</p>"
+          }
+        },
+        "returns": {
+          "type": "faq_group",
+          "settings": {
+            "title": "Returns & Exchanges",
+            "content": "<p><strong>What is your return policy?</strong><br>We accept returns within 30 days of purchase. Items must be unworn and in original packaging.</p>"
+          }
+        }
+      },
+      "block_order": ["customer-service", "shipping-ops", "shipping-rates", "returns"],
+      "settings": {
+        "heading": "FAQ",
+        "description": "Please use the 'CONTACT US' button on our website or email us and our CS team will get back to you as soon as they can.",
+        "button_label": "Contact Us",
+        "button_link": "/pages/contact"
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -7,7 +7,8 @@
       "@theme/product-form": {{ 'product-form.js' | asset_url | json }},
       "@theme/header-drawer": {{ 'header-drawer.js' | asset_url | json }},
       "@theme/predictive-search": {{ 'predictive-search.js' | asset_url | json }},
-      "@theme/product-gallery": {{ 'product-gallery.js' | asset_url | json }}
+      "@theme/product-gallery": {{ 'product-gallery.js' | asset_url | json }},
+      "@theme/collection-filters": {{ 'collection-filters.js' | asset_url | json }}
     }
   }
 </script>
@@ -17,6 +18,10 @@
 
 {% if template contains 'product' %}
   <script type="module" src="{{ 'product-gallery.js' | asset_url }}"></script>
+{% endif %}
+
+{% if template contains 'collection' %}
+  <script type="module" src="{{ 'collection-filters.js' | asset_url }}"></script>
 {% endif %}
 <script type="module" src="{{ 'header-drawer.js' | asset_url }}"></script>
 <script type="module" src="{{ 'cart-icon.js' | asset_url }}"></script>

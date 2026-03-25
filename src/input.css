@@ -105,15 +105,105 @@ header-drawer [data-panel].is-open {
 .predictive-search-results {
   opacity: 0;
   pointer-events: none;
-  visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0s 0.2s;
+  transition: opacity 0.2s ease;
 }
 
 .predictive-search-results.is-active {
   opacity: 1;
   pointer-events: auto;
-  visibility: visible;
-  transition: opacity 0.2s ease, visibility 0s 0s;
+}
+
+/* Hide browser native search clear button */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ── Collection filters ── */
+/* Mobile: drawer from left */
+collection-filters [data-filter-overlay] {
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+collection-filters [data-filter-overlay].is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+collection-filters [data-filters] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 24rem;
+  height: 100%;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+collection-filters [data-filters].is-open {
+  transform: translateX(0);
+}
+
+/* Desktop: inline sidebar */
+@media (min-width: 768px) {
+  collection-filters [data-filter-overlay] {
+    display: none !important;
+  }
+
+  collection-filters [data-filters] {
+    position: static;
+    width: 14rem;
+    max-width: none;
+    height: auto;
+    transform: none;
+    transition: none;
+    flex-shrink: 0;
+  }
+
+  collection-filters [data-filters].is-desktop-hidden {
+    display: none !important;
+  }
+}
+
+/* Price range slider */
+[data-range-slider] {
+  position: relative;
+  height: 2px;
+  background: #d1d5db;
+  margin: 1rem 0 0.5rem;
+  touch-action: none;
+  user-select: none;
+}
+
+[data-range-track] {
+  position: absolute;
+  height: 100%;
+  background: #111827;
+}
+
+[data-range-min],
+[data-range-max] {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border: 2px solid #111827;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  z-index: 1;
+}
+
+[data-range-min]:active,
+[data-range-max]:active {
+  cursor: grabbing;
+  background: #111827;
 }
 
 /* ── Product gallery ── */

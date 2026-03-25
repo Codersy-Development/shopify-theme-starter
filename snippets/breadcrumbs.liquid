@@ -1,0 +1,127 @@
+{%- comment -%}
+  Generates up to 4 level breadcrumb navigation for the current page.
+
+  Levels:
+    - Level 1 (Home)
+    - Level 2 (Category) - Optional, requires collection reference metafield
+    - Level 3 (Subcategory) - Optional, requires collection reference metafield
+    - Level 4 (Product / Current page)
+
+  Parameters:
+    - show_breadcrumb: boolean to control visibility (optional, defaults to true)
+
+  Metafield Setup:
+    For products: Add metafields 'breadcrumb.category' and 'breadcrumb.subcategory'
+    For collections: Add metafield 'breadcrumb.category'
+    These should be collection reference metafields pointing to parent collections.
+{%- endcomment -%}
+
+{%- liquid
+  case template.name
+    when 'product'
+      # Product can have all 4 leves
+      # Levels 2 and 3 are optional and needs to be collection reference metafields
+      assign template_object = product
+      assign category_collection = collections[template_object.metafields.breadcrumb.category]
+      assign subcategory_collection = collections[template_object.metafields.breadcrumb.subcategory]
+      assign category_link = template_object.metafields.breadcrumb.category | metafield_tag
+      assign subcategory_link = template_object.metafields.breadcrumb.subcategory | metafield_tag
+    when 'collection'
+      # Collection can have all 3 levels
+      # Levels 2 is optional and needs to be a collection reference metafield
+      assign template_object = collection
+      assign category_collection = collections[template_object.metafields.breadcrumb.category]
+      assign category_link = template_object.metafields.breadcrumb.category | metafield_tag
+    when 'article'
+      assign template_object = article
+      assign category_link = '<a href="[url]">[title]</a>' | replace: '[url]', blog.url | replace: '[title]', blog.title
+    when 'blog'
+      assign template_object = blog
+    when 'page'
+      assign template_object = page
+  endcase
+
+  assign item_position = 2
+-%}
+
+{% if template_object %}
+  <nav
+    aria-label="breadcrumb"
+    class="text-sm py-[25px] md:py-[30px]"
+  >
+    <ol class="flex items-center overflow-x-auto scrollbar-hide">
+      <li>
+        <a href="{{ routes.root_url }}" class="text-[#1E1E1F] hover:text-gray-900 transition-colors">
+          {{- 'breadcrumb.home' | t -}}
+        </a>
+      </li>
+      {% if category_link != blank %}
+        <li class="mx-2">
+          <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-[#1E1E1F]">
+            <circle cx="8" cy="8" r="2" fill="currentColor"/>
+          </svg>
+        </li>
+        <li>
+          <div class="text-[#1E1E1F]">{{ category_link }}</div>
+        </li>
+      {% endif %}
+      {% if subcategory_link != blank %}
+        <li class="mx-2">
+          <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-[#1E1E1F]">
+            <circle cx="8" cy="8" r="2" fill="currentColor"/>
+          </svg>
+        </li>
+        <li>
+          <div class="text-[#1E1E1F]">{{ subcategory_link }}</div>
+        </li>
+      {% endif %}
+      <li class="mx-2">
+        <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-[#1E1E1F]">
+          <circle cx="8" cy="8" r="2" fill="currentColor"/>
+        </svg>
+      </li>
+      <li>
+        <span class="text-[#6D6D6D] font-medium" aria-current="page">{{ template_object.title }}</span>
+      </li>
+    </ol>
+  </nav>
+{% endif %}
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "{{ 'breadcrumb.home' | t }}",
+        "item": "{{ shop.url }}"
+      },
+      {% if category_collection != blank -%}
+      {
+        "@type": "ListItem",
+        "position": {{ item_position }},
+        "name": "{{ category_collection.title }}",
+        "item": "{{ shop.url }}{{ category_collection.url }}"
+      },
+      {%- assign item_position = item_position | plus: 1 -%}
+      {%- endif %}
+      {% if subcategory_collection != blank -%}
+      {
+        "@type": "ListItem",
+        "position": {{ item_position }},
+        "name": "{{ subcategory_collection.title }}",
+        "item": "{{ shop.url }}{{ subcategory_collection.url }}"
+      },
+      {%- assign item_position = item_position | plus: 1 -%}
+      {%- endif %}
+      {
+        "@type": "ListItem",
+        "position": {{ item_position }},
+        "name": "{{ template_object.title }}",
+        "item": "{{ shop.url }}{{ template_object.url }}"
+      }
+    ]
+  }
+</script>

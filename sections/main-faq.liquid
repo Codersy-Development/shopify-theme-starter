@@ -1,0 +1,137 @@
+<section class="py-12 md:py-20">
+  <div class="page-width">
+    <div class="grid md:grid-cols-[1fr_2fr] gap-12 md:gap-16">
+      <!-- Left: heading + description + CTA -->
+      <div>
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 uppercase">
+          {{ section.settings.heading }}
+        </h1>
+
+        {% if section.settings.description != blank %}
+          <p class="text-gray-500 leading-relaxed mb-8 max-w-sm">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.button_label != blank %}
+          <a
+            href="{{ section.settings.button_link }}"
+            class="inline-block border border-gray-900 text-gray-900 font-medium text-sm uppercase tracking-wider px-8 py-3 no-underline hover:bg-gray-900 hover:text-white transition-colors"
+          >
+            {{ section.settings.button_label }}
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Right: accordion -->
+      <div>
+        {% for block in section.blocks %}
+          <details class="group border-t border-gray-200" {{ block.shopify_attributes }} {% if forloop.last %}open{% endif %}>
+            <summary class="flex justify-between items-center py-4 cursor-pointer [&::-webkit-details-marker]:hidden list-none select-none gap-4">
+              <span class="text-sm font-bold uppercase tracking-wider">{{ block.settings.title }}</span>
+              <span class="text-gray-400 text-lg leading-none shrink-0" aria-hidden="true">
+                <span class="group-open:hidden">+</span>
+                <span class="hidden group-open:inline">−</span>
+              </span>
+            </summary>
+
+            <div class="pb-6 prose prose-sm text-gray-600 max-w-none">
+              {{ block.settings.content }}
+            </div>
+          </details>
+        {% endfor %}
+
+        {%- if section.blocks.size > 0 -%}
+          <div class="border-t border-gray-200"></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FAQ"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Please use the 'CONTACT US' button on our website or email us and our CS team will get back to you as soon as they can."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_group",
+      "name": "FAQ Group",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Question Category"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p><strong>Question goes here?</strong><br>Answer goes here.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "faq_group",
+          "settings": {
+            "title": "Customer Service Operations",
+            "content": "<p><strong>How do I contact customer service?</strong><br>You can reach us via the Contact Us page or by emailing our support team directly.</p>"
+          }
+        },
+        {
+          "type": "faq_group",
+          "settings": {
+            "title": "Shipping Operations",
+            "content": "<p><strong>How long does shipping take?</strong><br>Standard shipping takes 5-7 business days. Express shipping takes 2-3 business days.</p>"
+          }
+        },
+        {
+          "type": "faq_group",
+          "settings": {
+            "title": "Shipping & Rates",
+            "content": "<p><strong>How much does shipping cost?</strong><br>Shipping rates are calculated at checkout based on your location and the weight of your order.</p>"
+          }
+        },
+        {
+          "type": "faq_group",
+          "settings": {
+            "title": "Returns & Exchanges",
+            "content": "<p><strong>What is your return policy?</strong><br>We accept returns within 30 days of purchase. Items must be unworn and in original packaging.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
