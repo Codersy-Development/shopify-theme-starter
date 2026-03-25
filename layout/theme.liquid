@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html lang="{{ request.locale.iso_code }}" class="no-js">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,7 +13,7 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
-<title>
+    <title>
       {{ page_title }}
       {%- if current_tags %}
         &ndash; tagged "{{ current_tags | join: ', ' }}"
@@ -44,9 +44,11 @@
     </script>
   </head>
   <body class="min-h-screen flex flex-col">
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
+
     {% sections 'header-group' %}
 
-    <main class="flex-1">
+    <main id="main-content" class="flex-1" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
 
@@ -55,6 +57,9 @@
     {% if settings.cart_type == 'drawer' %}
       {% section 'cart-drawer' %}
     {% endif %}
+
+    <!-- Live region for cart status announcements -->
+    <div id="cart-status" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
 
     {% render 'scripts' %}
   </body>

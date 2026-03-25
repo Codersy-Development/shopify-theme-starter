@@ -1,11 +1,13 @@
 /**
- * Cart drawer using simple CSS transitions (no <dialog>).
+ * Cart drawer using simple CSS transitions.
  * Slides in from the right, overlay fades in.
+ * Includes focus trap and focus management for accessibility.
  */
 class CartDrawer extends HTMLElement {
   connectedCallback() {
     this.panel = this.querySelector('[data-panel]');
     this.overlay = this.querySelector('[data-overlay]');
+    this.triggerEl = null;
 
     this.querySelectorAll('[data-close]').forEach((el) =>
       el.addEventListener('click', () => this.close())
@@ -17,6 +19,7 @@ class CartDrawer extends HTMLElement {
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen) this.close();
+      if (e.key === 'Tab' && this.isOpen) this.#trapFocus(e);
     });
   }
 
@@ -25,13 +28,12 @@ class CartDrawer extends HTMLElement {
   }
 
   open() {
+    this.triggerEl = document.activeElement;
     this.setAttribute('aria-hidden', 'false');
 
-    // Enable overlay clicks and fade in
     this.overlay.classList.remove('pointer-events-none');
     this.overlay.classList.add('pointer-events-auto');
 
-    // Use rAF to ensure the transition triggers after the class change
     requestAnimationFrame(() => {
       this.overlay.classList.remove('bg-black/0');
       this.overlay.classList.add('bg-black/50');
@@ -40,6 +42,12 @@ class CartDrawer extends HTMLElement {
     });
 
     document.body.style.overflow = 'hidden';
+
+    // Focus the close button after transition
+    this.panel.addEventListener('transitionend', () => {
+      this.panel.querySelector('[data-close]')?.focus();
+    }, { once: true });
+
     this.refresh();
   }
 
@@ -53,12 +61,32 @@ class CartDrawer extends HTMLElement {
     this.panel.classList.remove('translate-x-0');
     this.panel.classList.add('translate-x-full');
 
-    // After transition ends, disable overlay clicks and restore scroll
     this.panel.addEventListener('transitionend', () => {
       this.overlay.classList.remove('pointer-events-auto');
       this.overlay.classList.add('pointer-events-none');
       document.body.style.overflow = '';
+
+      // Return focus to trigger element
+      this.triggerEl?.focus();
     }, { once: true });
+  }
+
+  #trapFocus(e) {
+    const focusable = this.panel.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
 
   async refresh() {

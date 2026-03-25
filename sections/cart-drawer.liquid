@@ -3,12 +3,18 @@
   <div data-overlay class="fixed inset-0 bg-black/0 pointer-events-none transition-[background-color] duration-300 z-40"></div>
 
   <!-- Drawer -->
-  <div data-panel class="fixed top-0 right-0 w-full max-w-md h-full bg-white shadow-xl flex flex-col translate-x-full transition-transform duration-300 ease-out z-50">
+  <div
+    data-panel
+    role="dialog"
+    aria-modal="true"
+    aria-label="Shopping cart"
+    class="fixed top-0 right-0 w-full max-w-md h-full bg-white shadow-xl flex flex-col translate-x-full transition-transform duration-300 ease-out z-50"
+  >
     <!-- Header -->
     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold">Cart</h2>
-      <button data-close type="button" class="text-gray-400 hover:text-gray-600 cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <h2 class="text-lg font-semibold" id="cart-drawer-title">Cart</h2>
+      <button data-close type="button" class="text-gray-400 hover:text-gray-600 cursor-pointer" aria-label="Close cart">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -17,14 +23,14 @@
     <!-- Content -->
     <div data-cart-drawer-content class="flex-1 overflow-y-auto">
       {% if cart.item_count > 0 %}
-        <div class="divide-y divide-gray-200 px-6">
+        <ul class="divide-y divide-gray-200 px-6" role="list">
           {% for item in cart.items %}
-            <div class="flex items-center gap-4 py-4">
+            <li class="flex items-center gap-4 py-4">
               <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                 {% if item.image %}
                   <img
                     src="{{ item.image | image_url: width: 160 }}"
-                    alt="{{ item.image.alt | escape }}"
+                    alt="{{ item.image.alt | default: item.product.title | escape }}"
                     class="w-full h-full object-cover"
                     width="160"
                     height="160"
@@ -39,11 +45,13 @@
                 {% if item.variant.title != 'Default Title' %}
                   <p class="text-xs text-gray-500 mt-0.5">{{ item.variant.title }}</p>
                 {% endif %}
-                <p class="text-sm text-gray-600 mt-0.5">{{ item.price | money }} &times; {{ item.quantity }}</p>
+                <p class="text-sm text-gray-600 mt-0.5">
+                  <span class="visually-hidden">Price:</span> {{ item.price | money }} &times; {{ item.quantity }}
+                </p>
               </div>
-            </div>
+            </li>
           {% endfor %}
-        </div>
+        </ul>
       {% else %}
         <div class="flex flex-col items-center justify-center h-full text-center px-6">
           <p class="text-gray-500 mb-4">Your cart is empty.</p>
