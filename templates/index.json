@@ -13,14 +13,34 @@
       "type": "featured-collection",
       "settings": {
         "heading": "Featured Products",
-        "products_to_show": 4
+        "products_to_show": 4,
+        "show_swatches": true,
+        "button_label": "View all"
       }
     },
     "rich-text": {
       "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "About our store",
+            "size": "medium",
+            "tag": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "richtext": "<p>Share your brand story with customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+            "width": "medium"
+          }
+        }
+      },
+      "block_order": ["heading", "text"],
       "settings": {
-        "heading": "About our store",
-        "text": "<p>Share your brand story with customers.</p>"
+        "center": true,
+        "width": "max-w-4xl mx-auto"
       }
     }
   },

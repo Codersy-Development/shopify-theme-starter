@@ -220,7 +220,7 @@
               <p class="text-sm text-gray-500 mb-4">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
               <div data-product-grid class="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {% for product in collection.products %}
-                  {% render 'product-card', product: product %}
+                  {% render 'product-card', product: product, show_swatches: section.settings.show_swatches %}
                 {% endfor %}
               </div>
             {% else %}
@@ -279,6 +279,12 @@
       "max": 48,
       "step": 4,
       "default": 24
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "label": "Show color swatches",
+      "default": true
     }
   ]
 }

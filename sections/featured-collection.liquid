@@ -1,14 +1,35 @@
+{%- liquid
+  if section.settings.collection != blank
+    assign featured_collection = collections[section.settings.collection]
+  else
+    assign featured_collection = collections['all']
+  endif
+-%}
+
 <section class="py-16">
   <div class="page-width">
-    <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12">
-      {{ section.settings.heading }}
-    </h2>
+    {% if section.settings.heading != blank %}
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
 
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {% for product in collections[section.settings.collection].products limit: section.settings.products_to_show %}
-        {% render 'product-card', product: product %}
+      {% for product in featured_collection.products limit: section.settings.products_to_show %}
+        {% render 'product-card', product: product, show_swatches: section.settings.show_swatches %}
       {% endfor %}
     </div>
+
+    {% if section.settings.button_label != blank %}
+      <div class="text-center mt-10">
+        <a
+          href="{{ featured_collection.url | default: '/collections/all' }}"
+          class="inline-block border border-gray-900 text-gray-900 font-medium text-sm px-8 py-3 rounded-lg no-underline hover:bg-gray-900 hover:text-white transition-colors"
+        >
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {% endif %}
   </div>
 </section>
 
@@ -35,6 +56,18 @@
       "max": 12,
       "step": 1,
       "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "label": "Show color swatches",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "View all"
     }
   ],
   "presets": [

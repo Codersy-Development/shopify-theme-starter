@@ -1,17 +1,94 @@
-<a href="{{ product.url }}" class="group no-underline" aria-label="{{ product.title }} — {{ product.price | money }}">
-  <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
-    {% render 'image',
-      image: product.featured_image,
-      max_width: 600,
-      sizes: '(min-width: 768px) 25vw, 50vw',
-      alt: product.title,
-      class: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
-    %}
+{% comment %}
+  Product card with optional color swatches and compare-at price.
+
+  @param {product}  product        - Product object (required)
+  @param {boolean}  show_swatches  - Show color swatches (optional, default: false)
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant | default: product.variants.first
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign color_option = nil
+  if show_swatches
+    for option in product.options_with_values
+      assign option_name_down = option.name | downcase
+      if option_name_down == 'color' or option_name_down == 'colour'
+        assign color_option = option
+        break
+      endif
+    endfor
+  endif
+-%}
+
+<div data-product-card class="group">
+  <a href="{{ product.url }}" class="block no-underline">
+    <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3 relative">
+      {% render 'image',
+        image: product.featured_image,
+        max_width: 600,
+        sizes: '(min-width: 768px) 25vw, 50vw',
+        alt: product.title,
+        class: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 product-card-image'
+      %}
+
+      {% if on_sale %}
+        <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-medium px-2 py-0.5 rounded">
+          Sale
+        </span>
+      {% endif %}
+    </div>
+  </a>
+
+  <a href="{{ product.url }}" class="block no-underline">
+    <h3 class="text-sm font-medium text-gray-900">{{ product.title }}</h3>
+  </a>
+
+  <div class="flex items-center gap-2 mt-1">
+    <span class="text-sm {% if on_sale %}text-red-600 font-medium{% else %}text-gray-600{% endif %}">
+      {{ product.price | money }}
+    </span>
+    {% if on_sale %}
+      <span class="text-sm text-gray-400 line-through">
+        {{ product.compare_at_price | money }}
+      </span>
+    {% endif %}
   </div>
 
-  <h3 class="text-sm font-medium text-gray-900">{{ product.title }}</h3>
-  <p class="text-sm text-gray-600 mt-1">
-    <span class="visually-hidden">Price:</span>
-    {{ product.price | money }}
-  </p>
-</a>
+  {% if color_option and color_option.values.size > 1 %}
+    <div class="flex flex-wrap gap-1.5 mt-2">
+      {%- for value in color_option.values -%}
+        {%- liquid
+          assign swatch_image = product.featured_image
+          assign swatch_variant_id = current_variant.id
+          assign color_index = color_option.position | minus: 1
+
+          for variant in product.variants
+            if variant.options[color_index] == value
+              if variant.featured_image
+                assign swatch_image = variant.featured_image
+              endif
+              assign swatch_variant_id = variant.id
+              break
+            endif
+          endfor
+        -%}
+
+        <button
+          type="button"
+          data-swatch
+          data-image-src="{{ swatch_image | image_url: width: 600 }}"
+          data-image-srcset="{{ swatch_image | image_url: width: 400 }} 400w, {{ swatch_image | image_url: width: 600 }} 600w"
+          data-url="{{ product.url }}?variant={{ swatch_variant_id }}"
+          style="background-color: {{ value | downcase }}"
+          class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer transition-shadow hover:ring-2 hover:ring-offset-1 hover:ring-gray-400 {% if forloop.first %}ring-2 ring-offset-1 ring-gray-900{% endif %}"
+          aria-label="{{ value }}"
+          title="{{ value }}"
+        ></button>
+      {%- endfor -%}
+    </div>
+  {% endif %}
+</div>
