@@ -1,19 +1,18 @@
 /**
- * Mobile menu drawer using simple CSS transitions.
- * Slides in from the left, overlay fades in.
- * Includes focus trap and focus management for accessibility.
+ * Mobile menu drawer.
+ * Just toggles .is-open — all transitions handled by CSS.
+ * No inert, no inline styles, no rAF tricks.
  */
 class HeaderDrawer extends HTMLElement {
   connectedCallback() {
     this.panel = this.querySelector('[data-panel]');
-    this.overlay = this.querySelector('[data-overlay]');
     this.openBtn = this.querySelector('[data-open]');
 
     this.openBtn?.addEventListener('click', () => this.open());
     this.querySelectorAll('[data-close]').forEach((el) =>
       el.addEventListener('click', () => this.close())
     );
-    this.overlay?.addEventListener('click', () => this.close());
+    this.querySelector('[data-overlay]')?.addEventListener('click', () => this.close());
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen) this.close();
@@ -22,58 +21,33 @@ class HeaderDrawer extends HTMLElement {
   }
 
   get isOpen() {
-    return this.getAttribute('aria-hidden') === 'false';
+    return this.classList.contains('is-open');
   }
 
   open() {
-    this.setAttribute('aria-hidden', 'false');
+    this.classList.add('is-open');
     this.openBtn?.setAttribute('aria-expanded', 'true');
-
-    this.overlay.classList.remove('pointer-events-none');
-    this.overlay.classList.add('pointer-events-auto');
-
-    requestAnimationFrame(() => {
-      this.overlay.classList.remove('bg-black/0');
-      this.overlay.classList.add('bg-black/50');
-      this.panel.classList.remove('-translate-x-full');
-      this.panel.classList.add('translate-x-0');
-    });
-
     document.body.style.overflow = 'hidden';
 
-    // Focus the close button after transition
-    this.panel.addEventListener('transitionend', () => {
+    setTimeout(() => {
       this.panel.querySelector('[data-close]')?.focus();
-    }, { once: true });
+    }, 350);
   }
 
   close() {
     if (!this.isOpen) return;
 
-    this.setAttribute('aria-hidden', 'true');
+    this.classList.remove('is-open');
     this.openBtn?.setAttribute('aria-expanded', 'false');
-
-    this.overlay.classList.remove('bg-black/50');
-    this.overlay.classList.add('bg-black/0');
-    this.panel.classList.remove('translate-x-0');
-    this.panel.classList.add('-translate-x-full');
-
-    this.panel.addEventListener('transitionend', () => {
-      this.overlay.classList.remove('pointer-events-auto');
-      this.overlay.classList.add('pointer-events-none');
-      document.body.style.overflow = '';
-
-      // Return focus to hamburger button
-      this.openBtn?.focus();
-    }, { once: true });
+    document.body.style.overflow = '';
+    this.openBtn?.focus();
   }
 
   #trapFocus(e) {
     const focusable = this.panel.querySelectorAll(
-      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
     );
     if (!focusable.length) return;
-
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
 

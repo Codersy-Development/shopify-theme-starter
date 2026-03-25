@@ -35,9 +35,10 @@ class PredictiveSearch extends HTMLElement {
 
   open() {
     this.dropdown?.classList.add('is-active');
-    requestAnimationFrame(() => {
+    // Wait for CSS transition to enable pointer-events before focusing
+    setTimeout(() => {
       this.input?.focus();
-    });
+    }, 50);
   }
 
   close() {

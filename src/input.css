@@ -4,6 +4,7 @@
 @source "../templates/*.liquid";
 @source "../sections/*.liquid";
 @source "../snippets/*.liquid";
+@source "../assets/*.js";
 
 /* ── Global container ── */
 .page-width {
@@ -67,6 +68,38 @@
 
 .skip-to-content:focus {
   left: 0;
+}
+
+/* ── Drawer transitions ── */
+cart-drawer [data-overlay],
+header-drawer [data-overlay] {
+  background-color: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  transition: background-color 0.3s ease;
+}
+
+cart-drawer.is-open [data-overlay],
+header-drawer.is-open [data-overlay] {
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+}
+
+cart-drawer [data-panel] {
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+cart-drawer.is-open [data-panel] {
+  transform: translateX(0);
+}
+
+header-drawer [data-panel] {
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+header-drawer.is-open [data-panel] {
+  transform: translateX(0);
 }
 
 /* ── Predictive search ── */

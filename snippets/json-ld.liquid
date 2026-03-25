@@ -39,7 +39,7 @@
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": {{ shop.url | append: '/search?q={search_term_string}' | json }}
+      "urlTemplate": "{{ shop.url }}/search?q={% raw %}{search_term_string}{% endraw %}"
     },
     "query-input": "required name=search_term_string"
   }

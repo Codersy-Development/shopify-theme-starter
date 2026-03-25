@@ -1,23 +1,66 @@
-<section class="bg-gray-900 text-white">
-  <div class="page-width py-24 text-center">
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-      {{ section.settings.heading }}
-    </h1>
+<section
+  class="relative flex flex-col items-center justify-end w-full overflow-hidden"
+  style="min-height: {{ section.settings.desktop_height }}vh;"
+>
+  {%- if section.settings.image != blank -%}
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      {%- if section.settings.mobile_image != blank -%}
+        <picture>
+          <source media="(min-width: 768px)" srcset="{{ section.settings.image | image_url: width: 2000 }}">
+          <img
+            src="{{ section.settings.mobile_image | image_url: width: 800 }}"
+            alt="{{ section.settings.image.alt | default: section.settings.heading }}"
+            class="absolute inset-0 w-full h-full object-cover"
+            loading="eager"
+            fetchpriority="high"
+            width="{{ section.settings.mobile_image.width }}"
+            height="{{ section.settings.mobile_image.height }}"
+          >
+        </picture>
+      {%- else -%}
+        <img
+          src="{{ section.settings.image | image_url: width: 2000 }}"
+          alt="{{ section.settings.image.alt | default: section.settings.heading }}"
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+        >
+      {%- endif -%}
 
-    {% if section.settings.subheading != blank %}
-      <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+      {%- if section.settings.overlay_opacity > 0 -%}
+        <div
+          class="absolute inset-0"
+          style="background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 100.0 }}) 62%);"
+        ></div>
+      {%- endif -%}
+    </div>
+  {%- else -%}
+    <div class="absolute inset-0 bg-gray-900" aria-hidden="true"></div>
+  {%- endif -%}
+
+  <div class="relative flex flex-col items-center gap-6 md:gap-8 text-center text-white px-4 pb-12 md:pb-24 pt-4 w-full max-w-[837px]">
+    {%- if section.settings.subheading != blank -%}
+      <p class="text-xl md:text-2xl italic tracking-tight">
         {{ section.settings.subheading }}
       </p>
-    {% endif %}
+    {%- endif -%}
 
-    {% if section.settings.button_label != blank %}
+    {%- if section.settings.heading != blank -%}
+      <h1 class="text-5xl md:text-8xl lg:text-[96px] font-medium uppercase leading-none tracking-tight">
+        {{ section.settings.heading }}
+      </h1>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
       <a
         href="{{ section.settings.button_link }}"
-        class="inline-block bg-white text-gray-900 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors no-underline"
+        class="inline-flex items-center justify-center bg-white text-black font-bold uppercase text-base px-5 py-3 min-w-[200px] h-[47px] no-underline transition-colors duration-200 hover:bg-black hover:text-white"
       >
         {{ section.settings.button_label }}
       </a>
-    {% endif %}
+    {%- endif -%}
   </div>
 </section>
 
@@ -26,22 +69,52 @@
   "name": "Hero Banner",
   "settings": [
     {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Welcome to our store"
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Section height",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 30
     },
     {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Discover our curated collection of products."
+      "default": "Dark Romance"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Romantic Gothic Fashion"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Button label",
-      "default": "Shop now"
+      "default": "Shop Now"
     },
     {
       "type": "url",

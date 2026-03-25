@@ -1,4 +1,29 @@
-<header-drawer class="contents" aria-hidden="true">
+<style>
+  header-drawer [data-overlay] {
+    background-color: rgba(0,0,0,0);
+    pointer-events: none;
+    visibility: hidden;
+    transition: background-color 0.3s ease, visibility 0s 0.3s;
+  }
+  header-drawer.is-open [data-overlay] {
+    background-color: rgba(0,0,0,0.5);
+    pointer-events: auto;
+    visibility: visible;
+    transition: background-color 0.3s ease, visibility 0s 0s;
+  }
+  header-drawer [data-panel] {
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0.3s;
+  }
+  header-drawer.is-open [data-panel] {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s 0s;
+  }
+</style>
+
+<header-drawer class="contents">
   <button
     type="button"
     class="md:hidden text-gray-700 hover:text-gray-900 cursor-pointer"
@@ -12,17 +37,15 @@
     </svg>
   </button>
 
-  <!-- Overlay -->
-  <div data-overlay class="fixed inset-0 bg-black/0 pointer-events-none transition-[background-color] duration-300 z-40"></div>
+  <div data-overlay class="fixed inset-0 z-40"></div>
 
-  <!-- Drawer -->
   <div
     id="mobile-menu-panel"
     data-panel
     role="dialog"
     aria-modal="true"
     aria-label="Mobile menu"
-    class="fixed top-0 left-0 w-full max-w-xs h-full bg-white shadow-xl flex flex-col -translate-x-full transition-transform duration-300 ease-out z-50"
+    class="fixed top-0 left-0 w-full max-w-xs h-full bg-white shadow-xl flex flex-col z-50"
   >
     <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200">
       <span class="text-lg font-semibold">Menu</span>
