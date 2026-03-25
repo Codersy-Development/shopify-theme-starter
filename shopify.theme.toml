@@ -1,0 +1,7 @@
+[environments.development]
+store = "codersy-test-store.myshopify.com"
+password = "kremarica1234"
+
+[environments.production]
+store = "codersy-test-store.myshopify.com"
+password = "kremarica1234"

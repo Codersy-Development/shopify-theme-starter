@@ -5,8 +5,8 @@
   "scripts": {
     "build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./assets/application.css --minify",
     "watch:css": "npx @tailwindcss/cli -i ./src/input.css -o ./assets/application.css --watch",
-    "dev": "concurrently \"npm run watch:css\" \"shopify theme dev\"",
-    "deploy": "npm run build:css && shopify theme push"
+    "dev": "concurrently \"npm run watch:css\" \"shopify theme dev --environment development\"",
+    "deploy": "npm run build:css && shopify theme push --environment production"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.0.0",
