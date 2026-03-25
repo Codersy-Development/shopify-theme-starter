@@ -1,7 +1,5 @@
 /**
- * Cart drawer using simple CSS transitions.
- * Slides in from the right, overlay fades in.
- * Includes focus trap and focus management for accessibility.
+ * Cart drawer with quantity controls, remove, and focus management.
  */
 class CartDrawer extends HTMLElement {
   connectedCallback() {
@@ -21,6 +19,8 @@ class CartDrawer extends HTMLElement {
       if (e.key === 'Escape' && this.isOpen) this.close();
       if (e.key === 'Tab' && this.isOpen) this.#trapFocus(e);
     });
+
+    this.#bindQuantityButtons();
   }
 
   get isOpen() {
@@ -43,7 +43,6 @@ class CartDrawer extends HTMLElement {
 
     document.body.style.overflow = 'hidden';
 
-    // Focus the close button after transition
     this.panel.addEventListener('transitionend', () => {
       this.panel.querySelector('[data-close]')?.focus();
     }, { once: true });
@@ -65,8 +64,6 @@ class CartDrawer extends HTMLElement {
       this.overlay.classList.remove('pointer-events-auto');
       this.overlay.classList.add('pointer-events-none');
       document.body.style.overflow = '';
-
-      // Return focus to trigger element
       this.triggerEl?.focus();
     }, { once: true });
   }
@@ -76,7 +73,6 @@ class CartDrawer extends HTMLElement {
       'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
     );
     if (!focusable.length) return;
-
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
 
@@ -86,6 +82,45 @@ class CartDrawer extends HTMLElement {
     } else if (!e.shiftKey && document.activeElement === last) {
       e.preventDefault();
       first.focus();
+    }
+  }
+
+  #bindQuantityButtons() {
+    this.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-change-qty]');
+      if (!btn) return;
+      const line = parseInt(btn.dataset.line, 10);
+      const qty = parseInt(btn.dataset.qty, 10);
+      this.#updateQuantity(line, qty);
+    });
+  }
+
+  async #updateQuantity(line, quantity) {
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ line, quantity }),
+      });
+
+      if (!response.ok) throw new Error('Failed to update cart');
+
+      const cart = await response.json();
+
+      document.dispatchEvent(
+        new CustomEvent('cart:updated', { detail: { item_count: cart.item_count } })
+      );
+
+      const status = document.getElementById('cart-status');
+      if (status) {
+        status.textContent = quantity === 0
+          ? 'Item removed from cart.'
+          : `Cart updated. ${cart.item_count} ${cart.item_count === 1 ? 'item' : 'items'} in cart.`;
+      }
+
+      await this.refresh();
+    } catch (error) {
+      console.error('Cart update error:', error);
     }
   }
 
@@ -101,6 +136,16 @@ class CartDrawer extends HTMLElement {
         const currentContent = this.querySelector('[data-cart-drawer-content]');
         if (newContent && currentContent) {
           currentContent.replaceWith(newContent);
+        }
+        // Also update footer (subtotal/checkout)
+        const newFooter = fragment.querySelector('[data-cart-drawer-footer]');
+        const currentFooter = this.querySelector('[data-cart-drawer-footer]');
+        if (newFooter && currentFooter) {
+          currentFooter.replaceWith(newFooter);
+        } else if (newFooter && !currentFooter) {
+          this.panel.appendChild(newFooter);
+        } else if (!newFooter && currentFooter) {
+          currentFooter.remove();
         }
       }
     } catch (error) {

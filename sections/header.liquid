@@ -1,8 +1,8 @@
 <header class="bg-white border-b border-gray-200" role="banner">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16 gap-4">
+  <div class="page-width">
+    <div class="flex items-center h-16 gap-4">
       <!-- Left: mobile menu + logo -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 flex-1">
         {% render 'header-drawer', menu: section.settings.menu %}
 
         <a href="/" class="text-xl font-bold text-gray-900 no-underline shrink-0" title="{{ shop.name }}">
@@ -21,11 +21,11 @@
       </div>
 
       <!-- Center: nav (desktop only) -->
-      <nav class="hidden md:flex items-center gap-6" aria-label="Main navigation">
+      <nav class="hidden md:flex items-center justify-center gap-6" aria-label="Main navigation">
         {% for link in linklists[section.settings.menu].links %}
           <a
             href="{{ link.url }}"
-            class="text-sm text-gray-700 hover:text-gray-900 no-underline"
+            class="text-sm text-gray-700 hover:text-gray-900 no-underline whitespace-nowrap"
             {% if link.active %}aria-current="page"{% endif %}
           >
             {{ link.title }}
@@ -34,12 +34,21 @@
       </nav>
 
       <!-- Right: icons -->
-      <div class="flex items-center gap-4">
-        <a href="/search" class="text-gray-700 hover:text-gray-900 no-underline" aria-label="Search">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </a>
+      <div class="flex items-center justify-end gap-4 flex-1">
+        {% if settings.predictive_search_enabled %}
+          {% render 'predictive-search' %}
+          <a href="/search" class="md:hidden text-gray-700 hover:text-gray-900 no-underline" aria-label="Search">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </a>
+        {% else %}
+          <a href="/search" class="text-gray-700 hover:text-gray-900 no-underline" aria-label="Search">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </a>
+        {% endif %}
 
         <cart-icon>
           {% if settings.cart_type == 'drawer' %}

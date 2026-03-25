@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
 
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
     {% render 'canonicals' %}
     {% render 'robots' %}
 
@@ -30,7 +32,12 @@
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
 
+    {%- if settings.seo_google_site_verification != blank -%}
+      <meta name="google-site-verification" content="{{ settings.seo_google_site_verification }}">
+    {%- endif -%}
+
     {% render 'meta-tags' %}
+    {% render 'json-ld' %}
 
     {{ content_for_header }}
 
@@ -42,6 +49,18 @@
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
+
+    <style>
+      :root {
+        --page-width: {% if settings.page_width == 'full' %}100%{% else %}{{ settings.page_width }}px{% endif %};
+        --padding-inline: {{ settings.padding_mobile }}px;
+      }
+      @media (min-width: 768px) {
+        :root {
+          --padding-inline: {{ settings.padding_desktop }}px;
+        }
+      }
+    </style>
   </head>
   <body class="min-h-screen flex flex-col">
     <a href="#main-content" class="skip-to-content">Skip to content</a>
@@ -58,7 +77,6 @@
       {% section 'cart-drawer' %}
     {% endif %}
 
-    <!-- Live region for cart status announcements -->
     <div id="cart-status" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
 
     {% render 'scripts' %}

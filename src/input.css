@@ -5,6 +5,15 @@
 @source "../sections/*.liquid";
 @source "../snippets/*.liquid";
 
+/* ── Global container ── */
+.page-width {
+  max-width: var(--page-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--padding-inline);
+  padding-right: var(--padding-inline);
+}
+
 /* Custom theme styles */
 @layer base {
   body {
@@ -22,7 +31,6 @@
 
 /* ── Accessibility ── */
 
-/* Visible focus indicators for keyboard users only */
 :focus-visible {
   outline: 2px solid #111827;
   outline-offset: 2px;
@@ -32,7 +40,6 @@
   outline: none;
 }
 
-/* Visually hidden — screen reader only */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -45,7 +52,6 @@
   border: 0;
 }
 
-/* Skip-to-content link */
 .skip-to-content {
   position: absolute;
   left: -9999px;
@@ -61,6 +67,20 @@
 
 .skip-to-content:focus {
   left: 0;
+}
+
+/* ── Predictive search ── */
+.predictive-search-results {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.predictive-search-results.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 /* ── Reduced motion ── */

@@ -1,18 +1,15 @@
 <cart-drawer class="contents" aria-hidden="true">
-  <!-- Overlay -->
   <div data-overlay class="fixed inset-0 bg-black/0 pointer-events-none transition-[background-color] duration-300 z-40"></div>
 
-  <!-- Drawer -->
   <div
     data-panel
     role="dialog"
     aria-modal="true"
     aria-label="Shopping cart"
-    class="fixed top-0 right-0 w-full max-w-md h-full bg-white shadow-xl flex flex-col translate-x-full transition-transform duration-300 ease-out z-50"
+    class="fixed top-0 right-0 h-full w-full sm:max-w-md bg-white shadow-xl flex flex-col translate-x-full transition-transform duration-300 ease-out z-50"
   >
-    <!-- Header -->
     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold" id="cart-drawer-title">Cart</h2>
+      <h2 class="text-lg font-semibold">Cart</h2>
       <button data-close type="button" class="text-gray-400 hover:text-gray-600 cursor-pointer" aria-label="Close cart">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -20,12 +17,11 @@
       </button>
     </div>
 
-    <!-- Content -->
     <div data-cart-drawer-content class="flex-1 overflow-y-auto">
       {% if cart.item_count > 0 %}
         <ul class="divide-y divide-gray-200 px-6" role="list">
           {% for item in cart.items %}
-            <li class="flex items-center gap-4 py-4">
+            <li class="flex gap-4 py-4">
               <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                 {% if item.image %}
                   <img
@@ -46,8 +42,45 @@
                   <p class="text-xs text-gray-500 mt-0.5">{{ item.variant.title }}</p>
                 {% endif %}
                 <p class="text-sm text-gray-600 mt-0.5">
-                  <span class="visually-hidden">Price:</span> {{ item.price | money }} &times; {{ item.quantity }}
+                  <span class="visually-hidden">Price:</span> {{ item.price | money }}
                 </p>
+
+                <div class="flex items-center gap-3 mt-2">
+                  <div class="flex items-center border border-gray-200 rounded-lg">
+                    <button
+                      type="button"
+                      class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-900 cursor-pointer"
+                      aria-label="Decrease quantity for {{ item.product.title }}"
+                      data-change-qty
+                      data-line="{{ forloop.index }}"
+                      data-qty="{{ item.quantity | minus: 1 }}"
+                    >
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M5 12h14"/></svg>
+                    </button>
+                    <span class="w-8 text-center text-sm" aria-label="Quantity: {{ item.quantity }}">{{ item.quantity }}</span>
+                    <button
+                      type="button"
+                      class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-900 cursor-pointer"
+                      aria-label="Increase quantity for {{ item.product.title }}"
+                      data-change-qty
+                      data-line="{{ forloop.index }}"
+                      data-qty="{{ item.quantity | plus: 1 }}"
+                    >
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="text-xs text-gray-400 hover:text-red-600 cursor-pointer transition-colors"
+                    aria-label="Remove {{ item.product.title }} from cart"
+                    data-change-qty
+                    data-line="{{ forloop.index }}"
+                    data-qty="0"
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             </li>
           {% endfor %}
@@ -62,9 +95,8 @@
       {% endif %}
     </div>
 
-    <!-- Footer -->
     {% if cart.item_count > 0 %}
-      <div class="border-t border-gray-200 px-6 py-4">
+      <div data-cart-drawer-footer class="border-t border-gray-200 px-6 py-4">
         <div class="flex items-center justify-between mb-4">
           <span class="text-sm font-semibold">Subtotal</span>
           <span class="text-sm font-semibold">{{ cart.total_price | money }}</span>

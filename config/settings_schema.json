@@ -8,6 +8,43 @@
     "theme_support_url": "https://codersy.com"
   },
   {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "page_width",
+        "label": "Page width",
+        "options": [
+          { "value": "1200", "label": "Narrow (1200px)" },
+          { "value": "1400", "label": "Default (1400px)" },
+          { "value": "1600", "label": "Wide (1600px)" },
+          { "value": "full", "label": "Full width" }
+        ],
+        "default": "1400"
+      },
+      {
+        "type": "range",
+        "id": "padding_mobile",
+        "label": "Horizontal padding (mobile)",
+        "min": 12,
+        "max": 40,
+        "step": 4,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "padding_desktop",
+        "label": "Horizontal padding (desktop)",
+        "min": 20,
+        "max": 80,
+        "step": 4,
+        "unit": "px",
+        "default": 40
+      }
+    ]
+  },
+  {
     "name": "Logo & Favicon",
     "settings": [
       {
@@ -67,6 +104,18 @@
     ]
   },
   {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "label": "Enable predictive search",
+        "default": true,
+        "info": "Show search suggestions as you type."
+      }
+    ]
+  },
+  {
     "name": "Social Media",
     "settings": [
       {
@@ -108,6 +157,17 @@
         "id": "social_pinterest_link",
         "label": "Pinterest",
         "info": "https://pinterest.com/your-page"
+      }
+    ]
+  },
+  {
+    "name": "SEO",
+    "settings": [
+      {
+        "type": "text",
+        "id": "seo_google_site_verification",
+        "label": "Google site verification",
+        "info": "Content value from Google Search Console meta tag"
       }
     ]
   }
