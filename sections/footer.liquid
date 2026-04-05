@@ -1,6 +1,7 @@
-<footer class="bg-gray-50 border-t border-gray-200 mt-auto" role="contentinfo">
-  <div class="page-width py-12">
-    <div class="grid md:grid-cols-3 gap-8 mb-8">
+<footer class="bg-[var(--color-accent)] text-white mt-auto" role="contentinfo">
+  <div class="page-width py-16">
+    <div class="grid md:grid-cols-4 gap-10 mb-12">
+      <!-- Brand -->
       <div>
         <a href="/" class="inline-block mb-4 no-underline" title="{{ shop.name }}">
           {% if settings.logo != blank %}
@@ -13,32 +14,47 @@
               style: 'max-width: 100px'
             %}
           {% else %}
-            <span class="text-sm font-semibold text-gray-900 uppercase tracking-wider">{{ shop.name }}</span>
+            <span class="text-lg font-bold text-white" style="font-family: var(--font-heading);">{{ shop.name }}</span>
           {% endif %}
         </a>
         {% if section.settings.about_text != blank %}
-          <p class="text-sm text-gray-500">{{ section.settings.about_text }}</p>
+          <p class="text-sm text-white/70 mb-4">{{ section.settings.about_text }}</p>
         {% endif %}
         <div class="mt-4">
           {% render 'social-icons' %}
         </div>
       </div>
 
+      <!-- Quick links -->
       <div>
-        <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Quick links</h3>
+        <h3 class="text-sm font-semibold uppercase tracking-wider mb-4" style="font-family: var(--font-heading);">Quick links</h3>
         <nav class="space-y-2" aria-label="Footer navigation">
           {% for link in linklists[section.settings.menu].links %}
-            <a href="{{ link.url }}" class="block text-sm text-gray-500 hover:text-gray-700 no-underline">
-              {{ link.title }}
-            </a>
+            <a href="{{ link.url }}" class="block text-sm text-white/70 hover:text-white no-underline transition-colors">{{ link.title }}</a>
           {% endfor %}
         </nav>
       </div>
 
+      <!-- Certifications -->
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wider mb-4" style="font-family: var(--font-heading);">Certifications</h3>
+        <div class="space-y-3">
+          {% for block in section.blocks %}
+            {% if block.type == 'certification' %}
+              <div class="flex items-center gap-2 text-sm text-white/70" {{ block.shopify_attributes }}>
+                <svg class="w-4 h-4 text-[var(--color-primary-light)] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                {{ block.settings.text }}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Newsletter -->
       {% if section.settings.show_newsletter %}
         <div>
-          <h3 id="newsletter-heading" class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Stay in touch</h3>
-          <p class="text-sm text-gray-500 mb-3">Subscribe for updates and promotions.</p>
+          <h3 id="newsletter-heading" class="text-sm font-semibold uppercase tracking-wider mb-4" style="font-family: var(--font-heading);">Stay healthy</h3>
+          <p class="text-sm text-white/70 mb-3">Get wellness tips and exclusive offers delivered to your inbox.</p>
           {% form 'customer' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
             <div class="flex gap-2">
@@ -51,13 +67,13 @@
                 required
                 aria-required="true"
                 autocomplete="email"
-                class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                class="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)] focus:border-transparent"
               >
               <button
                 type="submit"
-                class="bg-gray-900 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+                class="bg-[var(--color-primary)] text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[var(--color-primary-light)] transition-colors cursor-pointer"
               >
-                Subscribe
+                Join
               </button>
             </div>
           {% endform %}
@@ -65,12 +81,12 @@
       {% endif %}
     </div>
 
-    <div class="border-t border-gray-200 pt-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <p class="text-sm text-gray-400">
+    <div class="border-t border-white/20 pt-8 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p class="text-sm text-white/50">
         &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
       </p>
-      <p class="text-sm text-gray-400">
-        Shopify theme by <a href="https://www.codersy.com" class="text-gray-500 hover:text-gray-700 no-underline" title="Codersy - Shopify Development">Codersy</a>
+      <p class="text-sm text-white/50">
+        Shopify theme by <a href="https://www.codersy.com" class="text-white/60 hover:text-white no-underline transition-colors" title="Codersy - Shopify Development">Codersy</a>
       </p>
     </div>
   </div>
@@ -89,7 +105,8 @@
     {
       "type": "text",
       "id": "about_text",
-      "label": "About text"
+      "label": "About text",
+      "default": "Premium supplements crafted with pure, science-backed ingredients for your wellness journey."
     },
     {
       "type": "checkbox",
@@ -97,6 +114,28 @@
       "label": "Show newsletter signup",
       "default": true
     }
-  ]
+  ],
+  "blocks": [
+    {
+      "type": "certification",
+      "name": "Certification",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Certification text",
+          "default": "GMP Certified"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "certification", "settings": { "text": "GMP Certified Facility" } },
+      { "type": "certification", "settings": { "text": "Third-Party Lab Tested" } },
+      { "type": "certification", "settings": { "text": "Non-GMO Ingredients" } },
+      { "type": "certification", "settings": { "text": "Organic Certified" } }
+    ]
+  }
 }
 {% endschema %}

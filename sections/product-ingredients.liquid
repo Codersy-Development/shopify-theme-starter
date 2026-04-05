@@ -1,0 +1,98 @@
+<section class="py-12 md:py-16 bg-[var(--color-background-alt)]">
+  <div class="page-width">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center mb-4" style="font-family: var(--font-heading);">
+      {{ section.settings.heading }}
+    </h2>
+    {% if section.settings.subheading != blank %}
+      <p class="text-center text-[var(--color-text-light)] max-w-2xl mx-auto mb-10">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for block in section.blocks %}
+        <div class="bg-[var(--color-background)] rounded-xl p-6 border border-[var(--color-border)]" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <div class="w-16 h-16 mb-4 rounded-full overflow-hidden bg-[var(--color-background-alt)]">
+              {% render 'image',
+                image: block.settings.image,
+                max_width: 128,
+                sizes: '64px',
+                alt: block.settings.name,
+                class: 'w-full h-full object-cover'
+              %}
+            </div>
+          {% else %}
+            <div class="w-16 h-16 mb-4 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center">
+              <svg class="w-8 h-8 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+          {% endif %}
+          <h3 class="text-lg font-bold mb-1" style="font-family: var(--font-heading);">{{ block.settings.name }}</h3>
+          {% if block.settings.dosage != blank %}
+            <p class="text-sm font-semibold text-[var(--color-primary)] mb-2">{{ block.settings.dosage }}</p>
+          {% endif %}
+          <p class="text-sm text-[var(--color-text-light)]">{{ block.settings.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ingredient Breakdown",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Key Ingredients"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Every ingredient is carefully selected and backed by science."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Ingredient name",
+          "default": "Vitamin D3"
+        },
+        {
+          "type": "text",
+          "id": "dosage",
+          "label": "Dosage",
+          "default": "2000 IU per serving"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Supports immune health, bone strength, and mood regulation. Sourced from organic lichen."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ingredient Breakdown",
+      "blocks": [
+        { "type": "ingredient", "settings": { "name": "Vitamin D3", "dosage": "2000 IU", "description": "Supports immune health, bone strength, and mood regulation." } },
+        { "type": "ingredient", "settings": { "name": "Omega-3 Fish Oil", "dosage": "1000mg", "description": "Promotes heart health, brain function, and reduces inflammation." } },
+        { "type": "ingredient", "settings": { "name": "Probiotics", "dosage": "10 Billion CFU", "description": "Supports digestive health and strengthens gut microbiome." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

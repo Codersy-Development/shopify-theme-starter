@@ -1,7 +1,7 @@
 {%- if section.settings.text != blank -%}
-  <div class="bg-gray-900 text-white text-center text-sm py-2 px-4">
+  <div class="bg-[var(--color-primary)] text-white text-center text-sm py-2.5 px-4">
     {%- if section.settings.link != blank -%}
-      <a href="{{ section.settings.link }}" class="text-white hover:text-gray-200 no-underline">
+      <a href="{{ section.settings.link }}" class="text-white hover:text-white/80 no-underline">
         {{ section.settings.text }}
       </a>
     {%- else -%}
@@ -18,7 +18,7 @@
       "type": "text",
       "id": "text",
       "label": "Text",
-      "default": "Free shipping on orders over $50"
+      "default": "🌿 Free shipping on orders over $50 — Use code VITALITY at checkout"
     },
     {
       "type": "url",

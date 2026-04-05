@@ -11,7 +11,9 @@
       "@theme/collection-filters": {{ 'collection-filters.js' | asset_url | json }},
       "@theme/accordion": {{ 'accordion.js' | asset_url | json }},
       "@theme/product-card": {{ 'product-card.js' | asset_url | json }},
-      "@theme/header-nav": {{ 'header-nav.js' | asset_url | json }}
+      "@theme/header-nav": {{ 'header-nav.js' | asset_url | json }},
+      "@theme/before-after": {{ 'before-after.js' | asset_url | json }},
+      "@theme/subscription-toggle": {{ 'subscription-toggle.js' | asset_url | json }}
     }
   }
 </script>
@@ -23,6 +25,8 @@
 
 {% if template contains 'product' %}
   <script type="module" src="{{ 'product-gallery.js' | asset_url }}"></script>
+  <script type="module" src="{{ 'before-after.js' | asset_url }}"></script>
+  <script type="module" src="{{ 'subscription-toggle.js' | asset_url }}"></script>
 {% endif %}
 
 {% if template contains 'collection' %}

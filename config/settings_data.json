@@ -1,8 +1,21 @@
 {
   "current": {
-    "color_primary": "#111827",
-    "color_secondary": "#2563eb",
+    "color_primary": "#2D6A4F",
+    "color_primary_light": "#52B788",
+    "color_secondary": "#B7791F",
+    "color_accent": "#1B4332",
+    "color_background": "#FFFFFF",
+    "color_background_alt": "#F0FFF4",
+    "color_text": "#1A202C",
+    "color_text_light": "#718096",
+    "color_border": "#E2E8F0",
     "cart_type": "drawer",
-    "logo_max_width": 120
+    "logo_max_width": 120,
+    "trust_bar_enabled": true,
+    "trust_badge_1": "GMP Certified",
+    "trust_badge_2": "Third-Party Tested",
+    "trust_badge_3": "Made in USA",
+    "trust_badge_4": "Free Shipping $50+",
+    "font_body_size": 16
   }
 }

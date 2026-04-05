@@ -1,7 +1,7 @@
 <section class="py-12 md:py-16">
   <div class="page-width max-w-3xl">
     {% if section.settings.heading != blank %}
-      <h2 class="text-2xl sm:text-3xl font-bold mb-8 {% if section.settings.center_heading %}text-center{% endif %}">
+      <h2 class="text-2xl sm:text-3xl font-bold mb-8 {% if section.settings.center_heading %}text-center{% endif %}" style="font-family: var(--font-heading);">
         {{ section.settings.heading }}
       </h2>
     {% endif %}
@@ -9,7 +9,7 @@
     <accordion-group {% if section.settings.allow_multiple %}data-allow-multiple{% endif %}>
       {% for block in section.blocks %}
         <div
-          class="accordion-item border-b border-gray-200"
+          class="accordion-item border-b border-[var(--color-border)]"
           data-accordion
           {% if forloop.first and section.settings.open_first %}data-open{% endif %}
           {{ block.shopify_attributes }}
@@ -21,14 +21,14 @@
             aria-expanded="false"
           >
             <span class="text-sm font-bold uppercase tracking-wider">{{ block.settings.title }}</span>
-            <span class="accordion-icon text-gray-400 text-lg leading-none shrink-0" aria-hidden="true">
+            <span class="accordion-icon text-[var(--color-text-light)] text-lg leading-none shrink-0" aria-hidden="true">
               <span class="accordion-icon-closed">+</span>
-              <span class="accordion-icon-open">−</span>
+              <span class="accordion-icon-open">&minus;</span>
             </span>
           </button>
           <div class="accordion-content">
             <div>
-              <div class="pb-6 prose prose-sm text-gray-600 max-w-none">
+              <div class="pb-6 prose prose-sm text-[var(--color-text-light)] max-w-none">
                 {{ block.settings.content }}
               </div>
             </div>

@@ -7,10 +7,10 @@
   <div class="page-width">
     {% render 'breadcrumbs' %}
 
-    <h1 class="text-3xl font-bold mb-2">{{ collection.title }}</h1>
+    <h1 class="text-3xl font-bold mb-2" style="font-family: var(--font-heading);">{{ collection.title }}</h1>
 
     {% if collection.description != blank %}
-      <div class="prose text-gray-600 mb-6">{{ collection.description }}</div>
+      <div class="prose text-[var(--color-text-light)] mb-6">{{ collection.description }}</div>
     {% endif %}
 
     <collection-filters class="block">
@@ -19,7 +19,7 @@
 
       <form action="{{ collection.url }}" method="get" data-filter-form>
         <!-- Toolbar -->
-        <div class="flex items-center justify-between py-4 border-y border-gray-200 mb-6">
+        <div class="flex items-center justify-between py-4 border-y border-[var(--color-border)] mb-6">
           <button
             type="button"
             data-toggle-filters
@@ -34,17 +34,17 @@
           <div class="flex items-center gap-4">
             <!-- Products per row (desktop) -->
             <div class="hidden md:flex items-center gap-1" role="radiogroup" aria-label="Grid columns">
-              <button type="button" data-grid="3" class="p-1.5 rounded hover:bg-gray-100 transition-colors cursor-pointer" aria-label="3 columns">
-                <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20"><rect x="1" y="2" width="5" height="16" rx="1"/><rect x="8" y="2" width="5" height="16" rx="1"/><rect x="15" y="2" width="4" height="16" rx="1"/></svg>
+              <button type="button" data-grid="3" class="p-1.5 rounded hover:bg-[var(--color-background-alt)] transition-colors cursor-pointer" aria-label="3 columns">
+                <svg class="w-5 h-5 text-[var(--color-text-light)]" fill="currentColor" viewBox="0 0 20 20"><rect x="1" y="2" width="5" height="16" rx="1"/><rect x="8" y="2" width="5" height="16" rx="1"/><rect x="15" y="2" width="4" height="16" rx="1"/></svg>
               </button>
-              <button type="button" data-grid="4" class="p-1.5 rounded hover:bg-gray-100 transition-colors cursor-pointer" aria-label="4 columns">
-                <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20"><rect x="1" y="2" width="3.5" height="16" rx="1"/><rect x="6" y="2" width="3.5" height="16" rx="1"/><rect x="11" y="2" width="3.5" height="16" rx="1"/><rect x="16" y="2" width="3" height="16" rx="1"/></svg>
+              <button type="button" data-grid="4" class="p-1.5 rounded hover:bg-[var(--color-background-alt)] transition-colors cursor-pointer" aria-label="4 columns">
+                <svg class="w-5 h-5 text-[var(--color-text-light)]" fill="currentColor" viewBox="0 0 20 20"><rect x="1" y="2" width="3.5" height="16" rx="1"/><rect x="6" y="2" width="3.5" height="16" rx="1"/><rect x="11" y="2" width="3.5" height="16" rx="1"/><rect x="16" y="2" width="3" height="16" rx="1"/></svg>
               </button>
             </div>
 
             <!-- Sort -->
             <div class="flex items-center gap-2">
-              <span class="text-sm text-gray-500 hidden sm:inline">Sort by:</span>
+              <span class="text-sm text-[var(--color-text-light)] hidden sm:inline">Sort by:</span>
               <select
                 name="sort_by"
                 class="text-sm font-medium border-0 bg-transparent cursor-pointer pr-6 focus:ring-0 focus:outline-none"
@@ -74,7 +74,7 @@
               {% for value in filter.active_values %}
                 <a
                   href="{{ value.url_to_remove }}"
-                  class="inline-flex items-center gap-1 text-xs bg-gray-100 rounded-full px-3 py-1.5 no-underline text-gray-700 hover:bg-gray-200 transition-colors"
+                  class="inline-flex items-center gap-1 text-xs bg-[var(--color-background-alt)] rounded-full px-3 py-1.5 no-underline text-[var(--color-text)] hover:bg-[var(--color-border)] transition-colors"
                 >
                   {{ value.label }}
                   <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -83,16 +83,16 @@
                 </a>
               {% endfor %}
             {% endfor %}
-            <a href="{{ collection.url }}" class="text-xs text-gray-500 hover:text-gray-900 no-underline underline ml-1">Clear all</a>
+            <a href="{{ collection.url }}" class="text-xs text-[var(--color-text-light)] hover:text-[var(--color-text)] no-underline underline ml-1">Clear all</a>
           </div>
         {% endif %}
 
         <!-- Layout: sidebar / drawer + grid -->
         <div class="md:flex gap-8">
           <!-- Filters: mobile drawer / desktop sidebar -->
-          <aside data-filters class="bg-white z-50 flex flex-col md:w-56 md:shrink-0 md:block">
+          <aside data-filters class="bg-[var(--color-background)] z-50 flex flex-col md:w-56 md:shrink-0 md:block">
             <!-- Mobile drawer header -->
-            <div class="md:hidden flex items-center justify-between px-6 py-4 border-b border-gray-200">
+            <div class="md:hidden flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)]">
               <button
                 type="button"
                 data-toggle-filters
@@ -103,7 +103,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
                 </svg>
               </button>
-              <button type="button" data-close-filters class="text-gray-400 hover:text-gray-600 cursor-pointer" aria-label="Close filters">
+              <button type="button" data-close-filters class="text-[var(--color-text-light)] hover:text-[var(--color-text-light)] cursor-pointer" aria-label="Close filters">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path stroke-linecap="round" d="M5 12h14" />
                 </svg>
@@ -113,10 +113,10 @@
             <!-- Filter groups -->
             <div class="flex-1 overflow-y-auto px-6 md:px-0">
               {% for filter in collection.filters %}
-                <details class="group border-b border-gray-200" {% if forloop.index <= 3 %}open{% endif %}>
+                <details class="group border-b border-[var(--color-border)]" {% if forloop.index <= 3 %}open{% endif %}>
                   <summary class="flex justify-between items-center py-4 cursor-pointer [&::-webkit-details-marker]:hidden list-none text-sm font-medium uppercase tracking-wider select-none">
                     {{ filter.label }}
-                    <span class="text-gray-400 text-lg leading-none" aria-hidden="true">
+                    <span class="text-[var(--color-text-light)] text-lg leading-none" aria-hidden="true">
                       <span class="group-open:hidden">+</span>
                       <span class="hidden group-open:inline">−</span>
                     </span>
@@ -128,16 +128,16 @@
                         <div class="space-y-2 max-h-60 overflow-y-auto">
                           {% for value in filter.values %}
                             {% if value.count > 0 or value.active %}
-                              <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
+                              <label class="flex items-center gap-2 cursor-pointer text-sm text-[var(--color-text)]">
                                 <input
                                   type="checkbox"
                                   name="{{ value.param_name }}"
                                   value="{{ value.value }}"
                                   {% if value.active %}checked{% endif %}
-                                  class="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer"
+                                  class="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-text)] focus:ring-[var(--color-primary)] cursor-pointer"
                                 >
                                 <span class="flex-1">{{ value.label }}</span>
-                                <span class="text-gray-400 text-xs">({{ value.count }})</span>
+                                <span class="text-[var(--color-text-light)] text-xs">({{ value.count }})</span>
                               </label>
                             {% endif %}
                           {% endfor %}
@@ -161,7 +161,7 @@
                           <div data-range-min></div>
                           <div data-range-max></div>
                         </div>
-                        <div class="flex justify-between text-xs text-gray-500">
+                        <div class="flex justify-between text-xs text-[var(--color-text-light)]">
                           <span data-label-min>{{ cart.currency.symbol }}{{ min_money | round }}</span>
                           <span data-label-max>{{ cart.currency.symbol }}{{ max_money | round }}+</span>
                         </div>
@@ -181,13 +181,13 @@
                         >
 
                       {% when 'boolean' %}
-                        <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
+                        <label class="flex items-center gap-2 cursor-pointer text-sm text-[var(--color-text)]">
                           <input
                             type="checkbox"
                             name="{{ filter.param_name }}"
                             value="1"
                             {% if filter.active_values.size > 0 %}checked{% endif %}
-                            class="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer"
+                            class="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-text)] focus:ring-[var(--color-primary)] cursor-pointer"
                           >
                           {{ filter.label }}
                         </label>
@@ -198,16 +198,16 @@
             </div>
 
             <!-- Mobile drawer footer -->
-            <div class="md:hidden flex gap-3 px-6 py-4 border-t border-gray-200">
+            <div class="md:hidden flex gap-3 px-6 py-4 border-t border-[var(--color-border)]">
               <a
                 href="{{ collection.url }}"
-                class="flex-1 text-center border border-gray-900 py-3 text-sm font-medium uppercase tracking-wider no-underline text-gray-900 hover:bg-gray-50 transition-colors"
+                class="flex-1 text-center border border-gray-900 py-3 text-sm font-medium uppercase tracking-wider no-underline text-[var(--color-text)] hover:bg-[var(--color-background-alt)] transition-colors"
               >
                 Clear All
               </a>
               <button
                 type="submit"
-                class="flex-1 bg-gray-900 text-white py-3 text-sm font-medium uppercase tracking-wider cursor-pointer hover:bg-gray-800 transition-colors"
+                class="flex-1 bg-[var(--color-primary)] text-white py-3 text-sm font-medium uppercase tracking-wider cursor-pointer hover:bg-[var(--color-primary-light)] transition-colors"
               >
                 Apply
               </button>
@@ -217,7 +217,7 @@
           <!-- Product grid -->
           <div class="flex-1 min-w-0">
             {% if collection.products.size > 0 %}
-              <p class="text-sm text-gray-500 mb-4">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
+              <p class="text-sm text-[var(--color-text-light)] mb-4">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
               <div data-product-grid class="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {% for product in collection.products %}
                   {% render 'product-card', product: product, show_swatches: section.settings.show_swatches %}
@@ -225,8 +225,8 @@
               </div>
             {% else %}
               <div class="text-center py-16">
-                <p class="text-gray-500 mb-4">No products match your filters.</p>
-                <a href="{{ collection.url }}" class="text-sm font-medium text-gray-900 underline">Clear all filters</a>
+                <p class="text-[var(--color-text-light)] mb-4">No products match your filters.</p>
+                <a href="{{ collection.url }}" class="text-sm font-medium text-[var(--color-text)] underline">Clear all filters</a>
               </div>
             {% endif %}
           </div>
@@ -237,25 +237,25 @@
       {% if paginate.pages > 1 %}
         <nav class="flex justify-center items-center flex-wrap gap-1 mt-12" aria-label="Pagination">
           {% if paginate.previous %}
-            <a href="{{ paginate.previous.url }}" class="px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 no-underline text-gray-700 text-sm" aria-label="Previous page">
+            <a href="{{ paginate.previous.url }}" class="px-3 py-2 border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-background-alt)] no-underline text-[var(--color-text)] text-sm" aria-label="Previous page">
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
             </a>
           {% endif %}
 
           {% for i in (1..paginate.pages) %}
             {% if i == paginate.current_page %}
-              <span class="w-10 h-10 flex items-center justify-center bg-gray-900 text-white rounded-lg text-sm" aria-current="page">{{ i }}</span>
+              <span class="w-10 h-10 flex items-center justify-center bg-[var(--color-primary)] text-white rounded-lg text-sm" aria-current="page">{{ i }}</span>
             {% else %}
               {%- assign page_url = paginate.collection_url | append: '?page=' | append: i -%}
               {%- if current_tags -%}
                 {%- assign page_url = paginate.collection_url | append: '/' | append: current_tags | join: '+' | append: '?page=' | append: i -%}
               {%- endif -%}
-              <a href="{{ page_url }}" class="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-lg hover:bg-gray-50 no-underline text-gray-700 text-sm">{{ i }}</a>
+              <a href="{{ page_url }}" class="w-10 h-10 flex items-center justify-center border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-background-alt)] no-underline text-[var(--color-text)] text-sm">{{ i }}</a>
             {% endif %}
           {% endfor %}
 
           {% if paginate.next %}
-            <a href="{{ paginate.next.url }}" class="px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 no-underline text-gray-700 text-sm" aria-label="Next page">
+            <a href="{{ paginate.next.url }}" class="px-3 py-2 border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-background-alt)] no-underline text-[var(--color-text)] text-sm" aria-label="Next page">
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
             </a>
           {% endif %}

@@ -26,7 +26,7 @@
 
 <div data-product-card class="group">
   <a href="{{ product.url }}" class="block no-underline">
-    <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3 relative">
+    <div class="aspect-square bg-[var(--color-background-alt)] rounded-xl overflow-hidden mb-3 relative">
       {% render 'image',
         image: product.featured_image,
         max_width: 600,
@@ -44,15 +44,15 @@
   </a>
 
   <a href="{{ product.url }}" class="block no-underline">
-    <h3 class="text-sm font-medium text-gray-900">{{ product.title }}</h3>
+    <h3 class="text-sm font-medium text-[var(--color-text)]">{{ product.title }}</h3>
   </a>
 
   <div class="flex items-center gap-2 mt-1">
-    <span class="text-sm {% if on_sale %}text-red-600 font-medium{% else %}text-gray-600{% endif %}">
+    <span class="text-sm {% if on_sale %}text-red-600 font-medium{% else %}text-[var(--color-text-light)]{% endif %}">
       {{ product.price | money }}
     </span>
     {% if on_sale %}
-      <span class="text-sm text-gray-400 line-through">
+      <span class="text-sm text-[var(--color-text-light)] line-through">
         {{ product.compare_at_price | money }}
       </span>
     {% endif %}
@@ -84,7 +84,7 @@
           data-image-srcset="{{ swatch_image | image_url: width: 400 }} 400w, {{ swatch_image | image_url: width: 600 }} 600w"
           data-url="{{ product.url }}?variant={{ swatch_variant_id }}"
           style="background-color: {{ value | downcase }}"
-          class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer transition-shadow hover:ring-2 hover:ring-offset-1 hover:ring-gray-400 {% if forloop.first %}ring-2 ring-offset-1 ring-gray-900{% endif %}"
+          class="w-5 h-5 rounded-full border border-[var(--color-border)] cursor-pointer transition-shadow hover:ring-2 hover:ring-offset-1 hover:ring-[var(--color-primary)] {% if forloop.first %}ring-2 ring-offset-1 ring-[var(--color-primary)]{% endif %}"
           aria-label="{{ value }}"
           title="{{ value }}"
         ></button>

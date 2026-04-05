@@ -15,30 +15,38 @@
   padding-right: var(--padding-inline);
 }
 
-/* Custom theme styles */
+/* ── Vitality base styles ── */
 @layer base {
   body {
-    @apply font-sans text-gray-900 antialiased;
+    @apply antialiased;
+    color: var(--color-text);
+    font-family: var(--font-body);
   }
 
   a {
-    @apply text-blue-600 hover:text-blue-800 transition-colors;
+    color: var(--color-primary);
+    transition: color 0.2s ease;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  a:hover {
+    color: var(--color-primary-light);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
     @apply font-bold leading-tight;
+    color: var(--color-text);
+  }
+
+  ::selection {
+    background: var(--color-primary);
+    color: #fff;
   }
 }
 
 /* ── Accessibility ── */
-
 :focus-visible {
-  outline: 2px solid #111827;
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -64,7 +72,7 @@
   top: 0;
   z-index: 9999;
   padding: 0.75rem 1.5rem;
-  background: #111827;
+  background: var(--color-primary);
   color: #fff;
   font-size: 0.875rem;
   font-weight: 600;
@@ -121,17 +129,13 @@ header-nav {
   left: 50%;
   transform: translateX(-50%);
   min-width: 12rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
   border-radius: 0.5rem;
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   opacity: 0;
   pointer-events: none;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
   transform: translateX(-50%) translateY(4px);
   z-index: 50;
 }
@@ -149,18 +153,14 @@ header-nav {
   transform: translateX(-50%);
   width: 100vw;
   max-width: var(--page-width, 1200px);
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
   border-top: none;
   border-radius: 0 0 0.5rem 0.5rem;
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   opacity: 0;
   pointer-events: none;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
   transform: translateX(-50%) translateY(4px);
   z-index: 50;
 }
@@ -187,7 +187,6 @@ header-nav {
   pointer-events: auto;
 }
 
-/* Hide browser native search clear button */
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
@@ -195,7 +194,6 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 /* ── Collection filters ── */
-/* Mobile: drawer from left */
 collection-filters [data-filter-overlay] {
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
@@ -223,7 +221,6 @@ collection-filters [data-filters].is-open {
   transform: translateX(0);
 }
 
-/* Desktop: inline sidebar */
 @media (min-width: 768px) {
   collection-filters [data-filter-overlay] {
     display: none !important;
@@ -248,7 +245,7 @@ collection-filters [data-filters].is-open {
 [data-range-slider] {
   position: relative;
   height: 2px;
-  background: #d1d5db;
+  background: var(--color-border);
   margin: 1rem 0 0.5rem;
   touch-action: none;
   user-select: none;
@@ -257,7 +254,7 @@ collection-filters [data-filters].is-open {
 [data-range-track] {
   position: absolute;
   height: 100%;
-  background: #111827;
+  background: var(--color-primary);
 }
 
 [data-range-min],
@@ -266,8 +263,8 @@ collection-filters [data-filters].is-open {
   top: 50%;
   width: 18px;
   height: 18px;
-  background: #fff;
-  border: 2px solid #111827;
+  background: var(--color-background);
+  border: 2px solid var(--color-primary);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   cursor: grab;
@@ -277,7 +274,7 @@ collection-filters [data-filters].is-open {
 [data-range-min]:active,
 [data-range-max]:active {
   cursor: grabbing;
-  background: #111827;
+  background: var(--color-primary);
 }
 
 /* ── Accordion animation ── */
@@ -315,4 +312,31 @@ product-gallery [data-image-slide] {
 
 product-gallery [data-image-slide].is-active {
   opacity: 1;
+}
+
+/* ── Before/After slider ── */
+before-after-slider [data-slider-container] {
+  touch-action: pan-y;
+}
+
+before-after-slider [data-before-clip] img {
+  min-width: 100%;
+  max-width: none;
+}
+
+/* ── Subscription toggle ── */
+subscription-toggle label {
+  transition: background-color 0.2s ease;
+}
+
+subscription-toggle label:has(input:checked) {
+  background-color: var(--color-background-alt);
+  border-color: var(--color-primary);
+}
+
+/* ── Prose overrides for Vitality ── */
+.prose {
+  --tw-prose-body: var(--color-text-light);
+  --tw-prose-headings: var(--color-text);
+  --tw-prose-links: var(--color-primary);
 }

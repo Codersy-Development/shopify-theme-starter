@@ -1,11 +1,11 @@
-<header class="bg-white border-b border-gray-200" role="banner">
+<header class="bg-[var(--color-background)] border-b border-[var(--color-border)] sticky top-0 z-40" role="banner">
   <div class="page-width">
-    <div class="flex items-center h-16 gap-4">
+    <div class="flex items-center h-16 md:h-18 gap-4">
       <!-- Left: mobile menu + logo -->
       <div class="flex items-center gap-3 flex-1">
         {% render 'header-drawer', menu: section.settings.menu %}
 
-        <a href="/" class="text-xl font-bold text-gray-900 no-underline shrink-0" title="{{ shop.name }}">
+        <a href="/" class="text-xl font-bold text-[var(--color-accent)] no-underline shrink-0" title="{{ shop.name }}" style="font-family: var(--font-heading);">
           {% if settings.logo != blank %}
             {% assign logo_sizes = settings.logo_max_width | append: 'px' %}
             {% assign logo_style = 'max-width: ' | append: settings.logo_max_width | append: 'px' %}
@@ -47,50 +47,29 @@
             %}
 
             {% if is_mega %}
-              {%- comment -%} Mega menu item {%- endcomment -%}
               <div class="header-nav-item" data-nav-item>
                 <button
                   type="button"
-                  class="text-sm text-gray-700 hover:text-gray-900 whitespace-nowrap inline-flex items-center gap-1 cursor-pointer bg-transparent border-0 p-0"
+                  class="text-sm text-[var(--color-text-light)] hover:text-[var(--color-primary)] whitespace-nowrap inline-flex items-center gap-1 cursor-pointer bg-transparent border-0 p-0 transition-colors"
                   aria-expanded="false"
                   data-nav-trigger
                 >
                   {{ link.title }}
-                  <svg
-                    class="w-3 h-3 transition-transform header-nav-chevron"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    aria-hidden="true"
-                  >
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
+                  <svg class="w-3 h-3 transition-transform header-nav-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                 </button>
 
                 <div class="header-mega-menu" data-nav-panel>
                   <div class="page-width py-8">
                     <div class="flex gap-8">
-                      {%- comment -%} Link columns {%- endcomment -%}
                       <div class="flex-1 grid grid-cols-{{ link.links.size | at_most: 4 }} gap-8">
                         {% for child in link.links %}
                           <div>
-                            <a
-                              href="{{ child.url }}"
-                              class="text-sm font-semibold text-gray-900 no-underline block mb-3"
-                            >
-                              {{ child.title }}
-                            </a>
+                            <a href="{{ child.url }}" class="text-sm font-semibold text-[var(--color-text)] no-underline block mb-3">{{ child.title }}</a>
                             {% if child.links.size > 0 %}
                               <ul class="list-none p-0 m-0 space-y-2">
                                 {% for grandchild in child.links %}
                                   <li>
-                                    <a
-                                      href="{{ grandchild.url }}"
-                                      class="text-sm text-gray-600 hover:text-gray-900 no-underline"
-                                    >
-                                      {{ grandchild.title }}
-                                    </a>
+                                    <a href="{{ grandchild.url }}" class="text-sm text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">{{ grandchild.title }}</a>
                                   </li>
                                 {% endfor %}
                               </ul>
@@ -99,7 +78,6 @@
                         {% endfor %}
                       </div>
 
-                      {%- comment -%} Featured image {%- endcomment -%}
                       {% if mega_block.settings.featured_image != blank %}
                         <div class="w-64 shrink-0">
                           <a href="{{ mega_block.settings.featured_image_link }}" class="block no-underline group">
@@ -110,9 +88,7 @@
                               class: 'w-full aspect-[4/3] object-cover rounded-lg'
                             %}
                             {% if mega_block.settings.featured_image_heading != blank %}
-                              <p class="mt-2 text-sm font-medium text-gray-900 group-hover:underline">
-                                {{ mega_block.settings.featured_image_heading }}
-                              </p>
+                              <p class="mt-2 text-sm font-medium text-[var(--color-text)] group-hover:underline">{{ mega_block.settings.featured_image_heading }}</p>
                             {% endif %}
                           </a>
                         </div>
@@ -123,37 +99,22 @@
               </div>
 
             {% elsif has_children %}
-              {%- comment -%} Standard dropdown {%- endcomment -%}
               <div class="header-nav-item" data-nav-item>
                 <button
                   type="button"
-                  class="text-sm text-gray-700 hover:text-gray-900 whitespace-nowrap inline-flex items-center gap-1 cursor-pointer bg-transparent border-0 p-0"
+                  class="text-sm text-[var(--color-text-light)] hover:text-[var(--color-primary)] whitespace-nowrap inline-flex items-center gap-1 cursor-pointer bg-transparent border-0 p-0 transition-colors"
                   aria-expanded="false"
                   data-nav-trigger
                 >
                   {{ link.title }}
-                  <svg
-                    class="w-3 h-3 transition-transform header-nav-chevron"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    aria-hidden="true"
-                  >
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
+                  <svg class="w-3 h-3 transition-transform header-nav-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                 </button>
 
                 <div class="header-dropdown" data-nav-panel>
                   <ul class="list-none p-0 m-0 py-2">
                     {% for child in link.links %}
                       <li>
-                        <a
-                          href="{{ child.url }}"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 no-underline whitespace-nowrap"
-                        >
-                          {{ child.title }}
-                        </a>
+                        <a href="{{ child.url }}" class="block px-4 py-2 text-sm text-[var(--color-text-light)] hover:bg-[var(--color-background-alt)] hover:text-[var(--color-primary)] no-underline whitespace-nowrap">{{ child.title }}</a>
                       </li>
                     {% endfor %}
                   </ul>
@@ -163,10 +124,8 @@
             {% else %}
               <a
                 href="{{ link.url }}"
-                class="text-sm text-gray-700 hover:text-gray-900 no-underline whitespace-nowrap"
-                {% if link.active %}
-                  aria-current="page"
-                {% endif %}
+                class="text-sm text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline whitespace-nowrap transition-colors"
+                {% if link.active %}aria-current="page"{% endif %}
               >
                 {{ link.title }}
               </a>
@@ -180,18 +139,8 @@
         {% if settings.predictive_search_enabled %}
           {% render 'predictive-search' %}
         {% else %}
-          <a href="/search" class="text-gray-700 hover:text-gray-900 no-underline" aria-label="Search">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-              aria-hidden="true"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+          <a href="/search" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline transition-colors" aria-label="Search">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
           </a>
         {% endif %}
 
@@ -199,53 +148,21 @@
           {% if settings.cart_type == 'drawer' %}
             <button
               type="button"
-              class="text-gray-700 hover:text-gray-900 cursor-pointer relative"
+              class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] cursor-pointer relative transition-colors"
               onclick="document.dispatchEvent(new CustomEvent('cart:open'))"
               aria-label="Cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-              <span
-                data-cart-count
-                class="absolute -top-2 -right-2 bg-gray-900 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center {% if cart.item_count == 0 %}hidden{% endif %}"
-                aria-hidden="true"
-              >
-                {{ cart.item_count }}
-              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+              <span data-cart-count class="absolute -top-2 -right-2 bg-[var(--color-primary)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center {% if cart.item_count == 0 %}hidden{% endif %}" aria-hidden="true">{{ cart.item_count }}</span>
             </button>
           {% else %}
             <a
               href="/cart"
-              class="text-gray-700 hover:text-gray-900 no-underline relative"
+              class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline relative transition-colors"
               aria-label="Cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-              <span
-                data-cart-count
-                class="absolute -top-2 -right-2 bg-gray-900 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center {% if cart.item_count == 0 %}hidden{% endif %}"
-                aria-hidden="true"
-              >
-                {{ cart.item_count }}
-              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+              <span data-cart-count class="absolute -top-2 -right-2 bg-[var(--color-primary)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center {% if cart.item_count == 0 %}hidden{% endif %}" aria-hidden="true">{{ cart.item_count }}</span>
             </a>
           {% endif %}
         </cart-icon>

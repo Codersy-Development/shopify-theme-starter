@@ -1,12 +1,12 @@
 <section class="py-12">
   <div class="page-width">
-    <h1 class="text-3xl font-bold mb-8">{{ blog.title }}</h1>
+    <h1 class="text-3xl font-bold mb-8" style="font-family: var(--font-heading);">{{ blog.title }}</h1>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {% for article in blog.articles %}
         <a href="{{ article.url }}" class="group no-underline">
           {% if article.image %}
-            <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4">
+            <div class="aspect-video bg-[var(--color-background-alt)] rounded-xl overflow-hidden mb-4">
               {% render 'image',
                 image: article.image,
                 max_width: 800,
@@ -17,10 +17,10 @@
             </div>
           {% endif %}
 
-          <h2 class="text-lg font-semibold text-gray-900 group-hover:text-gray-600 mb-2">
+          <h2 class="text-lg font-semibold text-[var(--color-text)] group-hover:text-[var(--color-primary)] mb-2 transition-colors" style="font-family: var(--font-heading);">
             {{ article.title }}
           </h2>
-          <p class="text-sm text-gray-500">{{ article.published_at | date: '%B %d, %Y' }}</p>
+          <p class="text-sm text-[var(--color-text-light)]">{{ article.published_at | date: '%B %d, %Y' }}</p>
         </a>
       {% endfor %}
     </div>

@@ -4,9 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="">
+    <meta name="theme-color" content="{{ settings.color_primary }}">
 
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
 
     {% render 'canonicals' %}
     {% render 'robots' %}
@@ -39,6 +40,9 @@
     {% render 'meta-tags' %}
     {% render 'json-ld' %}
 
+    {{ settings.font_heading | font_face: font_display: 'swap' }}
+    {{ settings.font_body | font_face: font_display: 'swap' }}
+
     {{ content_for_header }}
 
     {{ 'application.css' | asset_url | stylesheet_tag }}
@@ -52,6 +56,20 @@
 
     <style>
       :root {
+        --color-primary: {{ settings.color_primary }};
+        --color-primary-light: {{ settings.color_primary_light }};
+        --color-secondary: {{ settings.color_secondary }};
+        --color-accent: {{ settings.color_accent }};
+        --color-background: {{ settings.color_background }};
+        --color-background-alt: {{ settings.color_background_alt }};
+        --color-text: {{ settings.color_text }};
+        --color-text-light: {{ settings.color_text_light }};
+        --color-border: {{ settings.color_border }};
+
+        --font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+        --font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+        --font-body-size: {{ settings.font_body_size }}px;
+
         --page-width: {% if settings.page_width == 'full' %}100%{% else %}{{ settings.page_width }}px{% endif %};
         --padding-inline: {{ settings.padding_mobile }}px;
       }
@@ -62,10 +80,14 @@
       }
     </style>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col bg-[var(--color-background)] text-[var(--color-text)]" style="font-family: var(--font-body); font-size: var(--font-body-size);">
     <a href="#main-content" class="skip-to-content">Skip to content</a>
 
     {% sections 'header-group' %}
+
+    {% if settings.trust_bar_enabled %}
+      {% render 'trust-bar' %}
+    {% endif %}
 
     <main id="main-content" class="flex-1" role="main" tabindex="-1">
       {{ content_for_layout }}

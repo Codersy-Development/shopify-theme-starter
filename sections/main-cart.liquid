@@ -1,13 +1,13 @@
 <section class="py-12">
   <div class="page-width max-w-3xl">
-    <h1 class="text-3xl font-bold mb-8">Your Cart</h1>
+    <h1 class="text-3xl font-bold mb-8" style="font-family: var(--font-heading);">Your Cart</h1>
 
     {% if cart.item_count > 0 %}
       <form action="/cart" method="post">
-        <div class="divide-y divide-gray-200">
+        <div class="divide-y divide-[var(--color-border)]">
           {% for item in cart.items %}
             <div class="flex items-center gap-4 py-6">
-              <div class="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+              <div class="w-20 h-20 bg-[var(--color-background-alt)] rounded-lg overflow-hidden shrink-0">
                 {% render 'image',
                   image: item.image,
                   max_width: 200,
@@ -18,13 +18,13 @@
               </div>
 
               <div class="flex-1 min-w-0">
-                <a href="{{ item.url }}" class="text-sm font-medium text-gray-900 no-underline">
+                <a href="{{ item.url }}" class="text-sm font-medium text-[var(--color-text)] no-underline hover:text-[var(--color-primary)]">
                   {{ item.product.title }}
                 </a>
                 {% if item.variant.title != 'Default Title' %}
-                  <p class="text-sm text-gray-500 mt-1">{{ item.variant.title }}</p>
+                  <p class="text-sm text-[var(--color-text-light)] mt-1">{{ item.variant.title }}</p>
                 {% endif %}
-                <p class="text-sm text-gray-600 mt-1">{{ item.price | money }}</p>
+                <p class="text-sm text-[var(--color-text-light)] mt-1">{{ item.price | money }}</p>
               </div>
 
               <div class="flex items-center gap-2">
@@ -33,14 +33,14 @@
                   name="updates[]"
                   value="{{ item.quantity }}"
                   min="0"
-                  class="w-16 border border-gray-300 rounded-lg px-2 py-1 text-center text-sm"
+                  class="w-16 border border-[var(--color-border)] rounded-lg px-2 py-1 text-center text-sm"
                 >
               </div>
             </div>
           {% endfor %}
         </div>
 
-        <div class="border-t border-gray-200 pt-6 mt-6">
+        <div class="border-t border-[var(--color-border)] pt-6 mt-6">
           <div class="flex items-center justify-between mb-6">
             <span class="text-lg font-semibold">Total</span>
             <span class="text-lg font-semibold">{{ cart.total_price | money }}</span>
@@ -50,14 +50,14 @@
             <button
               type="submit"
               name="update"
-              class="w-full border border-gray-300 font-semibold px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+              class="w-full border border-[var(--color-border)] font-semibold px-8 py-3 rounded-lg hover:bg-[var(--color-background-alt)] transition-colors cursor-pointer"
             >
               Update cart
             </button>
             <button
               type="submit"
               name="checkout"
-              class="w-full bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+              class="w-full bg-[var(--color-primary)] text-white font-semibold px-8 py-3 rounded-lg hover:bg-[var(--color-primary-light)] transition-colors cursor-pointer"
             >
               Checkout
             </button>
@@ -66,10 +66,10 @@
       </form>
     {% else %}
       <div class="text-center py-12">
-        <p class="text-gray-500 mb-6">Your cart is empty.</p>
+        <p class="text-[var(--color-text-light)] mb-6">Your cart is empty.</p>
         <a
           href="/collections/all"
-          class="inline-block bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors no-underline"
+          class="inline-block bg-[var(--color-primary)] text-white font-semibold px-8 py-3 rounded-lg hover:bg-[var(--color-primary-light)] transition-colors no-underline"
         >
           Continue shopping
         </a>

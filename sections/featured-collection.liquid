@@ -9,7 +9,7 @@
 <section class="py-16">
   <div class="page-width">
     {% if section.settings.heading != blank %}
-      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12">
+      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12" style="font-family: var(--font-heading);">
         {{ section.settings.heading }}
       </h2>
     {% endif %}
@@ -24,7 +24,7 @@
       <div class="text-center mt-10">
         <a
           href="{{ featured_collection.url | default: '/collections/all' }}"
-          class="inline-block border border-gray-900 text-gray-900 font-medium text-sm px-8 py-3 rounded-lg no-underline hover:bg-gray-900 hover:text-white transition-colors"
+          class="inline-block border-2 border-[var(--color-primary)] text-[var(--color-primary)] font-medium text-sm px-8 py-3 rounded-lg no-underline hover:bg-[var(--color-primary)] hover:text-white transition-colors"
         >
           {{ section.settings.button_label }}
         </a>
@@ -41,7 +41,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Featured Products"
+      "default": "Best Sellers"
     },
     {
       "type": "collection",

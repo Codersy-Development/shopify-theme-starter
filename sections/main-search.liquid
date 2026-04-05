@@ -1,6 +1,6 @@
 <section class="py-12">
   <div class="page-width">
-    <h1 class="text-3xl font-bold mb-8">Search</h1>
+    <h1 class="text-3xl font-bold mb-8" style="font-family: var(--font-heading);">Search</h1>
 
     <form action="/search" method="get" role="search" aria-label="Product search" class="mb-8">
       <div class="flex gap-2">
@@ -12,11 +12,11 @@
           value="{{ search.terms | escape }}"
           placeholder="Search our store..."
           autocomplete="off"
-          class="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+          class="flex-1 border border-[var(--color-border)] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
         >
         <button
           type="submit"
-          class="bg-gray-900 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+          class="bg-[var(--color-primary)] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[var(--color-primary-light)] transition-colors cursor-pointer"
         >
           Search
         </button>
@@ -25,7 +25,7 @@
 
     {% if search.performed %}
       {% if search.results_count > 0 %}
-        <p class="text-sm text-gray-500 mb-6">
+        <p class="text-sm text-[var(--color-text-light)] mb-6">
           {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for &ldquo;{{ search.terms }}&rdquo;
         </p>
 
@@ -35,27 +35,16 @@
               {% render 'product-card', product: item %}
             {% else %}
               <a href="{{ item.url }}" class="no-underline">
-                <h3 class="text-sm font-medium text-gray-900">{{ item.title }}</h3>
+                <h3 class="text-sm font-medium text-[var(--color-text)]">{{ item.title }}</h3>
                 {% if item.content != blank %}
-                  <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ item.content | strip_html | truncate: 120 }}</p>
+                  <p class="text-sm text-[var(--color-text-light)] mt-1 line-clamp-2">{{ item.content | strip_html | truncate: 120 }}</p>
                 {% endif %}
               </a>
             {% endif %}
           {% endfor %}
         </div>
-
-        {% if paginate.pages > 1 %}
-          <nav class="flex justify-center gap-2 mt-12" aria-label="Search results pagination">
-            {% if paginate.previous %}
-              <a href="{{ paginate.previous.url }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50 no-underline text-gray-700">Previous</a>
-            {% endif %}
-            {% if paginate.next %}
-              <a href="{{ paginate.next.url }}" class="px-4 py-2 border rounded-lg hover:bg-gray-50 no-underline text-gray-700">Next</a>
-            {% endif %}
-          </nav>
-        {% endif %}
       {% else %}
-        <p class="text-gray-500">No results found for &ldquo;{{ search.terms }}&rdquo;. Please try another search.</p>
+        <p class="text-[var(--color-text-light)]">No results found for &ldquo;{{ search.terms }}&rdquo;. Please try another search.</p>
       {% endif %}
     {% endif %}
   </div>

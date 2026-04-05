@@ -5,6 +5,7 @@
         {% when 'heading' %}
           <{{ block.settings.tag }}
             class="font-bold mb-4 {% if section.settings.center %}text-center{% endif %} {% if block.settings.size == 'small' %}text-xl sm:text-2xl{% elsif block.settings.size == 'large' %}text-3xl sm:text-4xl lg:text-5xl{% else %}text-2xl sm:text-3xl{% endif %}"
+            style="font-family: var(--font-heading);"
             {{ block.shopify_attributes }}
           >
             {{ block.settings.text }}
@@ -12,7 +13,7 @@
 
         {% when 'text' %}
           <div
-            class="prose max-w-none text-gray-600 mb-6 {% if section.settings.center %}mx-auto text-center{% endif %} {% if block.settings.width == 'narrow' %}max-w-2xl{% elsif block.settings.width == 'medium' %}max-w-4xl{% endif %}"
+            class="prose max-w-none text-[var(--color-text-light)] mb-6 {% if section.settings.center %}mx-auto text-center{% endif %} {% if block.settings.width == 'narrow' %}max-w-2xl{% elsif block.settings.width == 'medium' %}max-w-4xl{% endif %}"
             {{ block.shopify_attributes }}
           >
             {{ block.settings.richtext }}
@@ -22,7 +23,7 @@
           <div class="{% if section.settings.center %}text-center{% endif %} mt-2 mb-6" {{ block.shopify_attributes }}>
             <a
               href="{{ block.settings.link }}"
-              class="inline-block font-semibold text-sm px-8 py-3 rounded-lg no-underline transition-colors {% if block.settings.style == 'primary' %}bg-gray-900 text-white hover:bg-gray-800{% elsif block.settings.style == 'outline' %}border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white{% else %}text-gray-900 underline hover:text-gray-600{% endif %}"
+              class="inline-block font-semibold text-sm px-8 py-3 rounded-lg no-underline transition-colors {% if block.settings.style == 'primary' %}bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-light)]{% elsif block.settings.style == 'outline' %}border-2 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white{% else %}text-[var(--color-primary)] underline hover:text-[var(--color-primary-light)]{% endif %}"
             >
               {{ block.settings.label }}
             </a>
@@ -35,7 +36,7 @@
           ></div>
 
         {% when 'divider' %}
-          <hr class="border-gray-200 my-8" {{ block.shopify_attributes }}>
+          <hr class="border-[var(--color-border)] my-8" {{ block.shopify_attributes }}>
       {% endcase %}
     {% endfor %}
   </div>

@@ -1,7 +1,7 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Shopify Theme Starter",
+    "theme_name": "Vitality",
     "theme_version": "1.0.0",
     "theme_author": "Codersy",
     "theme_documentation_url": "https://codersy.com",
@@ -74,16 +74,137 @@
     "name": "Colors",
     "settings": [
       {
+        "type": "header",
+        "content": "Brand colors"
+      },
+      {
         "type": "color",
         "id": "color_primary",
-        "label": "Primary color",
-        "default": "#111827"
+        "label": "Primary",
+        "default": "#2D6A4F",
+        "info": "Main brand color — buttons, links, accents"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_light",
+        "label": "Primary light",
+        "default": "#52B788",
+        "info": "Hover states, badges, highlights"
       },
       {
         "type": "color",
         "id": "color_secondary",
-        "label": "Secondary color",
-        "default": "#2563eb"
+        "label": "Secondary",
+        "default": "#B7791F",
+        "info": "Earth/gold accent — trust signals, icons"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent",
+        "default": "#1B4332",
+        "info": "Deep accent for headers, emphasis"
+      },
+      {
+        "type": "header",
+        "content": "Surface colors"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_background_alt",
+        "label": "Alternate background",
+        "default": "#F0FFF4",
+        "info": "Light tinted sections"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#1A202C"
+      },
+      {
+        "type": "color",
+        "id": "color_text_light",
+        "label": "Text light",
+        "default": "#718096"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border",
+        "default": "#E2E8F0"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "playfair_display_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "inter_n4"
+      },
+      {
+        "type": "range",
+        "id": "font_body_size",
+        "label": "Base font size",
+        "min": 14,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      }
+    ]
+  },
+  {
+    "name": "Trust badges",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Trust badge bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "trust_bar_enabled",
+        "label": "Show trust badge bar below header",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "trust_badge_1",
+        "label": "Badge 1 text",
+        "default": "GMP Certified"
+      },
+      {
+        "type": "text",
+        "id": "trust_badge_2",
+        "label": "Badge 2 text",
+        "default": "Third-Party Tested"
+      },
+      {
+        "type": "text",
+        "id": "trust_badge_3",
+        "label": "Badge 3 text",
+        "default": "Made in USA"
+      },
+      {
+        "type": "text",
+        "id": "trust_badge_4",
+        "label": "Badge 4 text",
+        "default": "Free Shipping $50+"
       }
     ]
   },
@@ -99,7 +220,7 @@
           { "value": "page", "label": "Page" }
         ],
         "default": "drawer",
-        "info": "Choose how the cart is displayed. Drawer slides in from the right, page navigates to /cart."
+        "info": "Choose how the cart is displayed."
       }
     ]
   },
@@ -110,8 +231,7 @@
         "type": "checkbox",
         "id": "predictive_search_enabled",
         "label": "Enable predictive search",
-        "default": true,
-        "info": "Show search suggestions as you type."
+        "default": true
       }
     ]
   },

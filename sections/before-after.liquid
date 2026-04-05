@@ -1,0 +1,115 @@
+<section class="py-12 md:py-16">
+  <div class="page-width max-w-4xl">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center mb-4" style="font-family: var(--font-heading);">
+      {{ section.settings.heading }}
+    </h2>
+    {% if section.settings.subheading != blank %}
+      <p class="text-center text-[var(--color-text-light)] max-w-2xl mx-auto mb-10">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    {% for block in section.blocks %}
+      <before-after-slider class="block mb-8 last:mb-0" {{ block.shopify_attributes }}>
+        <div class="relative overflow-hidden rounded-xl select-none" data-slider-container>
+          <!-- After image (background) -->
+          <div class="w-full">
+            {% if block.settings.after_image != blank %}
+              {% render 'image',
+                image: block.settings.after_image,
+                max_width: 1200,
+                sizes: '(min-width: 768px) 800px, 100vw',
+                alt: 'After',
+                class: 'w-full block'
+              %}
+            {% else %}
+              <div class="aspect-[16/9] bg-[var(--color-background-alt)]"></div>
+            {% endif %}
+          </div>
+
+          <!-- Before image (overlay, clipped) -->
+          <div class="absolute inset-0 overflow-hidden" data-before-clip style="width: 50%;">
+            {% if block.settings.before_image != blank %}
+              {% render 'image',
+                image: block.settings.before_image,
+                max_width: 1200,
+                sizes: '(min-width: 768px) 800px, 100vw',
+                alt: 'Before',
+                class: 'w-full block absolute top-0 left-0',
+                style: 'min-width: 100%; width: auto;'
+              %}
+            {% else %}
+              <div class="aspect-[16/9] bg-gray-300 w-full"></div>
+            {% endif %}
+          </div>
+
+          <!-- Slider handle -->
+          <div class="absolute top-0 bottom-0 cursor-ew-resize z-10" data-slider-handle style="left: 50%; transform: translateX(-50%);">
+            <div class="absolute inset-y-0 w-0.5 bg-white left-1/2 -translate-x-1/2"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+              <svg class="w-5 h-5 text-[var(--color-text)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/></svg>
+            </div>
+          </div>
+
+          <!-- Labels -->
+          <span class="absolute top-4 left-4 bg-black/50 text-white text-xs font-semibold px-3 py-1 rounded-full">Before</span>
+          <span class="absolute top-4 right-4 bg-black/50 text-white text-xs font-semibold px-3 py-1 rounded-full">After</span>
+        </div>
+
+        {% if block.settings.caption != blank %}
+          <p class="text-center text-sm text-[var(--color-text-light)] mt-3">{{ block.settings.caption }}</p>
+        {% endif %}
+      </before-after-slider>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Before/After Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Real Results"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "See the transformation our customers have experienced."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison",
+      "name": "Comparison",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "before_image",
+          "label": "Before image"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_image",
+          "label": "After image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Results after 30 days of consistent use"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Before/After Slider",
+      "blocks": [
+        { "type": "comparison" }
+      ]
+    }
+  ]
+}
+{% endschema %}
