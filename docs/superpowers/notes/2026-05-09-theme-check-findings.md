@@ -4,7 +4,7 @@ Captured during the build & tooling cleanup. These findings are NOT fixed in thi
 
 ## Raw Output
 
-````
+```
 
 > shopify-theme-starter@1.0.0 theme:check
 > shopify theme check
@@ -451,7 +451,7 @@ Captured during the build & tooling cleanup. These findings are NOT fixed in thi
 │                                                                              │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
-````
+```
 
 ## Triage Notes
 

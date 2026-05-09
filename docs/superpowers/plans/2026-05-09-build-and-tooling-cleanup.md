@@ -38,6 +38,7 @@ Expected: empty output.
 ## Task 1: Install Prettier + Liquid plugin
 
 **Files:**
+
 - Modify: `package.json`
 - Modify (auto): `package-lock.json`
 - Create: `.prettierrc.json`
@@ -100,6 +101,7 @@ Expected: exits with code 1 and prints the file path under "Code style issues fo
 ## Task 2: Add format/format:check scripts to `package.json`
 
 **Files:**
+
 - Modify: `package.json`
 
 - [ ] **Step 2.1: Add `format` and `format:check` scripts**
@@ -145,6 +147,7 @@ Expected: prettier runs across the repo and exits with code 1, listing dozens of
 ## Task 3: Add Theme Check configuration
 
 **Files:**
+
 - Create: `.theme-check.yml`
 
 - [ ] **Step 3.1: Verify the Shopify CLI's bundled theme-check is available**
@@ -194,9 +197,10 @@ Create the file with this structure (fill the code block with the actual output 
 Captured during the build & tooling cleanup. These findings are NOT fixed in this sub-project; they feed sub-projects 2 (JS), 3 (Liquid sections), and 4 (snippets).
 
 ## Raw Output
-
 ```
+
 <paste the contents of /tmp/theme-check-output.txt here>
+
 ```
 
 ## Triage Notes
@@ -221,6 +225,7 @@ If the captured output is reasonable, leave the file as-is from Step 3.2.
 ## Task 4: Update `.gitignore`
 
 **Files:**
+
 - Modify: `.gitignore`
 
 - [ ] **Step 4.1: Append additional ignores**
@@ -259,6 +264,7 @@ Expected: command succeeds; no syntax error in `.gitignore`.
 ## Task 5: Commit tooling setup
 
 **Files:**
+
 - All created/modified in Tasks 1–4 (see staging list below)
 
 - [ ] **Step 5.1: Confirm what will be staged**
@@ -403,6 +409,7 @@ Note the SHA — needed for Task 7.
 ## Task 7: Add `.git-blame-ignore-revs`
 
 **Files:**
+
 - Create: `.git-blame-ignore-revs`
 
 - [ ] **Step 7.1: Create the file with the formatting commit SHA**

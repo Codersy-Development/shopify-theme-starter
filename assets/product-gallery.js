@@ -4,14 +4,14 @@
  */
 class ProductGallery extends HTMLElement {
   connectedCallback() {
-    this.slides = this.querySelectorAll('[data-image-slide]');
-    this.thumbnails = this.querySelectorAll('[data-thumbnail]');
-    this.mainImage = this.querySelector('[data-main-image]');
+    this.slides = this.querySelectorAll("[data-image-slide]");
+    this.thumbnails = this.querySelectorAll("[data-thumbnail]");
+    this.mainImage = this.querySelector("[data-main-image]");
 
     if (this.slides.length <= 1) return;
 
     this.thumbnails.forEach((thumb) =>
-      thumb.addEventListener('click', () => this.goTo(thumb.dataset.target))
+      thumb.addEventListener("click", () => this.goTo(thumb.dataset.target)),
     );
 
     this.#initSwipe();
@@ -19,21 +19,21 @@ class ProductGallery extends HTMLElement {
   }
 
   get currentIndex() {
-    return [...this.slides].findIndex((s) => s.classList.contains('is-active'));
+    return [...this.slides].findIndex((s) => s.classList.contains("is-active"));
   }
 
   goTo(imageId) {
     const id = String(imageId);
 
     this.slides.forEach((slide) => {
-      slide.classList.toggle('is-active', slide.dataset.imageId === id);
+      slide.classList.toggle("is-active", slide.dataset.imageId === id);
     });
 
     this.thumbnails.forEach((thumb) => {
       const isActive = thumb.dataset.target === id;
-      thumb.classList.toggle('border-gray-900', isActive);
-      thumb.classList.toggle('border-transparent', !isActive);
-      thumb.setAttribute('aria-selected', isActive);
+      thumb.classList.toggle("border-gray-900", isActive);
+      thumb.classList.toggle("border-transparent", !isActive);
+      thumb.setAttribute("aria-selected", isActive);
     });
   }
 
@@ -51,27 +51,27 @@ class ProductGallery extends HTMLElement {
     let startX = 0;
 
     this.mainImage?.addEventListener(
-      'touchstart',
+      "touchstart",
       (e) => {
         startX = e.touches[0].clientX;
       },
-      { passive: true }
+      { passive: true },
     );
 
     this.mainImage?.addEventListener(
-      'touchend',
+      "touchend",
       (e) => {
         const diff = startX - e.changedTouches[0].clientX;
         if (Math.abs(diff) > 50) {
           diff > 0 ? this.next() : this.prev();
         }
       },
-      { passive: true }
+      { passive: true },
     );
   }
 
   #initVariantSync() {
-    const variantsEl = this.querySelector('[data-product-variants]');
+    const variantsEl = this.querySelector("[data-product-variants]");
     if (!variantsEl) return;
 
     let variants;
@@ -82,7 +82,7 @@ class ProductGallery extends HTMLElement {
     }
 
     const select = document.querySelector('product-form select[name="id"]');
-    select?.addEventListener('change', (e) => {
+    select?.addEventListener("change", (e) => {
       const variant = variants.find((v) => v.id === Number(e.target.value));
       if (variant?.featured_image) {
         this.goTo(variant.featured_image.id);
@@ -91,6 +91,6 @@ class ProductGallery extends HTMLElement {
   }
 }
 
-customElements.define('product-gallery', ProductGallery);
+customElements.define("product-gallery", ProductGallery);
 
 export { ProductGallery };

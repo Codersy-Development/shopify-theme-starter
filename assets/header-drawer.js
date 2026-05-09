@@ -4,50 +4,50 @@
  */
 class HeaderDrawer extends HTMLElement {
   connectedCallback() {
-    this.panel = this.querySelector('[data-panel]');
-    this.overlay = this.querySelector('[data-overlay]');
-    this.openBtn = this.querySelector('[data-open]');
+    this.panel = this.querySelector("[data-panel]");
+    this.overlay = this.querySelector("[data-overlay]");
+    this.openBtn = this.querySelector("[data-open]");
 
-    this.openBtn?.addEventListener('click', () => this.open());
-    this.querySelectorAll('[data-close]').forEach((el) =>
-      el.addEventListener('click', () => this.close())
+    this.openBtn?.addEventListener("click", () => this.open());
+    this.querySelectorAll("[data-close]").forEach((el) =>
+      el.addEventListener("click", () => this.close()),
     );
-    this.overlay?.addEventListener('click', () => this.close());
+    this.overlay?.addEventListener("click", () => this.close());
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.isOpen) this.close();
-      if (e.key === 'Tab' && this.isOpen) this.#trapFocus(e);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.isOpen) this.close();
+      if (e.key === "Tab" && this.isOpen) this.#trapFocus(e);
     });
   }
 
   get isOpen() {
-    return this.panel?.classList.contains('is-open');
+    return this.panel?.classList.contains("is-open");
   }
 
   open() {
-    this.panel?.classList.add('is-open');
-    this.overlay?.classList.add('is-open');
-    this.openBtn?.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
+    this.panel?.classList.add("is-open");
+    this.overlay?.classList.add("is-open");
+    this.openBtn?.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
 
     setTimeout(() => {
-      this.panel.querySelector('[data-close]')?.focus();
+      this.panel.querySelector("[data-close]")?.focus();
     }, 350);
   }
 
   close() {
     if (!this.isOpen) return;
 
-    this.panel?.classList.remove('is-open');
-    this.overlay?.classList.remove('is-open');
-    this.openBtn?.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
+    this.panel?.classList.remove("is-open");
+    this.overlay?.classList.remove("is-open");
+    this.openBtn?.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
     this.openBtn?.focus();
   }
 
   #trapFocus(e) {
     const focusable = this.panel.querySelectorAll(
-      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
     );
     if (!focusable.length) return;
     const first = focusable[0];
@@ -63,6 +63,6 @@ class HeaderDrawer extends HTMLElement {
   }
 }
 
-customElements.define('header-drawer', HeaderDrawer);
+customElements.define("header-drawer", HeaderDrawer);
 
 export { HeaderDrawer };

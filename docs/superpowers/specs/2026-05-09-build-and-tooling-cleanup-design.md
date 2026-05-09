@@ -47,10 +47,12 @@ Build & tooling is intentionally first because adding a linter and formatter imm
 ### 1. Prettier
 
 Add devDependencies:
+
 - `prettier@^3.3`
 - `@shopify/prettier-plugin-liquid@^1.9`
 
 Files to add:
+
 - `.prettierrc.json` — plugin registered; opinionated defaults: `printWidth: 100`, `singleQuote: false`, `trailingComma: "all"`, `tabWidth: 2`. Liquid-specific options will use plugin defaults until a specific need arises.
 - `.prettierignore` — exclude:
   - `node_modules/`
@@ -69,6 +71,7 @@ No npm dependency — uses the Shopify CLI already required for `shopify theme d
 ### 3. package.json — scripts
 
 Add:
+
 - `format` → `prettier --write .`
 - `format:check` → `prettier --check .`
 - `theme:check` → `shopify theme check`
@@ -81,12 +84,14 @@ Existing scripts (`build:css`, `watch:css`, `dev`, `deploy`) remain untouched.
 Running `npm run format` for the first time will touch most files (whitespace, quote style, Liquid tag spacing). This is unavoidable.
 
 Mitigations:
+
 - Land Prettier setup and the formatting run in two separate commits so review is sane.
 - Add `.git-blame-ignore-revs` containing the SHA of the formatting-run commit so `git blame` skips it. Document in a one-line comment in the file.
 
 ### 5. `.gitignore` additions
 
 Append (small, only what's defensible for a JS/Shopify project):
+
 - `.env`
 - `.env.local`
 - `*.log`

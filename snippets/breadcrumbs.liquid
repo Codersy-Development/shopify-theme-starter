@@ -51,13 +51,22 @@
   >
     <ol class="flex items-center overflow-x-auto scrollbar-hide">
       <li>
-        <a href="{{ routes.root_url }}" class="text-[#1E1E1F] hover:text-gray-900 transition-colors">
+        <a
+          href="{{ routes.root_url }}"
+          class="text-[#1E1E1F] hover:text-gray-900 transition-colors"
+        >
           {{- 'breadcrumb.home' | t -}}
         </a>
       </li>
       {% if category_link != blank %}
         <li class="mx-2">
-          <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-[#1E1E1F]">
+          <svg
+            width="16"
+            height="16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="text-[#1E1E1F]"
+          >
             <circle cx="8" cy="8" r="2" fill="currentColor"/>
           </svg>
         </li>
@@ -67,7 +76,13 @@
       {% endif %}
       {% if subcategory_link != blank %}
         <li class="mx-2">
-          <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-[#1E1E1F]">
+          <svg
+            width="16"
+            height="16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="text-[#1E1E1F]"
+          >
             <circle cx="8" cy="8" r="2" fill="currentColor"/>
           </svg>
         </li>
@@ -76,12 +91,20 @@
         </li>
       {% endif %}
       <li class="mx-2">
-        <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-[#1E1E1F]">
+        <svg
+          width="16"
+          height="16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="text-[#1E1E1F]"
+        >
           <circle cx="8" cy="8" r="2" fill="currentColor"/>
         </svg>
       </li>
       <li>
-        <span class="text-[#6D6D6D] font-medium" aria-current="page">{{ template_object.title }}</span>
+        <span class="text-[#6D6D6D] font-medium" aria-current="page">
+          {{- template_object.title -}}
+        </span>
       </li>
     </ol>
   </nav>

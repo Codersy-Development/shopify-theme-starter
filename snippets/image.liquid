@@ -38,21 +38,29 @@
   -%}
 
   {%- if fetchpriority -%}
-    {{ image | image_url: width: img_width | image_tag:
-       loading: img_loading,
-       widths: widths,
-       sizes: img_sizes,
-       alt: img_alt,
-       class: class,
-       style: style,
-       fetchpriority: fetchpriority }}
+    {{
+      image
+      | image_url: width: img_width
+      | image_tag:
+        loading: img_loading,
+        widths: widths,
+        sizes: img_sizes,
+        alt: img_alt,
+        class: class,
+        style: style,
+        fetchpriority: fetchpriority
+    }}
   {%- else -%}
-    {{ image | image_url: width: img_width | image_tag:
-       loading: img_loading,
-       widths: widths,
-       sizes: img_sizes,
-       alt: img_alt,
-       class: class,
-       style: style }}
+    {{
+      image
+      | image_url: width: img_width
+      | image_tag:
+        loading: img_loading,
+        widths: widths,
+        sizes: img_sizes,
+        alt: img_alt,
+        class: class,
+        style: style
+    }}
   {%- endif -%}
 {%- endif -%}
