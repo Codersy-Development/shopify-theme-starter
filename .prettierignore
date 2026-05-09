@@ -2,5 +2,11 @@ node_modules/
 assets/application.css
 package-lock.json
 .shopify/
+
+# Shopify-managed JSON: format is owned by Shopify (theme editor / locale tooling)
+# and round-trips through merchant edits — keep Prettier out.
 locales/
+templates/*.json
+config/*.json
+
 .git/

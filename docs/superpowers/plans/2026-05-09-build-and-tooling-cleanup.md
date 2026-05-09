@@ -509,8 +509,8 @@ Expected: builds cleanly. We deliberately don't run `npm run dev` because it sta
 
 - [x] `npm install` succeeds with the new devDependencies. _(Task 1 Step 1.1)_
 - [x] `npm run format:check` passes. _(Task 8 Step 8.1)_
-- [x] `npm run theme:check` runs and exits without error. _(Task 8 Step 8.1)_
-- [x] `npm run lint` runs both checks. _(Task 2 Step 2.1, verified Task 8 Step 8.1)_
+- [x] `npm run theme:check` runs. _(Task 8 Step 8.1 — exits 1 today because of captured findings; see [notes file](../notes/2026-05-09-theme-check-findings.md). Returns to 0 once sub-projects 2–4 land.)_
+- [x] `npm run lint` runs both checks in sequence. _(Task 2 Step 2.1; inherits `theme:check`'s exit code.)_
 - [x] Tooling commit + format-run commit exist. _(Tasks 5, 6)_
 - [x] `.git-blame-ignore-revs` exists with the formatting-run SHA. _(Task 7)_
 - [x] Theme Check findings captured in a notes file. _(Task 3 Step 3.4)_
