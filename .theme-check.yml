@@ -1,0 +1,10 @@
+# Shopify Theme Check configuration.
+# https://shopify.dev/docs/themes/tools/theme-check/configuration
+
+root: .
+
+ignore:
+  - node_modules/
+  - .shopify/
+  - src/
+  - docs/

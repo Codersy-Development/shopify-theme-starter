@@ -9,10 +9,16 @@
     "build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./assets/application.css --minify",
     "watch:css": "npx @tailwindcss/cli -i ./src/input.css -o ./assets/application.css --watch",
     "dev": "concurrently \"npm run watch:css\" \"shopify theme dev --environment development\"",
-    "deploy": "npm run build:css && shopify theme push --environment production"
+    "deploy": "npm run build:css && shopify theme push --environment production",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "theme:check": "shopify theme check",
+    "lint": "npm run format:check && npm run theme:check"
   },
   "devDependencies": {
+    "@shopify/prettier-plugin-liquid": "^1.10.2",
     "@tailwindcss/cli": "^4.0.0",
-    "concurrently": "^9.0.0"
+    "concurrently": "^9.0.0",
+    "prettier": "^3.8.3"
   }
 }

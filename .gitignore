@@ -1,3 +1,8 @@
 node_modules/
 assets/application.css
 .DS_Store
+
+# Local env / logs
+.env
+.env.local
+*.log
