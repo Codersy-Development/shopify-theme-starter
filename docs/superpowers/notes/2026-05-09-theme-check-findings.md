@@ -2,6 +2,8 @@
 
 Captured during the build & tooling cleanup. These findings are NOT fixed in this sub-project; they feed sub-projects 2 (JS), 3 (Liquid sections), and 4 (snippets).
 
+> **Note:** Because 34 errors are present, `npm run theme:check` and therefore `npm run lint` currently exit with code 1. This is intentional — the lint script faithfully surfaces real, tracked issues. The exit will return to 0 once subsequent sub-projects address the items below.
+
 ## Raw Output
 
 ```
