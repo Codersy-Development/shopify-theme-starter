@@ -1,0 +1,6 @@
+# Commits listed here are skipped by `git blame --ignore-revs-file=...`.
+# Configure once locally with:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Apply Prettier formatting across the theme
+201e4efbf6db81dfd9ad6d2dfc7b1b9adca9601a
