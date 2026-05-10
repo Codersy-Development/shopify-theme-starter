@@ -11,11 +11,13 @@
 **Spec:** [docs/superpowers/specs/2026-05-10-javascript-cleanup-design.md](../specs/2026-05-10-javascript-cleanup-design.md)
 
 **Verification model (no tests added):**
+
 - After every task: `npm run format:check` must pass.
 - `npm run theme:check` exit code must remain 1 with the same baseline (34 errors / 20 warnings) — this sub-project does not change Theme Check output.
 - Smoke testing is manual against `shopify theme dev`. The full smoke checklist runs in Task 11.
 
 **Branch & commit conventions:**
+
 - Work on a feature branch off `main`: `cleanup/javascript-web-components`.
 - Each task ends with a single commit. Commit messages use `refactor:`, `feat:`, `fix:`, or `style:` prefixes per the existing convention.
 - Final task opens the PR.
@@ -48,6 +50,7 @@ Expected: `Switched to a new branch 'cleanup/javascript-web-components'`
 **Goal:** Convert four pure-mechanical files (`accordion.js`, `cart-icon.js`, `header-nav.js`, `product-gallery.js`) to extend `Component` and use `setup()` instead of inline `connectedCallback()`. No behavior changes.
 
 **Files:**
+
 - Modify: `assets/accordion.js`
 - Modify: `assets/cart-icon.js`
 - Modify: `assets/header-nav.js`
@@ -365,6 +368,7 @@ connectedCallback. No behavior change."
 **Goal:** Add `assets/drawer.js`, register it in the importmap, and load it unconditionally. No consumer changes yet — Tasks 3, 4, and 7 will refactor `cart-drawer`, `header-drawer`, and `collection-filters` onto it.
 
 **Files:**
+
 - Create: `assets/drawer.js`
 - Modify: `snippets/scripts.liquid`
 
@@ -403,9 +407,7 @@ class Drawer extends Component {
     this.overlay = this.$("[data-overlay]");
     this._returnFocusEl = null;
 
-    this.$$("[data-close]").forEach((el) =>
-      el.addEventListener("click", () => this.close()),
-    );
+    this.$$("[data-close]").forEach((el) => el.addEventListener("click", () => this.close()));
     this.overlay?.addEventListener("click", () => this.close());
 
     document.addEventListener("keydown", (e) => {
@@ -506,9 +508,7 @@ class Drawer extends Component {
     };
 
     overlay?.addEventListener("click", close);
-    panel?.querySelectorAll("[data-close]").forEach((el) =>
-      el.addEventListener("click", close),
-    );
+    panel?.querySelectorAll("[data-close]").forEach((el) => el.addEventListener("click", close));
     document.addEventListener("keydown", (e) => {
       if (!isOpen()) return;
       if (!host.contains(document.activeElement)) return;
@@ -617,6 +617,7 @@ and collection-filters onto it."
 **Goal:** `<cart-drawer>` extends `Drawer`. The duplicated focus-trap, escape, body-lock, and return-focus logic comes from the base class. Cart-specific behavior (event listeners for `cart:open` / `cart:refresh`, quantity buttons, `refresh()`) stays.
 
 **Files:**
+
 - Modify: `assets/cart-drawer.js`
 
 - [ ] **Step 1: Replace `assets/cart-drawer.js`**
@@ -752,6 +753,7 @@ refresh stay."
 **Goal:** `<header-drawer>` extends `Drawer`. The hamburger button still toggles `aria-expanded`. All other duplicated logic moves to the base class.
 
 **Files:**
+
 - Modify: `assets/header-drawer.js`
 
 - [ ] **Step 1: Replace `assets/header-drawer.js`**
@@ -820,6 +822,7 @@ class. Subclass keeps the hamburger trigger and aria-expanded sync."
 **Goal:** Create `<grid-switcher>` as a focused custom element. Wrap the grid-column buttons in `sections/main-collection.liquid` with the new element. Remove the `#initGridSwitcher` and `#setGrid` methods (and the call site in `connectedCallback`) from `collection-filters.js`.
 
 **Files:**
+
 - Create: `assets/grid-switcher.js`
 - Modify: `sections/main-collection.liquid` (lines 41–68 area — wrap the radiogroup div)
 - Modify: `snippets/scripts.liquid`
@@ -925,7 +928,7 @@ Add an importmap entry and a gated script tag.
 In the importmap block, add (alphabetized between `cart-icon` and `header-drawer`):
 
 ```liquid
-      "@theme/grid-switcher": {{ 'grid-switcher.js' | asset_url | json }},
+"@theme/grid-switcher": {{ 'grid-switcher.js' | asset_url | json }},
 ```
 
 In the `{% if template contains 'collection' %}` block, add a script tag below the existing `collection-filters.js` line:
@@ -940,6 +943,7 @@ In the `{% if template contains 'collection' %}` block, add a script tag below t
 - [ ] **Step 4: Remove grid-switcher logic from `assets/collection-filters.js`**
 
 In `assets/collection-filters.js`:
+
 1. Remove the line `this.#initGridSwitcher();` from `connectedCallback()`.
 2. Remove both private methods `#initGridSwitcher()` and `#setGrid()` (currently lines ~82–105).
 
@@ -974,6 +978,7 @@ grid switcher; its file shrinks accordingly."
 **Goal:** Create `<price-range-slider>` as a focused custom element. Wrap the slider markup in `sections/main-collection.liquid`. Remove the `#initRangeSlider` method (and its call site) from `collection-filters.js`. **Fix:** dispatch a native `change` event on `[data-price-min]` and `[data-price-max]` after a drag completes so the parent form's auto-submit fires on desktop.
 
 **Files:**
+
 - Create: `assets/price-range-slider.js`
 - Modify: `sections/main-collection.liquid` (lines 219–257 area — wrap the slider + labels + hidden inputs)
 - Modify: `snippets/scripts.liquid`
@@ -1032,8 +1037,10 @@ class PriceRangeSlider extends Component {
     this.track.style.right = `${100 - maxPct}%`;
     if (this.minInput) this.minInput.value = this.minVal > 0 ? this.minVal : "";
     if (this.maxInput) this.maxInput.value = this.maxVal < this.rangeMax ? this.maxVal : "";
-    if (this.minLabel) this.minLabel.textContent = `${this.currencySymbol}${Math.round(this.minVal)}`;
-    if (this.maxLabel) this.maxLabel.textContent = `${this.currencySymbol}${Math.round(this.maxVal)}+`;
+    if (this.minLabel)
+      this.minLabel.textContent = `${this.currencySymbol}${Math.round(this.minVal)}`;
+    if (this.maxLabel)
+      this.maxLabel.textContent = `${this.currencySymbol}${Math.round(this.maxVal)}+`;
   }
 
   #bindThumb(thumb, setter) {
@@ -1078,7 +1085,7 @@ customElements.define("price-range-slider", PriceRangeSlider);
 export { PriceRangeSlider };
 ```
 
-> Implementation note vs the original: the original looked up the inputs/labels via `closest(".pb-4") || parentElement`. The new component looks them up *inside itself* via `this.$(...)` because in the next step we wrap the inputs and labels into the `<price-range-slider>` element. This is cleaner and avoids the brittle `.pb-4` lookup.
+> Implementation note vs the original: the original looked up the inputs/labels via `closest(".pb-4") || parentElement`. The new component looks them up _inside itself_ via `this.$(...)` because in the next step we wrap the inputs and labels into the `<price-range-slider>` element. This is cleaner and avoids the brittle `.pb-4` lookup.
 
 - [ ] **Step 2: Wrap the slider markup in `sections/main-collection.liquid`**
 
@@ -1087,90 +1094,90 @@ In `sections/main-collection.liquid`, locate lines 219–257 (the price-range fi
 Replace the existing block:
 
 ```liquid
-                          <!-- Range slider -->
-                          <div
-                            data-range-slider
-                            data-range-max="{{ range_max_money }}"
-                            data-currency="{{ cart.currency.symbol }}"
-                            class="mx-1 mb-3"
-                          >
-                            <div data-range-track></div>
-                            <div data-range-min></div>
-                            <div data-range-max></div>
-                          </div>
-                          <div class="flex justify-between text-xs text-gray-500">
-                            <span data-label-min>
-                              {{- cart.currency.symbol -}}
-                              {{- min_money | round -}}
-                            </span>
-                            <span data-label-max>
-                              {{- cart.currency.symbol -}}
-                              {{- max_money | round }}+</span
-                            >
-                          </div>
+<!-- Range slider -->
+<div
+  data-range-slider
+  data-range-max="{{ range_max_money }}"
+  data-currency="{{ cart.currency.symbol }}"
+  class="mx-1 mb-3"
+>
+  <div data-range-track></div>
+  <div data-range-min></div>
+  <div data-range-max></div>
+</div>
+<div class="flex justify-between text-xs text-gray-500">
+  <span data-label-min>
+    {{- cart.currency.symbol -}}
+    {{- min_money | round -}}
+  </span>
+  <span data-label-max>
+    {{- cart.currency.symbol -}}
+    {{- max_money | round }}+</span
+  >
+</div>
 
-                          <!-- Hidden inputs submitted with form -->
-                          <input
-                            type="hidden"
-                            name="{{ filter.min_value.param_name }}"
-                            data-price-min
-                            {% if filter.min_value.value %}
-                              value="{{ min_money }}"
-                            {% endif %}
-                          >
-                          <input
-                            type="hidden"
-                            name="{{ filter.max_value.param_name }}"
-                            data-price-max
-                            {% if filter.max_value.value %}
-                              value="{{ max_money }}"
-                            {% endif %}
-                          >
+<!-- Hidden inputs submitted with form -->
+<input
+  type="hidden"
+  name="{{ filter.min_value.param_name }}"
+  data-price-min
+  {% if filter.min_value.value %}
+    value="{{ min_money }}"
+  {% endif %}
+>
+<input
+  type="hidden"
+  name="{{ filter.max_value.param_name }}"
+  data-price-max
+  {% if filter.max_value.value %}
+    value="{{ max_money }}"
+  {% endif %}
+>
 ```
 
 with:
 
 ```liquid
-                          <price-range-slider
-                            data-range-max="{{ range_max_money }}"
-                            data-currency="{{ cart.currency.symbol }}"
-                            class="block"
-                          >
-                            <!-- Range slider -->
-                            <div data-range-slider class="mx-1 mb-3">
-                              <div data-range-track></div>
-                              <div data-range-min></div>
-                              <div data-range-max></div>
-                            </div>
-                            <div class="flex justify-between text-xs text-gray-500">
-                              <span data-label-min>
-                                {{- cart.currency.symbol -}}
-                                {{- min_money | round -}}
-                              </span>
-                              <span data-label-max>
-                                {{- cart.currency.symbol -}}
-                                {{- max_money | round }}+</span
-                              >
-                            </div>
+<price-range-slider
+  data-range-max="{{ range_max_money }}"
+  data-currency="{{ cart.currency.symbol }}"
+  class="block"
+>
+  <!-- Range slider -->
+  <div data-range-slider class="mx-1 mb-3">
+    <div data-range-track></div>
+    <div data-range-min></div>
+    <div data-range-max></div>
+  </div>
+  <div class="flex justify-between text-xs text-gray-500">
+    <span data-label-min>
+      {{- cart.currency.symbol -}}
+      {{- min_money | round -}}
+    </span>
+    <span data-label-max>
+      {{- cart.currency.symbol -}}
+      {{- max_money | round }}+</span
+    >
+  </div>
 
-                            <!-- Hidden inputs submitted with form -->
-                            <input
-                              type="hidden"
-                              name="{{ filter.min_value.param_name }}"
-                              data-price-min
-                              {% if filter.min_value.value %}
-                                value="{{ min_money }}"
-                              {% endif %}
-                            >
-                            <input
-                              type="hidden"
-                              name="{{ filter.max_value.param_name }}"
-                              data-price-max
-                              {% if filter.max_value.value %}
-                                value="{{ max_money }}"
-                              {% endif %}
-                            >
-                          </price-range-slider>
+  <!-- Hidden inputs submitted with form -->
+  <input
+    type="hidden"
+    name="{{ filter.min_value.param_name }}"
+    data-price-min
+    {% if filter.min_value.value %}
+      value="{{ min_money }}"
+    {% endif %}
+  >
+  <input
+    type="hidden"
+    name="{{ filter.max_value.param_name }}"
+    data-price-max
+    {% if filter.max_value.value %}
+      value="{{ max_money }}"
+    {% endif %}
+  >
+</price-range-slider>
 ```
 
 > The `data-range-max` and `data-currency` attributes move from the inner `<div data-range-slider>` to the `<price-range-slider>` host (because the JS reads `this.dataset.rangeMax` / `this.dataset.currency`). The inner `<div data-range-slider>` keeps its `class="mx-1 mb-3"` for layout.
@@ -1180,7 +1187,7 @@ with:
 In the importmap block, add (alphabetized between `predictive-search` and `product-card`):
 
 ```liquid
-      "@theme/price-range-slider": {{ 'price-range-slider.js' | asset_url | json }},
+"@theme/price-range-slider": {{ 'price-range-slider.js' | asset_url | json }},
 ```
 
 In the `{% if template contains 'collection' %}` block:
@@ -1196,6 +1203,7 @@ In the `{% if template contains 'collection' %}` block:
 - [ ] **Step 4: Remove range-slider logic from `assets/collection-filters.js`**
 
 In `assets/collection-filters.js`:
+
 1. Remove the line `this.querySelectorAll("[data-range-slider]").forEach((slider) => this.#initRangeSlider(slider));` from `connectedCallback()`.
 2. Remove the `#initRangeSlider(container)` method entirely (currently lines ~107–177).
 
@@ -1235,6 +1243,7 @@ assignment doesn't fire change."
 **Goal:** With grid-switcher and range-slider extracted, `<collection-filters>` is now an orchestrator only. Convert it to extend `Component`, use `setup()` instead of `connectedCallback()`, and delegate the mobile drawer behavior to `Drawer.controllerFor()`.
 
 **Files:**
+
 - Modify: `assets/collection-filters.js`
 
 - [ ] **Step 1: Replace `assets/collection-filters.js`**
@@ -1284,10 +1293,7 @@ class CollectionFilters extends Component {
       if (!this.mdQuery.matches) return;
       if (e.target.type === "number") {
         clearTimeout(this._debounce);
-        this._debounce = setTimeout(
-          () => this.form.submit(),
-          CollectionFilters.NUMBER_DEBOUNCE_MS,
-        );
+        this._debounce = setTimeout(() => this.form.submit(), CollectionFilters.NUMBER_DEBOUNCE_MS);
       } else {
         this.form.submit();
       }
@@ -1353,6 +1359,7 @@ grid-switcher logic moved out in earlier commits."
 **Goal:** `<product-card>` is a real custom element with a self-scoped click listener. Edit `snippets/product-card.liquid` so the wrapping element becomes `<product-card>`.
 
 **Files:**
+
 - Modify: `assets/product-card.js`
 - Modify: `snippets/product-card.liquid`
 
@@ -1412,6 +1419,7 @@ export { ProductCard };
 - [ ] **Step 2: Update `snippets/product-card.liquid`**
 
 In `snippets/product-card.liquid`:
+
 - Line 27: change `<div data-product-card class="group">` to `<product-card data-product-card class="group">`.
 - Line 94: change the matching closing `</div>` to `</product-card>`.
 
@@ -1446,6 +1454,7 @@ kept until the sub-project-6 CSS pass."
 **Goal:** Convert `<predictive-search>` to extend `Component`. **Fix:** apply `#escape()` to every interpolated value (titles, URLs, prices, image src/alt, query in "View all" link). Move placeholder HTML strings to `static` constants.
 
 **Files:**
+
 - Modify: `assets/predictive-search.js`
 
 - [ ] **Step 1: Replace `assets/predictive-search.js`**
@@ -1645,6 +1654,7 @@ and lifts placeholder HTML to static class constants."
 **Goal:** `<product-form>` extends `Component`. Consolidate the duplicated "restore button state" block in catch / non-catch branches into a single `#restoreButton(originalText)` helper. Save the original `textContent` before any `.trim()`-ing.
 
 **Files:**
+
 - Modify: `assets/product-form.js`
 
 - [ ] **Step 1: Replace `assets/product-form.js`**
@@ -1732,7 +1742,7 @@ customElements.define("product-form", ProductForm);
 export { ProductForm };
 ```
 
-> Behavior changes vs. original (per spec): (1) `originalText` is captured *before* the button text is overwritten, no longer trimmed on save; (2) the duplicated restore block is now a single `#restoreButton()` call.
+> Behavior changes vs. original (per spec): (1) `originalText` is captured _before_ the button text is overwritten, no longer trimmed on save; (2) the duplicated restore block is now a single `#restoreButton()` call.
 
 - [ ] **Step 2: Run format check**
 
@@ -1785,6 +1795,7 @@ Expected: Both `watch:css` and `shopify theme dev` start. The Shopify CLI prints
 - [ ] **Step 3: Smoke test 1 — cart-drawer**
 
 On the storefront:
+
 1. Click the cart icon → drawer slides open, body scroll locks, focus moves into the drawer.
 2. Press Tab repeatedly → focus cycles within the panel and never escapes to the page underneath.
 3. Press Escape → drawer closes; focus returns to the cart icon.
@@ -1796,6 +1807,7 @@ Expected: All steps work; browser console is clean.
 - [ ] **Step 4: Smoke test 2 — header-drawer**
 
 On mobile width (≤ 768 px):
+
 1. Click the hamburger → drawer opens; `aria-expanded` on the hamburger flips to `true`.
 2. Tab cycles within the drawer; Escape closes; focus returns to the hamburger.
 3. Overlay click closes.
@@ -1805,20 +1817,19 @@ Expected: All steps work; browser console is clean.
 - [ ] **Step 5: Smoke test 3 — collection-filters orchestrator**
 
 Open a collection page. **Desktop (≥ 768 px):**
+
 1. Click the toggle button → sidebar hides; label flips to "Show Filters". Click again → sidebar shows; label flips back.
 2. Toggle a filter checkbox → form auto-submits.
 3. Type into a number input (if present) → form auto-submits ~800 ms after the last keystroke.
 
-**Mobile (< 768 px):**
-4. Click the toggle → drawer opens (Drawer.controllerFor controls it).
-5. Tab cycles within the drawer; Escape closes; overlay click closes.
-6. Click Apply / Clear → form submits / clears as before.
+**Mobile (< 768 px):** 4. Click the toggle → drawer opens (Drawer.controllerFor controls it). 5. Tab cycles within the drawer; Escape closes; overlay click closes. 6. Click Apply / Clear → form submits / clears as before.
 
 Expected: All steps work; browser console is clean.
 
 - [ ] **Step 6: Smoke test 4 — price-range-slider (with the fix)**
 
 On a collection page that has a price filter:
+
 1. **Desktop:** Drag the min thumb to a new position and release → form auto-submits (this is new behavior).
 2. Drag the max thumb and release → form auto-submits.
 3. While dragging, the min/max labels update live.
@@ -1829,6 +1840,7 @@ Expected: All steps work; browser console is clean.
 - [ ] **Step 7: Smoke test 5 — grid-switcher**
 
 On a collection page (desktop):
+
 1. Click the 3-col button → grid renders with 3 columns; `bg-gray-100` moves to the 3-col button.
 2. Click the 4-col button → grid renders with 4 columns.
 3. Reload → the last selection persists.
@@ -1838,6 +1850,7 @@ Expected: All steps work.
 - [ ] **Step 8: Smoke test 6 — product-card swatches**
 
 On a collection page with cards that have swatches:
+
 1. Click a swatch on one card → image swaps; srcset swaps if present; all anchors in that card now point at the variant URL.
 2. Click a swatch on a different card → only that card's image swaps.
 
@@ -1846,6 +1859,7 @@ Expected: Each card's swatches affect only that card.
 - [ ] **Step 9: Smoke test 7 — predictive-search**
 
 If `settings.predictive_search_enabled`:
+
 1. Open the search dropdown → "Start typing to search..." placeholder shows.
 2. Type 2+ characters → "Searching..." then results render.
 3. Open devtools, inspect a result row's HTML → no double-quotes or angle brackets in attribute or text values come from raw API output (every value should pass through `#escape`).
@@ -1856,6 +1870,7 @@ Expected: Console clean; HTML inspection shows escaped values.
 - [ ] **Step 10: Smoke test 8 — product-form**
 
 On a product page:
+
 1. Click "Add to cart" → button text becomes "Adding...", `aria-busy="true"` set, then cart drawer opens with the new item, count updates.
 2. Use devtools Network tab to block `/cart/add.js` and resubmit → button shows "Error — try again", reverts to original after 2 s.
 
@@ -1925,7 +1940,7 @@ git commit -m "docs: mark sub-project 2 (JavaScript) as merged"
 git push
 ```
 
-> If `PROGRESS.md` is still untracked at PR-merge time, `git add` will track it. The first push of the branch above will not include it; this commit lands on the same branch *after* the PR is opened, or on `main` after merge — your call.
+> If `PROGRESS.md` is still untracked at PR-merge time, `git add` will track it. The first push of the branch above will not include it; this commit lands on the same branch _after_ the PR is opened, or on `main` after merge — your call.
 
 ---
 
@@ -1935,23 +1950,23 @@ This section is for the plan author's own pre-flight check; it is not a task for
 
 ### 1. Spec coverage
 
-| Spec requirement | Plan task |
-|---|---|
-| Adopt `Component` consistently | Tasks 1, 2 (drawer extends Component), 3, 4, 5, 6, 7, 8, 9, 10 |
-| Introduce `Drawer` subclass | Task 2 |
-| `Drawer.controllerFor()` for hosts | Task 2 (defined), Task 7 (consumed) |
-| `cart-drawer` extends `Drawer` | Task 3 |
-| `header-drawer` extends `Drawer` | Task 4 |
-| Split `collection-filters` into three components | Tasks 5, 6, 7 |
-| `<grid-switcher>` extracted | Task 5 |
-| `<price-range-slider>` extracted with `change`-event fix | Task 6 |
-| `<collection-filters>` orchestrator | Task 7 |
-| `<product-card>` custom element + snippet edit | Task 8 |
-| Predictive-search escape fixes | Task 9 |
-| `product-form` `#restoreButton` helper | Task 10 |
-| `snippets/scripts.liquid` updates | Tasks 2, 5, 6 (each task wires its own new file) |
-| Smoke checklist (9 items) | Task 11 (Steps 3–11) |
-| `format:check` + `theme:check` baseline check | Every task + Task 11 (Step 1) |
+| Spec requirement                                         | Plan task                                                      |
+| -------------------------------------------------------- | -------------------------------------------------------------- |
+| Adopt `Component` consistently                           | Tasks 1, 2 (drawer extends Component), 3, 4, 5, 6, 7, 8, 9, 10 |
+| Introduce `Drawer` subclass                              | Task 2                                                         |
+| `Drawer.controllerFor()` for hosts                       | Task 2 (defined), Task 7 (consumed)                            |
+| `cart-drawer` extends `Drawer`                           | Task 3                                                         |
+| `header-drawer` extends `Drawer`                         | Task 4                                                         |
+| Split `collection-filters` into three components         | Tasks 5, 6, 7                                                  |
+| `<grid-switcher>` extracted                              | Task 5                                                         |
+| `<price-range-slider>` extracted with `change`-event fix | Task 6                                                         |
+| `<collection-filters>` orchestrator                      | Task 7                                                         |
+| `<product-card>` custom element + snippet edit           | Task 8                                                         |
+| Predictive-search escape fixes                           | Task 9                                                         |
+| `product-form` `#restoreButton` helper                   | Task 10                                                        |
+| `snippets/scripts.liquid` updates                        | Tasks 2, 5, 6 (each task wires its own new file)               |
+| Smoke checklist (9 items)                                | Task 11 (Steps 3–11)                                           |
+| `format:check` + `theme:check` baseline check            | Every task + Task 11 (Step 1)                                  |
 
 All spec requirements have at least one task. ✓
 
