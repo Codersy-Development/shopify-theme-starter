@@ -6,7 +6,10 @@
       <!-- Product Gallery -->
       <product-gallery class="block">
         {% if product.images.size > 0 %}
-          <div class="relative aspect-square bg-gray-100 rounded-lg overflow-hidden" data-main-image>
+          <div
+            class="relative aspect-square bg-gray-100 rounded-lg overflow-hidden"
+            data-main-image
+          >
             {% for image in product.images %}
               <div
                 class="absolute inset-0 {% if forloop.first %}is-active{% endif %}"
@@ -39,7 +42,12 @@
           </div>
 
           {% if product.images.size > 1 %}
-            <div class="flex gap-2 mt-3 overflow-x-auto" data-thumbnails role="listbox" aria-label="Product images">
+            <div
+              class="flex gap-2 mt-3 overflow-x-auto"
+              data-thumbnails
+              role="listbox"
+              aria-label="Product images"
+            >
               {% for image in product.images %}
                 <button
                   type="button"
@@ -47,7 +55,11 @@
                   data-thumbnail
                   data-target="{{ image.id }}"
                   role="option"
-                  {% if forloop.first %}aria-selected="true"{% else %}aria-selected="false"{% endif %}
+                  {% if forloop.first %}
+                    aria-selected="true"
+                  {% else %}
+                    aria-selected="false"
+                  {% endif %}
                   aria-label="Product image {{ forloop.index }}"
                 >
                   {% render 'image',
@@ -108,7 +120,11 @@
                 {% endfor %}
               </div>
             {% else %}
-              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <input
+                type="hidden"
+                name="id"
+                value="{{ product.selected_or_first_available_variant.id }}"
+              >
             {% endif %}
 
             <button

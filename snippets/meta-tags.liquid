@@ -29,15 +29,27 @@
 {%- endif -%}
 
 {%- if request.page_type == 'product' -%}
-  <meta property="product:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  <meta
+    property="product:price:amount"
+    content="{{ product.price | money_without_currency | strip_html }}"
+  >
   <meta property="product:price:currency" content="{{ cart.currency.iso_code }}">
-  <meta property="product:availability" content="{% if product.available %}in stock{% else %}out of stock{% endif %}">
+  <meta
+    property="product:availability"
+    content="{% if product.available %}in stock{% else %}out of stock{% endif %}"
+  >
   <meta property="product:brand" content="{{ product.vendor | escape }}">
 {%- endif -%}
 
 {%- if request.page_type == 'article' -%}
-  <meta property="article:published_time" content="{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}">
-  <meta property="article:modified_time" content="{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' }}">
+  <meta
+    property="article:published_time"
+    content="{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}"
+  >
+  <meta
+    property="article:modified_time"
+    content="{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' }}"
+  >
   <meta property="article:author" content="{{ article.author }}">
   {%- for tag in article.tags -%}
     <meta property="article:tag" content="{{ tag }}">
@@ -45,7 +57,10 @@
 {%- endif -%}
 
 {%- if settings.social_x_link != blank -%}
-  <meta name="twitter:site" content="{{ settings.social_x_link | split: '/' | last | prepend: '@' }}">
+  <meta
+    name="twitter:site"
+    content="{{ settings.social_x_link | split: '/' | last | prepend: '@' }}"
+  >
 {%- endif -%}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ og_title | escape }}">
@@ -58,5 +73,8 @@
   <meta name="twitter:label1" content="Price">
   <meta name="twitter:data1" content="{{ product.price | money }}">
   <meta name="twitter:label2" content="Availability">
-  <meta name="twitter:data2" content="{% if product.available %}In stock{% else %}Sold out{% endif %}">
+  <meta
+    name="twitter:data2"
+    content="{% if product.available %}In stock{% else %}Sold out{% endif %}"
+  >
 {%- endif -%}

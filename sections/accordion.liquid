@@ -6,12 +6,18 @@
       </h2>
     {% endif %}
 
-    <accordion-group {% if section.settings.allow_multiple %}data-allow-multiple{% endif %}>
+    <accordion-group
+      {% if section.settings.allow_multiple %}
+        data-allow-multiple
+      {% endif %}
+    >
       {% for block in section.blocks %}
         <div
           class="accordion-item border-b border-gray-200"
           data-accordion
-          {% if forloop.first and section.settings.open_first %}data-open{% endif %}
+          {% if forloop.first and section.settings.open_first %}
+            data-open
+          {% endif %}
           {{ block.shopify_attributes }}
         >
           <button
@@ -20,8 +26,13 @@
             class="flex justify-between items-center w-full py-5 text-left cursor-pointer gap-4"
             aria-expanded="false"
           >
-            <span class="text-sm font-bold uppercase tracking-wider">{{ block.settings.title }}</span>
-            <span class="accordion-icon text-gray-400 text-lg leading-none shrink-0" aria-hidden="true">
+            <span class="text-sm font-bold uppercase tracking-wider">
+              {{- block.settings.title -}}
+            </span>
+            <span
+              class="accordion-icon text-gray-400 text-lg leading-none shrink-0"
+              aria-hidden="true"
+            >
               <span class="accordion-icon-closed">+</span>
               <span class="accordion-icon-open">−</span>
             </span>
@@ -92,9 +103,27 @@
     {
       "name": "Accordion",
       "blocks": [
-        { "type": "item", "settings": { "title": "Question one", "content": "<p>Answer to question one goes here.</p>" } },
-        { "type": "item", "settings": { "title": "Question two", "content": "<p>Answer to question two goes here.</p>" } },
-        { "type": "item", "settings": { "title": "Question three", "content": "<p>Answer to question three goes here.</p>" } }
+        {
+          "type": "item",
+          "settings": {
+            "title": "Question one",
+            "content": "<p>Answer to question one goes here.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Question two",
+            "content": "<p>Answer to question two goes here.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Question three",
+            "content": "<p>Answer to question three goes here.</p>"
+          }
+        }
       ]
     }
   ]

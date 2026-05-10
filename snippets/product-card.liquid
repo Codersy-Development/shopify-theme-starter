@@ -12,7 +12,7 @@
     assign on_sale = true
   endif
 
-  assign color_option = nil
+  assign color_option = null
   if show_swatches
     for option in product.options_with_values
       assign option_name_down = option.name | downcase

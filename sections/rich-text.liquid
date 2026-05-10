@@ -19,7 +19,10 @@
           </div>
 
         {% when 'button' %}
-          <div class="{% if section.settings.center %}text-center{% endif %} mt-2 mb-6" {{ block.shopify_attributes }}>
+          <div
+            class="{% if section.settings.center %}text-center{% endif %} mt-2 mb-6"
+            {{ block.shopify_attributes }}
+          >
             <a
               href="{{ block.settings.link }}"
               class="inline-block font-semibold text-sm px-8 py-3 rounded-lg no-underline transition-colors {% if block.settings.style == 'primary' %}bg-gray-900 text-white hover:bg-gray-800{% elsif block.settings.style == 'outline' %}border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white{% else %}text-gray-900 underline hover:text-gray-600{% endif %}"
@@ -178,7 +181,12 @@
       "name": "Rich Text",
       "blocks": [
         { "type": "heading", "settings": { "text": "Talk about your brand" } },
-        { "type": "text", "settings": { "richtext": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>" } },
+        {
+          "type": "text",
+          "settings": {
+            "richtext": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+          }
+        },
         { "type": "button" }
       ]
     }

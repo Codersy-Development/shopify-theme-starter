@@ -21,10 +21,7 @@ class HeaderNav extends HTMLElement {
       });
 
       item.addEventListener("mouseleave", () => {
-        closeTimeout = setTimeout(
-          () => this.#close(item),
-          HeaderNav.CLOSE_DELAY,
-        );
+        closeTimeout = setTimeout(() => this.#close(item), HeaderNav.CLOSE_DELAY);
       });
 
       // Keyboard: toggle on click/enter/space
@@ -57,16 +54,12 @@ class HeaderNav extends HTMLElement {
 
   #open(item) {
     item.classList.add("is-open");
-    item
-      .querySelector("[data-nav-trigger]")
-      ?.setAttribute("aria-expanded", "true");
+    item.querySelector("[data-nav-trigger]")?.setAttribute("aria-expanded", "true");
   }
 
   #close(item) {
     item.classList.remove("is-open");
-    item
-      .querySelector("[data-nav-trigger]")
-      ?.setAttribute("aria-expanded", "false");
+    item.querySelector("[data-nav-trigger]")?.setAttribute("aria-expanded", "false");
   }
 
   /**

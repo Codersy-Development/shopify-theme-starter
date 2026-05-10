@@ -13,7 +13,9 @@
               style: 'max-width: 100px'
             %}
           {% else %}
-            <span class="text-sm font-semibold text-gray-900 uppercase tracking-wider">{{ shop.name }}</span>
+            <span class="text-sm font-semibold text-gray-900 uppercase tracking-wider">
+              {{- shop.name -}}
+            </span>
           {% endif %}
         </a>
         {% if section.settings.about_text != blank %}
@@ -25,10 +27,15 @@
       </div>
 
       <div>
-        <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Quick links</h3>
+        <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+          Quick links
+        </h3>
         <nav class="space-y-2" aria-label="Footer navigation">
           {% for link in linklists[section.settings.menu].links %}
-            <a href="{{ link.url }}" class="block text-sm text-gray-500 hover:text-gray-700 no-underline">
+            <a
+              href="{{ link.url }}"
+              class="block text-sm text-gray-500 hover:text-gray-700 no-underline"
+            >
               {{ link.title }}
             </a>
           {% endfor %}
@@ -37,7 +44,12 @@
 
       {% if section.settings.show_newsletter %}
         <div>
-          <h3 id="newsletter-heading" class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Stay in touch</h3>
+          <h3
+            id="newsletter-heading"
+            class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4"
+          >
+            Stay in touch
+          </h3>
           <p class="text-sm text-gray-500 mb-3">Subscribe for updates and promotions.</p>
           {% form 'customer' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
@@ -67,10 +79,17 @@
 
     <div class="border-t border-gray-200 pt-8 flex flex-col sm:flex-row items-center justify-between gap-2">
       <p class="text-sm text-gray-400">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
+        &copy; {{ 'now' | date: '%Y' }}
+        {{ shop.name }}. All rights reserved.
       </p>
       <p class="text-sm text-gray-400">
-        Shopify theme by <a href="https://www.codersy.com" class="text-gray-500 hover:text-gray-700 no-underline" title="Codersy - Shopify Development">Codersy</a>
+        Shopify theme by
+        <a
+          href="https://www.codersy.com"
+          class="text-gray-500 hover:text-gray-700 no-underline"
+          title="Codersy - Shopify Development"
+          >Codersy</a
+        >
       </p>
     </div>
   </div>
