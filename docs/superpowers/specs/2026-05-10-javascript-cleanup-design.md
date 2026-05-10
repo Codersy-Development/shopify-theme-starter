@@ -127,7 +127,7 @@ Behavior-preserving except where flagged "fix".
 | `assets/cart-drawer.js` | Extends `Drawer`. Removes `#trapFocus`, document `keydown` handler, body-overflow management, return-focus logic — all inherited. Keeps: `cart:open` and `cart:refresh` document listeners, quantity-button click delegation, `#updateQuantity()`, `refresh()`. `setup()` calls `super.setup()` first, then wires cart-specific listeners. |
 | `assets/cart-icon.js` | Extends `Component`. `setup()` replaces `connectedCallback()`. No behavior change. |
 | `assets/collection-filters.js` | Extends `Component`. Range-slider and grid-switcher code move out (see below). Mobile drawer logic delegates to `Drawer.controllerFor(this.aside, this.overlay, this)`. The orchestrator keeps the form `change` listener with debounce for `type="number"`, `data-toggle-filters` / `data-close-filters` buttons, and the desktop visibility flag and label. |
-| `assets/grid-switcher.js` (new) | `<grid-switcher>` element. Reads its target grid (looked up by a `data-target` attribute pointing at a CSS selector, or by `closest("collection-filters") .querySelector("[data-product-grid]")`) and the `[data-grid]` buttons inside itself. On click, swaps `md:grid-cols-N` classes; persists to `localStorage` under `collection-grid-cols`; restores on `setup()`. |
+| `assets/grid-switcher.js` (new) | `<grid-switcher>` element. Looks up its target grid via `this.closest("collection-filters")?.querySelector("[data-product-grid]")` (matches the existing in-DOM relationship). Reads `[data-grid]` buttons inside itself. On click, swaps `md:grid-cols-N` classes on the grid; persists to `localStorage` under `collection-grid-cols`; restores on `setup()`. |
 | `assets/header-drawer.js` | Extends `Drawer`. `setup()` calls `super.setup()`, then wires the `[data-open]` button (which also toggles `aria-expanded`). Removes duplicated focus-trap, escape, body-lock, return-focus. |
 | `assets/header-nav.js` | Extends `Component`. `setup()` replaces `connectedCallback()`. No behavior change. |
 | `assets/predictive-search.js` | Extends `Component`. **Fix:** apply `#escape()` to every interpolated value (titles, URLs, prices, image src, image alt, query in "View all"). Move placeholder HTML to `static` class constants. No structural change. |
@@ -177,7 +177,7 @@ None.
 
 ## Acceptance Criteria
 
-- All 11 JS files in `/assets/` (excluding `application.css`) extend either `Component` or `Drawer`. None duplicate the focus-trap, body-scroll-lock, or escape-to-close logic.
+- Every custom-element file under `/assets/` extends either `Component` or `Drawer` (post-pass total: 14 JS files including the three new ones). None duplicate the focus-trap, body-scroll-lock, or escape-to-close logic.
 - `assets/drawer.js`, `assets/price-range-slider.js`, `assets/grid-switcher.js` exist and are wired into `snippets/scripts.liquid` (importmap + script tags, gated where appropriate).
 - `snippets/product-card.liquid` wraps each card in `<product-card>`. `assets/product-card.js` is a custom element with a self-scoped click listener and no document-level delegation.
 - `assets/predictive-search.js` applies `#escape()` to every interpolated value in the result HTML (titles, URLs, prices, image src, image alt, "View all" query).
