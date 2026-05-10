@@ -2,6 +2,7 @@
   {
     "imports": {
       "@theme/component": {{ 'component.js' | asset_url | json }},
+      "@theme/drawer": {{ 'drawer.js' | asset_url | json }},
       "@theme/cart-drawer": {{ 'cart-drawer.js' | asset_url | json }},
       "@theme/cart-icon": {{ 'cart-icon.js' | asset_url | json }},
       "@theme/product-form": {{ 'product-form.js' | asset_url | json }},
@@ -17,6 +18,7 @@
 </script>
 
 <script type="module" src="{{ 'component.js' | asset_url }}"></script>
+<script type="module" src="{{ 'drawer.js' | asset_url }}"></script>
 <script type="module" src="{{ 'product-form.js' | asset_url }}"></script>
 <script type="module" src="{{ 'accordion.js' | asset_url }}"></script>
 <script type="module" src="{{ 'product-card.js' | asset_url }}"></script>
