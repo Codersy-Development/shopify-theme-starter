@@ -5,17 +5,25 @@
  * focus-trap behavior shared by cart-drawer, header-drawer, and the
  * mobile mode of collection-filters.
  *
+ * `Drawer` is a class form that subclasses extend (cart-drawer,
+ * header-drawer). Internally, `Drawer` delegates to
+ * `Drawer.controllerFor` so the same logic lives in one place — the
+ * class form is a thin wrapper around the controller. Subclasses still
+ * call `super.setup()` / `super.open()` / `super.close()`, which simply
+ * forwards to the internal controller.
+ *
  * Subclasses MUST call `super.setup()` first so that `this.panel` and
  * `this.overlay` are populated before subclass listeners run.
  *
  * Markup contract: the host element contains `[data-panel]` and
- * `[data-overlay]` descendants. Any descendant `[data-close]` closes
- * the drawer when clicked.
+ * `[data-overlay]` descendants. Any descendant `[data-close]` of the
+ * host closes the drawer when clicked. `[data-close]` lookup is
+ * host-scoped in both the class form and `controllerFor`.
  *
  * For hosts that need drawer behavior on a sub-region of themselves
  * (e.g. <collection-filters> on its mobile filters aside), use the
  * static `Drawer.controllerFor(panel, overlay, host)` instead of
- * extending Drawer.
+ * extending Drawer. `controllerFor` is the canonical implementation.
  */
 import { Component } from "@theme/component";
 
@@ -26,57 +34,19 @@ class Drawer extends Component {
   setup() {
     this.panel = this.$("[data-panel]");
     this.overlay = this.$("[data-overlay]");
-    this._returnFocusEl = null;
-
-    this.$$("[data-close]").forEach((el) => el.addEventListener("click", () => this.close()));
-    this.overlay?.addEventListener("click", () => this.close());
-
-    document.addEventListener("keydown", (e) => {
-      if (!this.isOpen) return;
-      if (e.key === "Escape") this.close();
-      if (e.key === "Tab") this.#trapFocus(e);
-    });
+    this._controller = Drawer.controllerFor(this.panel, this.overlay, this);
   }
 
   get isOpen() {
-    return this.panel?.classList.contains("is-open");
+    return this._controller.isOpen;
   }
 
   open() {
-    this._returnFocusEl = document.activeElement;
-    this.panel?.classList.add("is-open");
-    this.overlay?.classList.add("is-open");
-    document.body.style.overflow = "hidden";
-
-    setTimeout(() => {
-      this.panel?.querySelector("[data-close]")?.focus();
-    }, Drawer.FOCUS_DELAY_MS);
+    this._controller.open();
   }
 
   close() {
-    if (!this.isOpen) return;
-
-    this.panel?.classList.remove("is-open");
-    this.overlay?.classList.remove("is-open");
-    document.body.style.overflow = "";
-    this._returnFocusEl?.focus?.();
-  }
-
-  #trapFocus(e) {
-    const focusable = this.panel?.querySelectorAll(
-      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    );
-    if (!focusable || !focusable.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
+    this._controller.close();
   }
 
   /**
@@ -86,7 +56,7 @@ class Drawer extends Component {
    *
    * @param {Element} panel
    * @param {Element|null} overlay
-   * @param {Element} host  Element the keydown listener filters against (Escape and Tab only fire while a descendant of host has focus or while host.contains(document.activeElement)).
+   * @param {Element} host  Element used to scope the `[data-close]` lookup.
    */
   static controllerFor(panel, overlay, host) {
     let returnFocusEl = null;
@@ -129,10 +99,9 @@ class Drawer extends Component {
     };
 
     overlay?.addEventListener("click", close);
-    panel?.querySelectorAll("[data-close]").forEach((el) => el.addEventListener("click", close));
+    host.querySelectorAll("[data-close]").forEach((el) => el.addEventListener("click", close));
     document.addEventListener("keydown", (e) => {
       if (!isOpen()) return;
-      if (!host.contains(document.activeElement)) return;
       if (e.key === "Escape") close();
       if (e.key === "Tab") trapFocus(e);
     });
@@ -146,7 +115,5 @@ class Drawer extends Component {
     };
   }
 }
-
-customElements.define("drawer-base", Drawer);
 
 export { Drawer };
