@@ -2,11 +2,13 @@
  * Product image gallery with thumbnails and swipe support.
  * Fades between images and syncs with variant selection.
  */
-class ProductGallery extends HTMLElement {
-  connectedCallback() {
-    this.slides = this.querySelectorAll("[data-image-slide]");
-    this.thumbnails = this.querySelectorAll("[data-thumbnail]");
-    this.mainImage = this.querySelector("[data-main-image]");
+import { Component } from "@theme/component";
+
+class ProductGallery extends Component {
+  setup() {
+    this.slides = this.$$("[data-image-slide]");
+    this.thumbnails = this.$$("[data-thumbnail]");
+    this.mainImage = this.$("[data-main-image]");
 
     if (this.slides.length <= 1) return;
 
@@ -71,7 +73,7 @@ class ProductGallery extends HTMLElement {
   }
 
   #initVariantSync() {
-    const variantsEl = this.querySelector("[data-product-variants]");
+    const variantsEl = this.$("[data-product-variants]");
     if (!variantsEl) return;
 
     let variants;

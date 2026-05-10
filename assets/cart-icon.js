@@ -2,10 +2,12 @@
  * Updates the cart item count bubble and aria-label in the header.
  * Listens for cart:updated events to keep the count in sync.
  */
-class CartIcon extends HTMLElement {
-  connectedCallback() {
-    this.countEl = this.querySelector("[data-cart-count]");
-    this.trigger = this.querySelector("button, a");
+import { Component } from "@theme/component";
+
+class CartIcon extends Component {
+  setup() {
+    this.countEl = this.$("[data-cart-count]");
+    this.trigger = this.$("button, a");
     document.addEventListener("cart:updated", (e) => this.update(e.detail));
   }
 

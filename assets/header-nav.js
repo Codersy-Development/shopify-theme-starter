@@ -2,12 +2,14 @@
  * Desktop navigation with dropdown and mega menu support.
  * Opens panels on hover (with delay) and keyboard interaction.
  */
-class HeaderNav extends HTMLElement {
+import { Component } from "@theme/component";
+
+class HeaderNav extends Component {
   /** @type {number} Delay in ms before closing a panel after mouse leaves */
   static CLOSE_DELAY = 150;
 
-  connectedCallback() {
-    this.items = this.querySelectorAll("[data-nav-item]");
+  setup() {
+    this.items = this.$$("[data-nav-item]");
 
     this.items.forEach((item) => {
       const trigger = item.querySelector("[data-nav-trigger]");

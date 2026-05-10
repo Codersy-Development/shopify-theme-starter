@@ -2,9 +2,11 @@
  * Animated accordion group.
  * Uses CSS grid-template-rows for smooth open/close height transitions.
  */
-class AccordionGroup extends HTMLElement {
-  connectedCallback() {
-    this.querySelectorAll("[data-accordion-trigger]").forEach((btn) => {
+import { Component } from "@theme/component";
+
+class AccordionGroup extends Component {
+  setup() {
+    this.$$("[data-accordion-trigger]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const item = btn.closest("[data-accordion]");
         const allowMultiple = this.hasAttribute("data-allow-multiple");
@@ -13,7 +15,7 @@ class AccordionGroup extends HTMLElement {
           this.#close(item);
         } else {
           if (!allowMultiple) {
-            this.querySelectorAll("[data-accordion].is-open").forEach((open) => this.#close(open));
+            this.$$("[data-accordion].is-open").forEach((open) => this.#close(open));
           }
           this.#open(item);
         }
@@ -21,7 +23,7 @@ class AccordionGroup extends HTMLElement {
     });
 
     // Open items marked with data-open
-    this.querySelectorAll("[data-accordion][data-open]").forEach((item) => this.#open(item));
+    this.$$("[data-accordion][data-open]").forEach((item) => this.#open(item));
   }
 
   #open(item) {
