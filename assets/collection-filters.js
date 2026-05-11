@@ -2,8 +2,8 @@
  * Collection filters orchestrator.
  *
  * Owns: form auto-submit on change (desktop), the toggle button
- * (Show/Hide on desktop, Open/Close drawer on mobile), and the desktop
- * "Show Filters" / "Hide Filters" label.
+ * (Show/Hide on desktop, Open/Close drawer on mobile), and the
+ * viewport-aware "Show Filters" / "Hide Filters" label.
  *
  * Delegates: <grid-switcher> and <price-range-slider> are independent
  * custom elements rendered inside this orchestrator. The mobile drawer
@@ -27,6 +27,15 @@ class CollectionFilters extends Component {
     this.mdQuery = window.matchMedia("(min-width: 768px)");
     this.drawer = Drawer.controllerFor(this.aside, this.overlay, this);
 
+    // Keep the label in sync with whatever toggles the aside's classes
+    // (drawer open/close, desktop show/hide). Catches Escape and overlay-click
+    // closes too, which don't route through our toggle() handler.
+    new MutationObserver(() => this.#updateLabel()).observe(this.aside, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    this.mdQuery.addEventListener("change", () => this.#updateLabel());
+
     // Toggle buttons (toolbar + drawer header)
     this.$$("[data-toggle-filters]").forEach((btn) =>
       btn.addEventListener("click", () => this.toggle()),
@@ -46,24 +55,22 @@ class CollectionFilters extends Component {
       }
     });
 
-    // Set initial desktop label
-    this.#updateDesktopLabel();
+    this.#updateLabel();
   }
 
   toggle() {
     if (this.mdQuery.matches) {
       this.desktopVisible = !this.desktopVisible;
       this.aside.classList.toggle("is-desktop-hidden");
-      this.#updateDesktopLabel();
     } else {
       this.drawer.isOpen ? this.drawer.close() : this.drawer.open();
     }
   }
 
-  #updateDesktopLabel() {
-    if (this.label) {
-      this.label.textContent = this.desktopVisible ? "Hide Filters" : "Show Filters";
-    }
+  #updateLabel() {
+    if (!this.label) return;
+    const showing = this.mdQuery.matches ? this.desktopVisible : this.drawer.isOpen;
+    this.label.textContent = showing ? "Hide Filters" : "Show Filters";
   }
 }
 
