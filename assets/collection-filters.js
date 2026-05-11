@@ -40,9 +40,6 @@ class CollectionFilters extends HTMLElement {
     // Price range slider sync
     this.querySelectorAll("[data-range-slider]").forEach((slider) => this.#initRangeSlider(slider));
 
-    // Grid column switcher
-    this.#initGridSwitcher();
-
     // Set initial desktop label
     this.#updateDesktopLabel();
   }
@@ -77,31 +74,6 @@ class CollectionFilters extends HTMLElement {
     if (this.label) {
       this.label.textContent = this.desktopVisible ? "Hide Filters" : "Show Filters";
     }
-  }
-
-  #initGridSwitcher() {
-    const grid = this.querySelector("[data-product-grid]");
-    const btns = this.querySelectorAll("[data-grid]");
-    if (!grid || !btns.length) return;
-
-    const saved = localStorage.getItem("collection-grid-cols");
-    if (saved) this.#setGrid(grid, btns, saved);
-
-    btns.forEach((btn) =>
-      btn.addEventListener("click", () => {
-        const cols = btn.dataset.grid;
-        this.#setGrid(grid, btns, cols);
-        localStorage.setItem("collection-grid-cols", cols);
-      }),
-    );
-  }
-
-  #setGrid(grid, btns, cols) {
-    grid.classList.remove("md:grid-cols-3", "md:grid-cols-4");
-    grid.classList.add(`md:grid-cols-${cols}`);
-    btns.forEach((b) => {
-      b.classList.toggle("bg-gray-100", b.dataset.grid === cols);
-    });
   }
 
   #initRangeSlider(container) {

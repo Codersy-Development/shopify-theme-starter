@@ -6,6 +6,7 @@
       "@theme/cart-drawer": {{ 'cart-drawer.js' | asset_url | json }},
       "@theme/cart-icon": {{ 'cart-icon.js' | asset_url | json }},
       "@theme/product-form": {{ 'product-form.js' | asset_url | json }},
+      "@theme/grid-switcher": {{ 'grid-switcher.js' | asset_url | json }},
       "@theme/header-drawer": {{ 'header-drawer.js' | asset_url | json }},
       "@theme/predictive-search": {{ 'predictive-search.js' | asset_url | json }},
       "@theme/product-gallery": {{ 'product-gallery.js' | asset_url | json }},
@@ -29,6 +30,7 @@
 
 {% if template contains 'collection' %}
   <script type="module" src="{{ 'collection-filters.js' | asset_url }}"></script>
+  <script type="module" src="{{ 'grid-switcher.js' | asset_url }}"></script>
 {% endif %}
 <script type="module" src="{{ 'header-drawer.js' | asset_url }}"></script>
 <script type="module" src="{{ 'header-nav.js' | asset_url }}"></script>
