@@ -37,9 +37,6 @@ class CollectionFilters extends HTMLElement {
       }
     });
 
-    // Price range slider sync
-    this.querySelectorAll("[data-range-slider]").forEach((slider) => this.#initRangeSlider(slider));
-
     // Set initial desktop label
     this.#updateDesktopLabel();
   }
@@ -74,77 +71,6 @@ class CollectionFilters extends HTMLElement {
     if (this.label) {
       this.label.textContent = this.desktopVisible ? "Hide Filters" : "Show Filters";
     }
-  }
-
-  #initRangeSlider(container) {
-    const minThumb = container.querySelector("[data-range-min]");
-    const maxThumb = container.querySelector("[data-range-max]");
-    const track = container.querySelector("[data-range-track]");
-    const wrapper = container.closest(".pb-4") || container.parentElement;
-    const minInput = wrapper.querySelector("[data-price-min]");
-    const maxInput = wrapper.querySelector("[data-price-max]");
-    const minLabel = wrapper.querySelector("[data-label-min]");
-    const maxLabel = wrapper.querySelector("[data-label-max]");
-
-    if (!minThumb || !maxThumb || !track) return;
-
-    const rangeMax = parseFloat(container.dataset.rangeMax) || 100;
-    const currencySymbol = container.dataset.currency || "$";
-    let minVal = parseFloat(minInput?.value) || 0;
-    let maxVal = parseFloat(maxInput?.value) || rangeMax;
-
-    const update = () => {
-      const minPct = (minVal / rangeMax) * 100;
-      const maxPct = (maxVal / rangeMax) * 100;
-      minThumb.style.left = `${minPct}%`;
-      maxThumb.style.left = `${maxPct}%`;
-      track.style.left = `${minPct}%`;
-      track.style.right = `${100 - maxPct}%`;
-      if (minInput) minInput.value = minVal > 0 ? minVal : "";
-      if (maxInput) maxInput.value = maxVal < rangeMax ? maxVal : "";
-      if (minLabel) minLabel.textContent = `${currencySymbol}${Math.round(minVal)}`;
-      if (maxLabel) maxLabel.textContent = `${currencySymbol}${Math.round(maxVal)}+`;
-    };
-
-    const drag = (thumb, setter) => {
-      const onMove = (e) => {
-        const rect = container.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        let pct = ((clientX - rect.left) / rect.width) * 100;
-        pct = Math.max(0, Math.min(100, pct));
-        const val = Math.round((pct / 100) * rangeMax);
-        setter(val);
-        update();
-      };
-      const onUp = () => {
-        document.removeEventListener("mousemove", onMove);
-        document.removeEventListener("mouseup", onUp);
-        document.removeEventListener("touchmove", onMove);
-        document.removeEventListener("touchend", onUp);
-      };
-      thumb.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-        document.addEventListener("mousemove", onMove);
-        document.addEventListener("mouseup", onUp);
-      });
-      thumb.addEventListener(
-        "touchstart",
-        (e) => {
-          document.addEventListener("touchmove", onMove, { passive: true });
-          document.addEventListener("touchend", onUp);
-        },
-        { passive: true },
-      );
-    };
-
-    drag(minThumb, (v) => {
-      minVal = Math.min(v, maxVal - 1);
-    });
-    drag(maxThumb, (v) => {
-      maxVal = Math.max(v, minVal + 1);
-    });
-
-    update();
   }
 }
 
