@@ -1,70 +1,26 @@
 /**
  * Cart drawer with quantity controls.
- * Toggles .is-open on panel & overlay directly — transitions handled by CSS.
+ *
+ * Open/close + body lock + escape + focus trap come from Drawer.
+ * This subclass adds: cart:open / cart:refresh event listeners,
+ * quantity-button click delegation, and Section Rendering API
+ * refresh logic.
  */
-class CartDrawer extends HTMLElement {
-  connectedCallback() {
-    this.panel = this.querySelector("[data-panel]");
-    this.overlay = this.querySelector("[data-overlay]");
-    this.triggerEl = null;
+import { Drawer } from "@theme/drawer";
 
-    this.querySelectorAll("[data-close]").forEach((el) =>
-      el.addEventListener("click", () => this.close()),
-    );
-    this.overlay?.addEventListener("click", () => this.close());
+class CartDrawer extends Drawer {
+  setup() {
+    super.setup();
 
     document.addEventListener("cart:open", () => this.open());
     document.addEventListener("cart:refresh", () => this.refresh());
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.isOpen) this.close();
-      if (e.key === "Tab" && this.isOpen) this.#trapFocus(e);
-    });
-
     this.#bindQuantityButtons();
   }
 
-  get isOpen() {
-    return this.panel?.classList.contains("is-open");
-  }
-
   open() {
-    this.triggerEl = document.activeElement;
-    this.panel?.classList.add("is-open");
-    this.overlay?.classList.add("is-open");
-    document.body.style.overflow = "hidden";
-
-    setTimeout(() => {
-      this.panel.querySelector("[data-close]")?.focus();
-    }, 350);
-
+    super.open();
     this.refresh();
-  }
-
-  close() {
-    if (!this.isOpen) return;
-
-    this.panel?.classList.remove("is-open");
-    this.overlay?.classList.remove("is-open");
-    document.body.style.overflow = "";
-    this.triggerEl?.focus();
-  }
-
-  #trapFocus(e) {
-    const focusable = this.panel.querySelectorAll(
-      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    );
-    if (!focusable.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
   }
 
   #bindQuantityButtons() {
@@ -116,12 +72,12 @@ class CartDrawer extends HTMLElement {
       if (html) {
         const fragment = document.createRange().createContextualFragment(html);
         const newContent = fragment.querySelector("[data-cart-drawer-content]");
-        const currentContent = this.querySelector("[data-cart-drawer-content]");
+        const currentContent = this.$("[data-cart-drawer-content]");
         if (newContent && currentContent) {
           currentContent.replaceWith(newContent);
         }
         const newFooter = fragment.querySelector("[data-cart-drawer-footer]");
-        const currentFooter = this.querySelector("[data-cart-drawer-footer]");
+        const currentFooter = this.$("[data-cart-drawer-footer]");
         if (newFooter && currentFooter) {
           currentFooter.replaceWith(newFooter);
         } else if (newFooter && !currentFooter) {
