@@ -17,7 +17,8 @@ class PriceRangeSlider extends Component {
     this.minThumb = this.$("[data-range-min]");
     this.maxThumb = this.$("[data-range-max]");
     this.track = this.$("[data-range-track]");
-    if (!this.minThumb || !this.maxThumb || !this.track) return;
+    this.sliderEl = this.$("[data-range-slider]");
+    if (!this.minThumb || !this.maxThumb || !this.track || !this.sliderEl) return;
 
     this.minInput = this.$("[data-price-min]");
     this.maxInput = this.$("[data-price-max]");
@@ -56,7 +57,7 @@ class PriceRangeSlider extends Component {
 
   #bindThumb(thumb, setter) {
     const onMove = (e) => {
-      const rect = this.getBoundingClientRect();
+      const rect = this.sliderEl.getBoundingClientRect();
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       let pct = ((clientX - rect.left) / rect.width) * 100;
       pct = Math.max(0, Math.min(100, pct));
