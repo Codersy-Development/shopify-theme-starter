@@ -31,22 +31,24 @@ class Drawer extends Component {
   /** Delay (ms) before focusing the close button so the open transition completes first. */
   static FOCUS_DELAY_MS = 350;
 
+  #controller;
+
   setup() {
     this.panel = this.$("[data-panel]");
     this.overlay = this.$("[data-overlay]");
-    this._controller = Drawer.controllerFor(this.panel, this.overlay, this);
+    this.#controller = Drawer.controllerFor(this.panel, this.overlay, this);
   }
 
   get isOpen() {
-    return this._controller.isOpen;
+    return this.#controller.isOpen;
   }
 
   open() {
-    this._controller.open();
+    this.#controller.open();
   }
 
   close() {
-    this._controller.close();
+    this.#controller.close();
   }
 
   /**
