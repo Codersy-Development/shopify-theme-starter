@@ -1,37 +1,46 @@
 /**
- * Collection filters & sorting.
- * Mobile: full-screen drawer from left with Apply/Clear buttons.
- * Desktop: inline sidebar with auto-submit on change.
+ * Collection filters orchestrator.
+ *
+ * Owns: form auto-submit on change (desktop), the toggle button
+ * (Show/Hide on desktop, Open/Close drawer on mobile), and the desktop
+ * "Show Filters" / "Hide Filters" label.
+ *
+ * Delegates: <grid-switcher> and <price-range-slider> are independent
+ * custom elements rendered inside this orchestrator. The mobile drawer
+ * mode is delegated to Drawer.controllerFor() against [data-filters] +
+ * [data-filter-overlay].
  */
-class CollectionFilters extends HTMLElement {
-  connectedCallback() {
-    this.form = this.querySelector("[data-filter-form]");
-    this.aside = this.querySelector("[data-filters]");
-    this.overlay = this.querySelector("[data-filter-overlay]");
-    this.label = this.querySelector("[data-filters-label]");
+import { Component } from "@theme/component";
+import { Drawer } from "@theme/drawer";
+
+class CollectionFilters extends Component {
+  /** Debounce (ms) for type=number inputs before auto-submit. */
+  static NUMBER_DEBOUNCE_MS = 800;
+
+  setup() {
+    this.form = this.$("[data-filter-form]");
+    this.aside = this.$("[data-filters]");
+    this.overlay = this.$("[data-filter-overlay]");
+    this.label = this.$("[data-filters-label]");
 
     this.desktopVisible = true;
     this.mdQuery = window.matchMedia("(min-width: 768px)");
+    this.drawer = Drawer.controllerFor(this.aside, this.overlay, this);
 
     // Toggle buttons (toolbar + drawer header)
-    this.querySelectorAll("[data-toggle-filters]").forEach((btn) =>
+    this.$$("[data-toggle-filters]").forEach((btn) =>
       btn.addEventListener("click", () => this.toggle()),
     );
-    this.querySelectorAll("[data-close-filters]").forEach((btn) =>
-      btn.addEventListener("click", () => this.closeDrawer()),
+    this.$$("[data-close-filters]").forEach((btn) =>
+      btn.addEventListener("click", () => this.drawer.close()),
     );
-    this.overlay?.addEventListener("click", () => this.closeDrawer());
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.drawerOpen) this.closeDrawer();
-    });
 
     // Desktop: auto-submit on change. Mobile: user clicks Apply.
     this.form?.addEventListener("change", (e) => {
       if (!this.mdQuery.matches) return;
       if (e.target.type === "number") {
         clearTimeout(this._debounce);
-        this._debounce = setTimeout(() => this.form.submit(), 800);
+        this._debounce = setTimeout(() => this.form.submit(), CollectionFilters.NUMBER_DEBOUNCE_MS);
       } else {
         this.form.submit();
       }
@@ -41,30 +50,14 @@ class CollectionFilters extends HTMLElement {
     this.#updateDesktopLabel();
   }
 
-  get drawerOpen() {
-    return this.aside?.classList.contains("is-open");
-  }
-
   toggle() {
     if (this.mdQuery.matches) {
       this.desktopVisible = !this.desktopVisible;
       this.aside.classList.toggle("is-desktop-hidden");
       this.#updateDesktopLabel();
     } else {
-      this.drawerOpen ? this.closeDrawer() : this.openDrawer();
+      this.drawer.isOpen ? this.drawer.close() : this.drawer.open();
     }
-  }
-
-  openDrawer() {
-    this.aside?.classList.add("is-open");
-    this.overlay?.classList.add("is-open");
-    document.body.style.overflow = "hidden";
-  }
-
-  closeDrawer() {
-    this.aside?.classList.remove("is-open");
-    this.overlay?.classList.remove("is-open");
-    document.body.style.overflow = "";
   }
 
   #updateDesktopLabel() {
