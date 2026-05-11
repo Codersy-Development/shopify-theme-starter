@@ -1,29 +1,26 @@
 /**
  * Hijacks the product form to add items via the Cart AJAX API.
- * On success, dispatches cart:updated and cart:open events to
- * update the cart icon and open the cart drawer.
- * Announces result to screen readers via aria-live region.
+ * On success, dispatches cart:updated and cart:open events to update
+ * the cart icon and open the cart drawer. Announces the result to
+ * screen readers via the #cart-status aria-live region.
  */
-class ProductForm extends HTMLElement {
-  connectedCallback() {
-    this.form = this.querySelector("form");
-    this.submitButton = this.querySelector('[type="submit"]');
-    this.form?.addEventListener("submit", (e) => this.handleSubmit(e));
-  }
+import { Component } from "@theme/component";
 
-  #announce(message) {
-    const status = document.getElementById("cart-status");
-    if (status) {
-      status.textContent = message;
-    }
+class ProductForm extends Component {
+  static ERROR_RESET_MS = 2000;
+
+  setup() {
+    this.form = this.$("form");
+    this.submitButton = this.$('[type="submit"]');
+    this.form?.addEventListener("submit", (e) => this.handleSubmit(e));
   }
 
   async handleSubmit(e) {
     e.preventDefault();
 
+    const originalText = this.submitButton.textContent;
     this.submitButton.disabled = true;
     this.submitButton.setAttribute("aria-busy", "true");
-    const originalText = this.submitButton.textContent;
     this.submitButton.textContent = "Adding...";
 
     try {
@@ -52,21 +49,27 @@ class ProductForm extends HTMLElement {
       this.#announce(
         `Added ${addedItem.product_title} to cart. Cart now has ${cart.item_count} ${cart.item_count === 1 ? "item" : "items"}.`,
       );
+
+      this.#restoreButton(originalText);
     } catch (error) {
       console.error("Add to cart error:", error);
       this.submitButton.textContent = "Error — try again";
       this.#announce("Failed to add item to cart. Please try again.");
-      setTimeout(() => {
-        this.submitButton.textContent = originalText.trim();
-      }, 2000);
-      this.submitButton.removeAttribute("aria-busy");
-      this.submitButton.disabled = false;
-      return;
+      setTimeout(() => this.#restoreButton(originalText), ProductForm.ERROR_RESET_MS);
     }
+  }
 
+  #announce(message) {
+    const status = document.getElementById("cart-status");
+    if (status) {
+      status.textContent = message;
+    }
+  }
+
+  #restoreButton(originalText) {
     this.submitButton.disabled = false;
     this.submitButton.removeAttribute("aria-busy");
-    this.submitButton.textContent = originalText.trim();
+    this.submitButton.textContent = originalText;
   }
 }
 
