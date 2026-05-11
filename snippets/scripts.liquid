@@ -2,14 +2,17 @@
   {
     "imports": {
       "@theme/component": {{ 'component.js' | asset_url | json }},
+      "@theme/drawer": {{ 'drawer.js' | asset_url | json }},
       "@theme/cart-drawer": {{ 'cart-drawer.js' | asset_url | json }},
       "@theme/cart-icon": {{ 'cart-icon.js' | asset_url | json }},
       "@theme/product-form": {{ 'product-form.js' | asset_url | json }},
+      "@theme/grid-switcher": {{ 'grid-switcher.js' | asset_url | json }},
       "@theme/header-drawer": {{ 'header-drawer.js' | asset_url | json }},
       "@theme/predictive-search": {{ 'predictive-search.js' | asset_url | json }},
       "@theme/product-gallery": {{ 'product-gallery.js' | asset_url | json }},
       "@theme/collection-filters": {{ 'collection-filters.js' | asset_url | json }},
       "@theme/accordion": {{ 'accordion.js' | asset_url | json }},
+      "@theme/price-range-slider": {{ 'price-range-slider.js' | asset_url | json }},
       "@theme/product-card": {{ 'product-card.js' | asset_url | json }},
       "@theme/header-nav": {{ 'header-nav.js' | asset_url | json }}
     }
@@ -17,6 +20,7 @@
 </script>
 
 <script type="module" src="{{ 'component.js' | asset_url }}"></script>
+<script type="module" src="{{ 'drawer.js' | asset_url }}"></script>
 <script type="module" src="{{ 'product-form.js' | asset_url }}"></script>
 <script type="module" src="{{ 'accordion.js' | asset_url }}"></script>
 <script type="module" src="{{ 'product-card.js' | asset_url }}"></script>
@@ -27,6 +31,8 @@
 
 {% if template contains 'collection' %}
   <script type="module" src="{{ 'collection-filters.js' | asset_url }}"></script>
+  <script type="module" src="{{ 'grid-switcher.js' | asset_url }}"></script>
+  <script type="module" src="{{ 'price-range-slider.js' | asset_url }}"></script>
 {% endif %}
 <script type="module" src="{{ 'header-drawer.js' | asset_url }}"></script>
 <script type="module" src="{{ 'header-nav.js' | asset_url }}"></script>

@@ -40,7 +40,7 @@
 
             <div class="flex items-center gap-4">
               <!-- Products per row (desktop) -->
-              <div
+              <grid-switcher
                 class="hidden md:flex items-center gap-1"
                 role="radiogroup"
                 aria-label="Grid columns"
@@ -65,7 +65,7 @@
                     <rect x="1" y="2" width="3.5" height="16" rx="1"/><rect x="6" y="2" width="3.5" height="16" rx="1"/><rect x="11" y="2" width="3.5" height="16" rx="1"/><rect x="16" y="2" width="3" height="16" rx="1"/>
                   </svg>
                 </button>
-              </div>
+              </grid-switcher>
 
               <!-- Sort -->
               <div class="flex items-center gap-2">
@@ -216,45 +216,46 @@
                             assign max_money = filter.max_value.value | default: filter.range_max | money_without_currency | replace: ',', ''
                           -%}
 
-                          <!-- Range slider -->
-                          <div
-                            data-range-slider
+                          <price-range-slider
                             data-range-max="{{ range_max_money }}"
                             data-currency="{{ cart.currency.symbol }}"
-                            class="mx-1 mb-3"
+                            class="block"
                           >
-                            <div data-range-track></div>
-                            <div data-range-min></div>
-                            <div data-range-max></div>
-                          </div>
-                          <div class="flex justify-between text-xs text-gray-500">
-                            <span data-label-min>
-                              {{- cart.currency.symbol -}}
-                              {{- min_money | round -}}
-                            </span>
-                            <span data-label-max>
-                              {{- cart.currency.symbol -}}
-                              {{- max_money | round }}+</span
-                            >
-                          </div>
+                            <!-- Range slider -->
+                            <div data-range-slider class="mx-1 mb-3">
+                              <div data-range-track></div>
+                              <div data-range-min></div>
+                              <div data-range-max></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-500">
+                              <span data-label-min>
+                                {{- cart.currency.symbol -}}
+                                {{- min_money | round -}}
+                              </span>
+                              <span data-label-max>
+                                {{- cart.currency.symbol -}}
+                                {{- max_money | round }}+</span
+                              >
+                            </div>
 
-                          <!-- Hidden inputs submitted with form -->
-                          <input
-                            type="hidden"
-                            name="{{ filter.min_value.param_name }}"
-                            data-price-min
-                            {% if filter.min_value.value %}
-                              value="{{ min_money }}"
-                            {% endif %}
-                          >
-                          <input
-                            type="hidden"
-                            name="{{ filter.max_value.param_name }}"
-                            data-price-max
-                            {% if filter.max_value.value %}
-                              value="{{ max_money }}"
-                            {% endif %}
-                          >
+                            <!-- Hidden inputs submitted with form -->
+                            <input
+                              type="hidden"
+                              name="{{ filter.min_value.param_name }}"
+                              data-price-min
+                              {% if filter.min_value.value %}
+                                value="{{ min_money }}"
+                              {% endif %}
+                            >
+                            <input
+                              type="hidden"
+                              name="{{ filter.max_value.param_name }}"
+                              data-price-max
+                              {% if filter.max_value.value %}
+                                value="{{ max_money }}"
+                              {% endif %}
+                            >
+                          </price-range-slider>
 
                         {% when 'boolean' %}
                           <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
