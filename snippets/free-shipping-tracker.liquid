@@ -1,0 +1,48 @@
+{% comment %}
+  Free shipping progress tracker.
+
+  Shows progress toward `settings.free_shipping_threshold` (in storefront
+  currency units, e.g. dollars). Renders nothing when the setting is blank
+  or zero — gives merchants a one-setting on/off.
+
+  Rendered inside <cart-drawer>'s [data-cart-drawer-footer]. The cart-drawer
+  JS replaces that footer on cart:updated, so this snippet re-computes
+  automatically with no extra wiring.
+{% endcomment %}
+
+{%- if settings.free_shipping_threshold > 0 -%}
+  {%- liquid
+    assign threshold_cents = settings.free_shipping_threshold | times: 100
+    assign remaining_cents = threshold_cents | minus: cart.total_price
+    assign progress_pct = cart.total_price | times: 100 | divided_by: threshold_cents
+    if progress_pct > 100
+      assign progress_pct = 100
+    endif
+    if remaining_cents < 0
+      assign remaining_cents = 0
+    endif
+  -%}
+
+  <div class="mb-4" data-free-shipping-tracker>
+    <p class="text-sm text-gray-600 mb-2">
+      {%- if remaining_cents > 0 -%}
+        Add {{ remaining_cents | money }} more for free shipping
+      {%- else -%}
+        You qualify for free shipping!
+      {%- endif -%}
+    </p>
+    <div
+      class="w-full h-2 bg-gray-200 rounded-full overflow-hidden"
+      role="progressbar"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="{{ progress_pct }}"
+      aria-label="Free shipping progress"
+    >
+      <div
+        class="h-full bg-gray-900 transition-all duration-300"
+        style="width: {{ progress_pct }}%;"
+      ></div>
+    </div>
+  </div>
+{%- endif -%}

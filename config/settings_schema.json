@@ -100,6 +100,12 @@
         ],
         "default": "drawer",
         "info": "Choose how the cart is displayed. Drawer slides in from the right, page navigates to /cart."
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "info": "Minimum order amount in your storefront currency (e.g., dollars) that qualifies for free shipping. Leave blank or set to 0 to hide the free-shipping tracker in the cart drawer."
       }
     ]
   },
