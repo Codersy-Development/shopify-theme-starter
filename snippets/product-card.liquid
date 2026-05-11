@@ -24,7 +24,7 @@
   endif
 -%}
 
-<div data-product-card class="group">
+<product-card data-product-card class="group">
   <a href="{{ product.url }}" class="block no-underline">
     <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3 relative">
       {% render 'image',
@@ -91,4 +91,4 @@
       {%- endfor -%}
     </div>
   {% endif %}
-</div>
+</product-card>
