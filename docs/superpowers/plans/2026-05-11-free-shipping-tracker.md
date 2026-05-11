@@ -11,11 +11,13 @@
 **Spec:** [docs/superpowers/specs/2026-05-11-free-shipping-tracker-design.md](../specs/2026-05-11-free-shipping-tracker-design.md)
 
 **Verification model (no tests added):**
+
 - After implementation: `npm run format:check` must pass (exit 0).
 - `npm run theme:check` must remain exit 1 with the same baseline (55 files inspected, 54 total offenses, 34 errors, 20 warnings).
 - Manual smoke checklist runs in Task 3 against `shopify theme dev`.
 
 **Branch & commit conventions:**
+
 - Feature branch off `main`: `feature/free-shipping-tracker`.
 - Single implementation commit. Final push opens the PR as draft (smoke testing happens against the PR, as with sub-project 2's flow).
 
@@ -47,6 +49,7 @@ Expected: `Switched to a new branch 'feature/free-shipping-tracker'`
 **Goal:** Three changes — setting, snippet, render call — landed together so the feature is end-to-end functional in one commit.
 
 **Files:**
+
 - Modify: `config/settings_schema.json`
 - Create: `snippets/free-shipping-tracker.liquid`
 - Modify: `sections/cart-drawer.liquid`
@@ -246,6 +249,7 @@ Leave the field blank. Save. On the storefront, add an item to the cart, open th
 In the customizer, set Free shipping threshold to `50`. Save. On the storefront, ensure cart has one item totaling less than $50 (e.g., a $10 product). Open the cart drawer.
 
 Expected:
+
 - A label reading "Add $40.00 more for free shipping" appears above the Subtotal row (assuming a $10 cart).
 - A horizontal progress bar below the label, filled to ~20% (matching `10/50`).
 
@@ -274,6 +278,7 @@ Expected: label shows "Add $24.99 more for free shipping" (math: `4999 - 2500 = 
 - [ ] **Step 8: Accessibility check**
 
 Open browser devtools, find the progress bar div, confirm it has:
+
 - `role="progressbar"`
 - `aria-valuemin="0"`
 - `aria-valuemax="100"`
@@ -359,10 +364,10 @@ The exact PROGRESS.md edit: add a new section after "Suggested next sub-project"
 ```markdown
 ## Feature work (post-cleanup, not part of the 6-sub-project plan)
 
-| Feature                                  | Status               | Reference                                 |
-| ---------------------------------------- | -------------------- | ----------------------------------------- |
-| Free shipping progress tracker (drawer)  | 🟡 In review (draft) | PR #N (link)                              |
-| Sticky add-to-cart on product page       | ⬜ Brainstorm pending | —                                         |
+| Feature                                 | Status                | Reference    |
+| --------------------------------------- | --------------------- | ------------ |
+| Free shipping progress tracker (drawer) | 🟡 In review (draft)  | PR #N (link) |
+| Sticky add-to-cart on product page      | ⬜ Brainstorm pending | —            |
 ```
 
 (Replace `PR #N` with the actual PR number printed in Step 12.)
@@ -375,20 +380,20 @@ This section is the plan author's pre-flight check; not a task for the implement
 
 ### Spec coverage
 
-| Spec requirement | Plan task |
-|---|---|
-| New `free_shipping_threshold` setting in `config/settings_schema.json`, in Cart group, type `number`, no default, with `info` text | Task 1 Step 1 |
-| `snippets/free-shipping-tracker.liquid` self-gates on setting blank/0 | Task 1 Step 2 (the `{%- if settings.free_shipping_threshold > 0 -%}` guard) |
-| Below-threshold label + partial bar | Task 1 Step 2 (`if remaining_cents > 0` branch) |
-| At/above-threshold label + 100% bar (capped) | Task 1 Step 2 (`progress_pct > 100` clamp + else branch) |
-| `{% render 'free-shipping-tracker' %}` placement (top of `[data-cart-drawer-footer]`, before Subtotal row, inside `cart.item_count > 0`) | Task 1 Step 3 |
-| Aria attributes (role=progressbar, valuemin/max/now, aria-label) | Task 1 Step 2 (markup includes all five) |
-| `mb-4` margin separator + `transition-all duration-300` | Task 1 Step 2 |
-| `npm run format:check` passes | Task 1 Step 4 |
-| `npm run theme:check` exit unchanged | Task 1 Step 5 |
-| Smoke checklist (10 items) | Task 2 Steps 2–9 |
-| Single commit | Task 1 Step 7 |
-| Feature branch off `main` | Task 0 |
+| Spec requirement                                                                                                                         | Plan task                                                                   |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| New `free_shipping_threshold` setting in `config/settings_schema.json`, in Cart group, type `number`, no default, with `info` text       | Task 1 Step 1                                                               |
+| `snippets/free-shipping-tracker.liquid` self-gates on setting blank/0                                                                    | Task 1 Step 2 (the `{%- if settings.free_shipping_threshold > 0 -%}` guard) |
+| Below-threshold label + partial bar                                                                                                      | Task 1 Step 2 (`if remaining_cents > 0` branch)                             |
+| At/above-threshold label + 100% bar (capped)                                                                                             | Task 1 Step 2 (`progress_pct > 100` clamp + else branch)                    |
+| `{% render 'free-shipping-tracker' %}` placement (top of `[data-cart-drawer-footer]`, before Subtotal row, inside `cart.item_count > 0`) | Task 1 Step 3                                                               |
+| Aria attributes (role=progressbar, valuemin/max/now, aria-label)                                                                         | Task 1 Step 2 (markup includes all five)                                    |
+| `mb-4` margin separator + `transition-all duration-300`                                                                                  | Task 1 Step 2                                                               |
+| `npm run format:check` passes                                                                                                            | Task 1 Step 4                                                               |
+| `npm run theme:check` exit unchanged                                                                                                     | Task 1 Step 5                                                               |
+| Smoke checklist (10 items)                                                                                                               | Task 2 Steps 2–9                                                            |
+| Single commit                                                                                                                            | Task 1 Step 7                                                               |
+| Feature branch off `main`                                                                                                                | Task 0                                                                      |
 
 All spec acceptance criteria covered.
 

@@ -180,9 +180,9 @@ Smoke checklist:
 
 ## Risks
 
-- **Currency assumption.** `| money` formats based on storefront currency. A merchant using Shopify Markets with multiple currencies sees one flat threshold across markets. *Mitigation:* documented in the setting `info` text; Markets support is a follow-up.
-- **Decimal precision.** `setting | times: 100` on a 2-decimal value is exact (`49.99 → 4999`). More than 2 decimals yields undefined behavior. *Mitigation:* `info` text recommends whole numbers or two decimals.
-- **Drawer-only scope.** Customers visiting `/cart` directly don't see the tracker. *Mitigation:* in scope as documented; follow-up if requested.
+- **Currency assumption.** `| money` formats based on storefront currency. A merchant using Shopify Markets with multiple currencies sees one flat threshold across markets. _Mitigation:_ documented in the setting `info` text; Markets support is a follow-up.
+- **Decimal precision.** `setting | times: 100` on a 2-decimal value is exact (`49.99 → 4999`). More than 2 decimals yields undefined behavior. _Mitigation:_ `info` text recommends whole numbers or two decimals.
+- **Drawer-only scope.** Customers visiting `/cart` directly don't see the tracker. _Mitigation:_ in scope as documented; follow-up if requested.
 
 ## Open Questions
 
