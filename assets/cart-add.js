@@ -1,4 +1,16 @@
 /**
+ * Write a message to the #cart-status aria-live region. No-op if the
+ * region isn't on the page. Use this for any cart-flow announcement so
+ * the singular/plural formatting can stay in one place.
+ */
+export function announceCartStatus(text) {
+  const status = document.getElementById("cart-status");
+  if (status) {
+    status.textContent = text;
+  }
+}
+
+/**
  * Add an item to the cart via Shopify's AJAX API and broadcast the
  * resulting state. Returns the added item object on success.
  *
@@ -22,6 +34,7 @@ export async function addToCart({ id, quantity = 1 }) {
   }
   const addedItem = await response.json();
 
+  // /cart/add.js returns the added line item, not updated cart totals — fetch /cart.js for item_count.
   const cartResponse = await fetch("/cart.js");
   const cart = await cartResponse.json();
 
@@ -30,10 +43,9 @@ export async function addToCart({ id, quantity = 1 }) {
   );
   document.dispatchEvent(new CustomEvent("cart:open"));
 
-  const status = document.getElementById("cart-status");
-  if (status) {
-    status.textContent = `Added ${addedItem.product_title} to cart. Cart now has ${cart.item_count} ${cart.item_count === 1 ? "item" : "items"}.`;
-  }
+  announceCartStatus(
+    `Added ${addedItem.product_title} to cart. Cart now has ${cart.item_count} ${cart.item_count === 1 ? "item" : "items"}.`,
+  );
 
   return addedItem;
 }

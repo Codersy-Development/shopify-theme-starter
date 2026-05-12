@@ -7,7 +7,7 @@
  * → restore after 2s).
  */
 import { Component } from "@theme/component";
-import { addToCart } from "@theme/cart-add";
+import { addToCart, announceCartStatus } from "@theme/cart-add";
 
 class ProductForm extends Component {
   static ERROR_RESET_MS = 2000;
@@ -27,12 +27,15 @@ class ProductForm extends Component {
     this.submitButton.textContent = "Adding...";
 
     try {
+      // Only id+quantity are forwarded; if line-item properties or selling-plan
+      // inputs are ever added to the form, widen addToCart's signature.
       const id = new FormData(this.form).get("id");
       await addToCart({ id, quantity: 1 });
       this.#restoreButton(originalText);
     } catch (error) {
       console.error("Add to cart error:", error);
       this.submitButton.textContent = "Error — try again";
+      announceCartStatus("Failed to add item to cart. Please try again.");
       setTimeout(() => this.#restoreButton(originalText), ProductForm.ERROR_RESET_MS);
     }
   }
