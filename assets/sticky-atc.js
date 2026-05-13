@@ -10,7 +10,7 @@
  * Liquid markup; this JS only drives the slide-in attribute toggle.
  */
 import { Component } from "@theme/component";
-import { addToCart } from "@theme/cart-add";
+import { addToCart, announceCartStatus } from "@theme/cart-add";
 
 class StickyAtc extends Component {
   static ERROR_RESET_MS = 2000;
@@ -52,6 +52,7 @@ class StickyAtc extends Component {
     } catch (error) {
       console.error("Sticky add to cart error:", error);
       this.button.textContent = "Error — try again";
+      announceCartStatus("Failed to add item to cart. Please try again.");
       setTimeout(() => this.#restoreButton(originalText), StickyAtc.ERROR_RESET_MS);
     }
   }
