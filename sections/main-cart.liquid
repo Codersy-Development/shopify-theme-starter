@@ -3,7 +3,7 @@
     <h1 class="text-3xl font-bold mb-8">Your Cart</h1>
 
     {% if cart.item_count > 0 %}
-      <form action="/cart" method="post">
+      <form action="{{ routes.cart_url }}" method="post">
         <div class="divide-y divide-gray-200">
           {% for item in cart.items %}
             <div class="flex items-center gap-4 py-6">
@@ -68,7 +68,7 @@
       <div class="text-center py-12">
         <p class="text-gray-500 mb-6">Your cart is empty.</p>
         <a
-          href="/collections/all"
+          href="{{ routes.all_products_collection_url }}"
           class="inline-block bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors no-underline"
         >
           Continue shopping

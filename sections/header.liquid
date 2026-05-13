@@ -6,7 +6,7 @@
         {% render 'header-drawer', menu: section.settings.menu %}
 
         <a
-          href="/"
+          href="{{ routes.root_url }}"
           class="text-xl font-bold text-gray-900 no-underline shrink-0"
           title="{{ shop.name }}"
         >
@@ -188,7 +188,7 @@
           {% render 'predictive-search' %}
         {% else %}
           <a
-            href="/search"
+            href="{{ routes.search_url }}"
             class="text-gray-700 hover:text-gray-900 no-underline"
             aria-label="Search"
           >
@@ -235,7 +235,7 @@
             </button>
           {% else %}
             <a
-              href="/cart"
+              href="{{ routes.cart_url }}"
               class="text-gray-700 hover:text-gray-900 no-underline relative"
               aria-label="Cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}"
             >

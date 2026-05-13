@@ -2,7 +2,11 @@
   <div class="page-width py-12">
     <div class="grid md:grid-cols-3 gap-8 mb-8">
       <div>
-        <a href="/" class="inline-block mb-4 no-underline" title="{{ shop.name }}">
+        <a
+          href="{{ routes.root_url }}"
+          class="inline-block mb-4 no-underline"
+          title="{{ shop.name }}"
+        >
           {% if settings.logo != blank %}
             {% render 'image',
               image: settings.logo,
