@@ -11,7 +11,7 @@ The user asked for a "full cleanup pass" of this Shopify starter theme. Decompos
 | 1   | **Build & tooling** (Prettier + Theme Check + npm scripts)        | ✅ Merged 2026-05-10 | PR [#1](https://github.com/Codersy-Development/shopify-theme-starter/pull/1), merge commit `54ac8cc` |
 | 2   | **JavaScript / web components** (11 files in `/assets/`)          | ✅ Merged 2026-05-11 | PR [#2](https://github.com/Codersy-Development/shopify-theme-starter/pull/2), merge commit `37ed0ce` |
 | 3   | **Liquid sections** (6 of 23 files touched)                       | ✅ Merged 2026-05-13 | PR [#5](https://github.com/Codersy-Development/shopify-theme-starter/pull/5), merge commit `772536a` |
-| 4   | Liquid snippets & layout                                          | ⬜ Not started       | —                                                                                                    |
+| 4   | **Liquid snippets & layout** (5 files touched)                    | ✅ Merged 2026-05-13 | PR [#6](https://github.com/Codersy-Development/shopify-theme-starter/pull/6), merge commit `38df66f` |
 | 5   | Templates & config (`templates/*.json`, `config/settings_*.json`) | ⬜ Not started       | —                                                                                                    |
 | 6   | CSS / Tailwind 4 (`src/input.css`)                                | ⬜ Not started       | —                                                                                                    |
 
@@ -24,7 +24,8 @@ Both shipped between sub-projects 2 and 3, off `main`, as separate PRs:
 
 ## State to know before resuming
 
-- **`npm run lint` now exits 1 only due to snippets/templates.** Theme Check baseline: **39 offenses across 4 files** (down from 54 across 10). All remaining offenses are in `snippets/canonicals.liquid`, `snippets/json-ld.liquid`, `snippets/predictive-search.liquid`, and `templates/gift_card.liquid` — explicitly deferred to sub-projects 4 and 5. `npm run format:check` exits 0.
+- **`npm run lint` exits 1 only due to `templates/gift_card.liquid`.** Theme Check baseline: **3 offenses across 1 file** (down from 54 across 10). The remaining errors are 2 `ImgWidthAndHeight` + 1 `TranslationKeyExists` in `gift_card.liquid` — sub-project 5 will clear them. `npm run format:check` exits 0.
+- **`.theme-check.yml` disables `UnknownFilter` and `RemoteAsset` globally** (commented with rationale, pointing back to sub-project 4's spec). The `push` and `qr_code` filters and the canonical-URL pattern are all real / intentional but the bundled Theme Check misfires on them. If a future change introduces a genuinely-unknown filter or a third-party CDN URL, the rule can be re-enabled per-file via `ignored_paths`.
 - **`git blame` skips the bulk-format commit (`201e4ef`).** New contributors should run `git config blame.ignoreRevsFile .git-blame-ignore-revs` once locally so blame attributes lines to their original authors.
 - **Prettier ignores Shopify-managed JSON:** `locales/`, `templates/*.json`, `config/*.json`. Don't widen `.prettierignore` further without a reason — those exclusions are deliberate.
 - **The starter theme is cloned for multiple downstream projects.** Anything added here propagates. Sub-projects 1 and 2 deliberately stayed minimal (no ESLint, no Husky, no JS bundler, no test runner) for that reason.
@@ -46,32 +47,35 @@ Both shipped between sub-projects 2 and 3, off `main`, as separate PRs:
 - **Real bug fix:** `sections/main-search.liquid` paginates correctly now. Previously, the Previous/Next nav referenced `paginate.*` outside a `{% paginate %}` block and was dead code — Theme Check flagged it 5 times and merchants with > 1 page of search results never saw the navigation. Now wrapped in `{% paginate search.results by section.settings.results_per_page %}`.
 - New `results_per_page` range setting on the search section (8–48, step 4, default 24), mirroring `main-collection.liquid`'s `products_per_page` schema.
 
-## Captured findings remaining for sub-projects 4 and 5
+## What sub-project 4 produced (PR #6)
 
-`docs/superpowers/notes/2026-05-09-theme-check-findings.md` contains the raw Theme Check output. After sub-project 3, the remaining issues are:
+- `.theme-check.yml` disables `UnknownFilter` and `RemoteAsset` globally. Both rules were misfiring on legitimate modern Liquid patterns (`push` and `qr_code` filters; canonical URLs and data-URI QR codes). Comments in the file explain the audit and point back to the spec.
+- `snippets/predictive-search.liquid` — last `HardcodedRoutes` warning in the theme: `/search` → `{{ routes.search_url }}`.
+- New `snippets/pagination.liquid` — numbered-pages pagination using Shopify's `paginate.parts` API (auto-truncates long page lists with `…` entries; URLs include filter/tag/sort/query params). Self-gates on `paginate.pages > 1`.
+- Bug-fix-in-flight: code review caught that `part.title == paginate.current_page` was a string-vs-integer comparison (Liquid's `==` doesn't coerce types), which would have suppressed the active-page highlight. Fixed by `assign current_page_str = paginate.current_page | append: ''` before the loop.
+- `sections/main-collection.liquid` — dropped 70 lines of inline pagination markup (including a dead `current_tags` URL-construction branch) in favor of `{% render 'pagination', paginate: paginate %}`. Short page lists pixel-identical to before; long page lists now use ellipsis truncation.
+- `sections/main-search.liquid` — renders the same snippet; normalizes the per-page read with `assign per_page = section.settings.results_per_page | default: 24` to mirror `main-collection.liquid`'s pattern. Search results now show numbered pagination (was Previous/Next-only) — a deliberate UX upgrade.
 
-- **`UnknownFilter` (high volume)** — `push` and `qr_code` filters in `snippets/json-ld.liquid` and `templates/gift_card.liquid`. Likely false positives for the modern `push` filter; revisit when sub-project 4 starts and consider downgrading severity in `.theme-check.yml`.
-- **`HardcodedRoutes`** — only one left, in `snippets/predictive-search.liquid` (`/search`). Sub-project 4.
-- **`RemoteAsset`** — in `snippets/canonicals.liquid` and `templates/gift_card.liquid`. Performance — sub-projects 4 and 5.
-- **`ImgWidthAndHeight` and `TranslationKeyExists`** — in `templates/gift_card.liquid` (sub-project 5).
+## Captured findings remaining for sub-project 5
 
-## Pending follow-ups within scope
+`docs/superpowers/notes/2026-05-09-theme-check-findings.md` contains the raw Theme Check output. After sub-project 4, the remaining issues are:
 
-These were flagged during sub-project 3 reviews; address them when the relevant sub-project lands:
+- **`ImgWidthAndHeight`** (2 errors) in `templates/gift_card.liquid` — `<img>` tags missing `width`/`height` attributes. Performance/CLS impact.
+- **`TranslationKeyExists`** (1 error) in `templates/gift_card.liquid` — references `gift_cards.issued.title` which has no entry in `locales/en.default.json`. Either add the key or use a hardcoded string.
 
-- **Pagination snippet extraction.** Both `sections/main-collection.liquid` and `sections/main-search.liquid` now have working `{% paginate %}` blocks. The ~70 lines of pagination markup in `main-collection.liquid` (with numbered pages + current-page highlighting) is more featureful than `main-search.liquid`'s Previous/Next-only nav. Sub-project 4 could extract a shared snippet and decide on a unified UX. Currently the asymmetry is intentional but worth a single-line note in the next PR description.
-- **`| default: 24` consistency.** `main-collection.liquid` reads its per-page setting through `assign per_page = section.settings.products_per_page | default: 24`. `main-search.liquid` references `section.settings.results_per_page` inline with no fallback. Schema defaults handle it in practice; normalize when sub-project 4 touches either file.
+That's the full remaining surface area — 3 offenses, 1 file. Sub-project 5 returns `npm run theme:check` to **exit 0** for the first time since sub-project 1 was merged.
 
 ## Suggested next sub-project
 
-**Sub-project 4 (Liquid snippets & layout).** Reasons:
+**Sub-project 5 (Templates & config).** Reasons:
 
-- Bulk of the remaining Theme Check errors live in snippets (`json-ld.liquid` has most of the `UnknownFilter` volume).
-- Pagination snippet extraction (cross-section dedup) is natural to bundle here.
-- One last `HardcodedRoutes` warning (`predictive-search.liquid`) finishes that category.
-- Returns `npm run theme:check` to near-green; only template-level fixes (sub-project 5) would remain.
+- Cleans the last 3 Theme Check offenses; returns lint to green.
+- Smallest remaining sub-project — one file, three discrete fixes.
+- Includes adding the missing `gift_cards.issued.title` translation key to `locales/en.default.json` (so this also touches the config layer the sub-project covers).
 
-To start: run `superpowers:brainstorming` and reference this progress file. The brainstorming step should produce a sub-project-4-specific spec at `docs/superpowers/specs/YYYY-MM-DD-liquid-snippets-cleanup-design.md`.
+To start: run `superpowers:brainstorming` and reference this progress file. The brainstorming step should produce a sub-project-5-specific spec at `docs/superpowers/specs/YYYY-MM-DD-templates-and-config-cleanup-design.md`.
+
+Sub-project 6 (CSS / Tailwind 4) remains after that — likely the smallest of all six since `src/input.css` is mostly token wiring.
 
 ## Reference artifacts
 
@@ -85,5 +89,7 @@ To start: run `superpowers:brainstorming` and reference this progress file. The 
 - Sticky add-to-cart plan — [docs/superpowers/plans/2026-05-11-sticky-atc.md](plans/2026-05-11-sticky-atc.md)
 - Sub-project 3 spec — [docs/superpowers/specs/2026-05-13-liquid-sections-cleanup-design.md](specs/2026-05-13-liquid-sections-cleanup-design.md)
 - Sub-project 3 plan — [docs/superpowers/plans/2026-05-13-liquid-sections-cleanup.md](plans/2026-05-13-liquid-sections-cleanup.md)
+- Sub-project 4 spec — [docs/superpowers/specs/2026-05-13-liquid-snippets-cleanup-design.md](specs/2026-05-13-liquid-snippets-cleanup-design.md)
+- Sub-project 4 plan — [docs/superpowers/plans/2026-05-13-liquid-snippets-cleanup.md](plans/2026-05-13-liquid-snippets-cleanup.md)
 - Theme Check findings (pre-sub-project 3 baseline) — [docs/superpowers/notes/2026-05-09-theme-check-findings.md](notes/2026-05-09-theme-check-findings.md)
 - Blame-ignore file — [.git-blame-ignore-revs](../../.git-blame-ignore-revs)
