@@ -2,7 +2,13 @@
   <div class="page-width">
     <h1 class="text-3xl font-bold mb-8">Search</h1>
 
-    <form action="/search" method="get" role="search" aria-label="Product search" class="mb-8">
+    <form
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      aria-label="Product search"
+      class="mb-8"
+    >
       <div class="flex gap-2">
         <label for="search-input" class="visually-hidden">Search</label>
         <input
@@ -25,46 +31,48 @@
 
     {% if search.performed %}
       {% if search.results_count > 0 %}
-        <p class="text-sm text-gray-500 mb-6">
-          {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for
-          &ldquo;{{ search.terms }}&rdquo;
-        </p>
+        {% paginate search.results by section.settings.results_per_page %}
+          <p class="text-sm text-gray-500 mb-6">
+            {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for
+            &ldquo;{{ search.terms }}&rdquo;
+          </p>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {% for item in search.results %}
-            {% if item.object_type == 'product' %}
-              {% render 'product-card', product: item %}
-            {% else %}
-              <a href="{{ item.url }}" class="no-underline">
-                <h3 class="text-sm font-medium text-gray-900">{{ item.title }}</h3>
-                {% if item.content != blank %}
-                  <p class="text-sm text-gray-500 mt-1 line-clamp-2">
-                    {{ item.content | strip_html | truncate: 120 }}
-                  </p>
-                {% endif %}
-              </a>
-            {% endif %}
-          {% endfor %}
-        </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for item in search.results %}
+              {% if item.object_type == 'product' %}
+                {% render 'product-card', product: item %}
+              {% else %}
+                <a href="{{ item.url }}" class="no-underline">
+                  <h3 class="text-sm font-medium text-gray-900">{{ item.title }}</h3>
+                  {% if item.content != blank %}
+                    <p class="text-sm text-gray-500 mt-1 line-clamp-2">
+                      {{ item.content | strip_html | truncate: 120 }}
+                    </p>
+                  {% endif %}
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
 
-        {% if paginate.pages > 1 %}
-          <nav class="flex justify-center gap-2 mt-12" aria-label="Search results pagination">
-            {% if paginate.previous %}
-              <a
-                href="{{ paginate.previous.url }}"
-                class="px-4 py-2 border rounded-lg hover:bg-gray-50 no-underline text-gray-700"
-                >Previous</a
-              >
-            {% endif %}
-            {% if paginate.next %}
-              <a
-                href="{{ paginate.next.url }}"
-                class="px-4 py-2 border rounded-lg hover:bg-gray-50 no-underline text-gray-700"
-                >Next</a
-              >
-            {% endif %}
-          </nav>
-        {% endif %}
+          {% if paginate.pages > 1 %}
+            <nav class="flex justify-center gap-2 mt-12" aria-label="Search results pagination">
+              {% if paginate.previous %}
+                <a
+                  href="{{ paginate.previous.url }}"
+                  class="px-4 py-2 border rounded-lg hover:bg-gray-50 no-underline text-gray-700"
+                  >Previous</a
+                >
+              {% endif %}
+              {% if paginate.next %}
+                <a
+                  href="{{ paginate.next.url }}"
+                  class="px-4 py-2 border rounded-lg hover:bg-gray-50 no-underline text-gray-700"
+                  >Next</a
+                >
+              {% endif %}
+            </nav>
+          {% endif %}
+        {% endpaginate %}
       {% else %}
         <p class="text-gray-500">
           No results found for &ldquo;{{ search.terms }}&rdquo;. Please try another search.
@@ -77,6 +85,17 @@
 {% schema %}
 {
   "name": "Search",
-  "tag": "section"
+  "tag": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "results_per_page",
+      "label": "Results per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    }
+  ]
 }
 {% endschema %}
