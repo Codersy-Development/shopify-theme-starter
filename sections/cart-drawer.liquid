@@ -131,6 +131,7 @@
 
     {% if cart.item_count > 0 %}
       <div data-cart-drawer-footer class="border-t border-gray-200 px-6 py-4">
+        {% render 'free-shipping-tracker' %}
         <div class="flex items-center justify-between mb-4">
           <span class="text-sm font-semibold">Subtotal</span>
           <span class="text-sm font-semibold">{{ cart.total_price | money }}</span>
