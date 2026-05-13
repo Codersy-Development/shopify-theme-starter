@@ -172,24 +172,26 @@ Two attribute additions in `templates/gift_card.liquid`. Doing both in one commi
 
 `old_string`:
 
+<!-- prettier-ignore -->
 ```liquid
-<img
-  src="{{ gift_card | qr_code }}"
-  alt="Gift card QR code"
-  class="mx-auto mb-6 w-40 h-40"
->
+        <img
+          src="{{ gift_card | qr_code }}"
+          alt="Gift card QR code"
+          class="mx-auto mb-6 w-40 h-40"
+        >
 ```
 
 `new_string`:
 
+<!-- prettier-ignore -->
 ```liquid
-<img
-  src="{{ gift_card | qr_code }}"
-  alt="Gift card QR code"
-  width="160"
-  height="160"
-  class="mx-auto mb-6 w-40 h-40"
->
+        <img
+          src="{{ gift_card | qr_code }}"
+          alt="Gift card QR code"
+          width="160"
+          height="160"
+          class="mx-auto mb-6 w-40 h-40"
+        >
 ```
 
 The class `w-40 h-40` resolves to 10rem × 10rem = 160px × 160px at the default 16px root font size. The HTML attributes match the rendered visual size, which is exactly what `ImgWidthAndHeight` wants for layout-reservation / CLS prevention.
@@ -198,27 +200,33 @@ The class `w-40 h-40` resolves to 10rem × 10rem = 160px × 160px at the default
 
 `old_string`:
 
+<!-- prettier-ignore -->
 ```liquid
-<a href="{{ gift_card.pass_url }}" class="inline-block mb-4">
-  <img
-    src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
-    alt="Add to Apple Wallet"
-    width="120"
-  >
-</a>
+      {% if gift_card.pass_url %}
+        <a href="{{ gift_card.pass_url }}" class="inline-block mb-4">
+          <img
+            src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
+            alt="Add to Apple Wallet"
+            width="120"
+          >
+        </a>
+      {% endif %}
 ```
 
 `new_string`:
 
+<!-- prettier-ignore -->
 ```liquid
-<a href="{{ gift_card.pass_url }}" class="inline-block mb-4">
-  <img
-    src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
-    alt="Add to Apple Wallet"
-    width="120"
-    height="44"
-  >
-</a>
+      {% if gift_card.pass_url %}
+        <a href="{{ gift_card.pass_url }}" class="inline-block mb-4">
+          <img
+            src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
+            alt="Add to Apple Wallet"
+            width="120"
+            height="44"
+          >
+        </a>
+      {% endif %}
 ```
 
 Apple's modern Add-to-Wallet badge SVG has a ~2.7:1 aspect ratio; `120 / 2.7 ≈ 44`. The SVG is vector — the attribute purely reserves layout space; rendering scales correctly.
