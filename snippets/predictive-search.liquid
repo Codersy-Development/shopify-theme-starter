@@ -46,7 +46,12 @@
       </button>
     </div>
 
-    <form action="/search" method="get" role="search" class="border-b border-gray-100">
+    <form
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      class="border-b border-gray-100"
+    >
       <div class="flex items-center gap-2 px-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"

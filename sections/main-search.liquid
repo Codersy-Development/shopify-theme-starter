@@ -1,3 +1,7 @@
+{%- liquid
+  assign per_page = section.settings.results_per_page | default: 24
+-%}
+
 <section class="py-12">
   <div class="page-width">
     <h1 class="text-3xl font-bold mb-8">Search</h1>
@@ -31,7 +35,7 @@
 
     {% if search.performed %}
       {% if search.results_count > 0 %}
-        {% paginate search.results by section.settings.results_per_page %}
+        {% paginate search.results by per_page %}
           <p class="text-sm text-gray-500 mb-6">
             {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for
             &ldquo;{{ search.terms }}&rdquo;
@@ -54,24 +58,7 @@
             {% endfor %}
           </div>
 
-          {% if paginate.pages > 1 %}
-            <nav class="flex justify-center gap-2 mt-12" aria-label="Search results pagination">
-              {% if paginate.previous %}
-                <a
-                  href="{{ paginate.previous.url }}"
-                  class="px-4 py-2 border rounded-lg hover:bg-gray-50 no-underline text-gray-700"
-                  >Previous</a
-                >
-              {% endif %}
-              {% if paginate.next %}
-                <a
-                  href="{{ paginate.next.url }}"
-                  class="px-4 py-2 border rounded-lg hover:bg-gray-50 no-underline text-gray-700"
-                  >Next</a
-                >
-              {% endif %}
-            </nav>
-          {% endif %}
+          {% render 'pagination', paginate: paginate %}
         {% endpaginate %}
       {% else %}
         <p class="text-gray-500">

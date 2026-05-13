@@ -8,3 +8,21 @@ ignore:
   - .shopify/
   - src/
   - docs/
+
+# Rule overrides — see docs/superpowers/specs/2026-05-13-liquid-snippets-cleanup-design.md
+# for the audit that produced these decisions.
+
+UnknownFilter:
+  # Bundled Theme Check doesn't recognize `push` (used in snippets/json-ld.liquid
+  # to build social-links and breadcrumb arrays) or `qr_code` (used in
+  # templates/gift_card.liquid). Both are real Shopify Liquid filters; the
+  # bundled checker just lags on Shopify's filter list. Disabled globally
+  # rather than play whack-a-mole on every new filter Shopify ships.
+  enabled: false
+
+RemoteAsset:
+  # Misfires on canonical-URL `<link rel="canonical" href="{{ shop.url }}…">`
+  # (snippets/canonicals.liquid) and on `{{ gift_card | qr_code }}` data URIs
+  # (templates/gift_card.liquid). The rule's intent is third-party CDN assets;
+  # this theme uses Shopify's CDN exclusively via asset_url filters.
+  enabled: false
