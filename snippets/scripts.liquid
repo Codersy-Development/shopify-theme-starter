@@ -3,6 +3,7 @@
     "imports": {
       "@theme/component": {{ 'component.js' | asset_url | json }},
       "@theme/drawer": {{ 'drawer.js' | asset_url | json }},
+      "@theme/cart-add": {{ 'cart-add.js' | asset_url | json }},
       "@theme/cart-drawer": {{ 'cart-drawer.js' | asset_url | json }},
       "@theme/cart-icon": {{ 'cart-icon.js' | asset_url | json }},
       "@theme/product-form": {{ 'product-form.js' | asset_url | json }},
@@ -10,6 +11,7 @@
       "@theme/header-drawer": {{ 'header-drawer.js' | asset_url | json }},
       "@theme/predictive-search": {{ 'predictive-search.js' | asset_url | json }},
       "@theme/product-gallery": {{ 'product-gallery.js' | asset_url | json }},
+      "@theme/sticky-atc": {{ 'sticky-atc.js' | asset_url | json }},
       "@theme/collection-filters": {{ 'collection-filters.js' | asset_url | json }},
       "@theme/accordion": {{ 'accordion.js' | asset_url | json }},
       "@theme/price-range-slider": {{ 'price-range-slider.js' | asset_url | json }},
@@ -27,6 +29,7 @@
 
 {% if template contains 'product' %}
   <script type="module" src="{{ 'product-gallery.js' | asset_url }}"></script>
+  <script type="module" src="{{ 'sticky-atc.js' | asset_url }}"></script>
 {% endif %}
 
 {% if template contains 'collection' %}
