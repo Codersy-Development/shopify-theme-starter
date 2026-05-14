@@ -14,6 +14,11 @@
       }
     }
   },
+  "gift_cards": {
+    "issued": {
+      "title": "Gift card"
+    }
+  },
   "cart": {
     "title": "Your cart",
     "empty": "Your cart is empty",
