@@ -1,19 +1,19 @@
 # Theme Cleanup — Progress Log
 
-Last updated: 2026-05-13
+Last updated: 2026-05-14
 
 ## The Plan
 
 The user asked for a "full cleanup pass" of this Shopify starter theme. Decomposed into six independently-shippable sub-projects:
 
-| #   | Sub-project                                                       | Status               | Reference                                                                                            |
-| --- | ----------------------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------- |
-| 1   | **Build & tooling** (Prettier + Theme Check + npm scripts)        | ✅ Merged 2026-05-10 | PR [#1](https://github.com/Codersy-Development/shopify-theme-starter/pull/1), merge commit `54ac8cc` |
-| 2   | **JavaScript / web components** (11 files in `/assets/`)          | ✅ Merged 2026-05-11 | PR [#2](https://github.com/Codersy-Development/shopify-theme-starter/pull/2), merge commit `37ed0ce` |
-| 3   | **Liquid sections** (6 of 23 files touched)                       | ✅ Merged 2026-05-13 | PR [#5](https://github.com/Codersy-Development/shopify-theme-starter/pull/5), merge commit `772536a` |
-| 4   | **Liquid snippets & layout** (5 files touched)                    | ✅ Merged 2026-05-13 | PR [#6](https://github.com/Codersy-Development/shopify-theme-starter/pull/6), merge commit `38df66f` |
-| 5   | Templates & config (`templates/*.json`, `config/settings_*.json`) | ⬜ Not started       | —                                                                                                    |
-| 6   | CSS / Tailwind 4 (`src/input.css`)                                | ⬜ Not started       | —                                                                                                    |
+| #   | Sub-project                                                | Status               | Reference                                                                                            |
+| --- | ---------------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------- |
+| 1   | **Build & tooling** (Prettier + Theme Check + npm scripts) | ✅ Merged 2026-05-10 | PR [#1](https://github.com/Codersy-Development/shopify-theme-starter/pull/1), merge commit `54ac8cc` |
+| 2   | **JavaScript / web components** (11 files in `/assets/`)   | ✅ Merged 2026-05-11 | PR [#2](https://github.com/Codersy-Development/shopify-theme-starter/pull/2), merge commit `37ed0ce` |
+| 3   | **Liquid sections** (6 of 23 files touched)                | ✅ Merged 2026-05-13 | PR [#5](https://github.com/Codersy-Development/shopify-theme-starter/pull/5), merge commit `772536a` |
+| 4   | **Liquid snippets & layout** (5 files touched)             | ✅ Merged 2026-05-13 | PR [#6](https://github.com/Codersy-Development/shopify-theme-starter/pull/6), merge commit `38df66f` |
+| 5   | **Templates & config** (2 files touched)                   | ✅ Merged 2026-05-14 | PR [#7](https://github.com/Codersy-Development/shopify-theme-starter/pull/7), merge commit `a7fc069` |
+| 6   | CSS / Tailwind 4 (`src/input.css`)                         | ⬜ Not started       | —                                                                                                    |
 
 ## Feature work landed alongside cleanup
 
@@ -24,7 +24,7 @@ Both shipped between sub-projects 2 and 3, off `main`, as separate PRs:
 
 ## State to know before resuming
 
-- **`npm run lint` exits 1 only due to `templates/gift_card.liquid`.** Theme Check baseline: **3 offenses across 1 file** (down from 54 across 10). The remaining errors are 2 `ImgWidthAndHeight` + 1 `TranslationKeyExists` in `gift_card.liquid` — sub-project 5 will clear them. `npm run format:check` exits 0.
+- **`npm run lint` exits 0.** Theme Check is fully green: 57 files inspected, 0 offenses. First time since sub-project 1 merged and the baseline was captured. The lint script (`format:check && theme:check`) is now safe to wire into a CI gate without immediate noise.
 - **`.theme-check.yml` disables `UnknownFilter` and `RemoteAsset` globally** (commented with rationale, pointing back to sub-project 4's spec). The `push` and `qr_code` filters and the canonical-URL pattern are all real / intentional but the bundled Theme Check misfires on them. If a future change introduces a genuinely-unknown filter or a third-party CDN URL, the rule can be re-enabled per-file via `ignored_paths`.
 - **`git blame` skips the bulk-format commit (`201e4ef`).** New contributors should run `git config blame.ignoreRevsFile .git-blame-ignore-revs` once locally so blame attributes lines to their original authors.
 - **Prettier ignores Shopify-managed JSON:** `locales/`, `templates/*.json`, `config/*.json`. Don't widen `.prettierignore` further without a reason — those exclusions are deliberate.
@@ -56,26 +56,19 @@ Both shipped between sub-projects 2 and 3, off `main`, as separate PRs:
 - `sections/main-collection.liquid` — dropped 70 lines of inline pagination markup (including a dead `current_tags` URL-construction branch) in favor of `{% render 'pagination', paginate: paginate %}`. Short page lists pixel-identical to before; long page lists now use ellipsis truncation.
 - `sections/main-search.liquid` — renders the same snippet; normalizes the per-page read with `assign per_page = section.settings.results_per_page | default: 24` to mirror `main-collection.liquid`'s pattern. Search results now show numbered pagination (was Previous/Next-only) — a deliberate UX upgrade.
 
-## Captured findings remaining for sub-project 5
+## What sub-project 5 produced (PR #7)
 
-`docs/superpowers/notes/2026-05-09-theme-check-findings.md` contains the raw Theme Check output. After sub-project 4, the remaining issues are:
-
-- **`ImgWidthAndHeight`** (2 errors) in `templates/gift_card.liquid` — `<img>` tags missing `width`/`height` attributes. Performance/CLS impact.
-- **`TranslationKeyExists`** (1 error) in `templates/gift_card.liquid` — references `gift_cards.issued.title` which has no entry in `locales/en.default.json`. Either add the key or use a hardcoded string.
-
-That's the full remaining surface area — 3 offenses, 1 file. Sub-project 5 returns `npm run theme:check` to **exit 0** for the first time since sub-project 1 was merged.
+- `locales/en.default.json` — added a new `gift_cards` namespace with `issued.title: "Gift card"`. Resolves the `TranslationKeyExists` finding on `{{ 'gift_cards.issued.title' | t }}` in the gift card template's `<title>`.
+- `templates/gift_card.liquid` — added `width="160" height="160"` to the QR code `<img>` (matches its `w-40 h-40` Tailwind class derivation: 10rem × 16px = 160px square) and `height="44"` to the Apple Wallet badge `<img>` (matches Apple's documented Add-to-Wallet badge aspect ratio at `width="120"`).
+- Total diff: 8 lines across 2 files.
 
 ## Suggested next sub-project
 
-**Sub-project 5 (Templates & config).** Reasons:
+**Sub-project 6 (CSS / Tailwind 4 in `src/input.css`).** The last remaining sub-project in the original decomposition. Tailwind 4 uses a CSS-first config — most theme-level customization (tokens, layer extensions, plugin invocations) lives in `src/input.css`. Worth auditing the file for stale or unused custom declarations, orphaned tokens that don't correspond to actual setting consumers, and any drift from Tailwind 4's recommended patterns.
 
-- Cleans the last 3 Theme Check offenses; returns lint to green.
-- Smallest remaining sub-project — one file, three discrete fixes.
-- Includes adding the missing `gift_cards.issued.title` translation key to `locales/en.default.json` (so this also touches the config layer the sub-project covers).
+To start: run `superpowers:brainstorming` and reference this progress file. The brainstorming step should produce a sub-project-6-specific spec at `docs/superpowers/specs/YYYY-MM-DD-css-tailwind-cleanup-design.md`.
 
-To start: run `superpowers:brainstorming` and reference this progress file. The brainstorming step should produce a sub-project-5-specific spec at `docs/superpowers/specs/YYYY-MM-DD-templates-and-config-cleanup-design.md`.
-
-Sub-project 6 (CSS / Tailwind 4) remains after that — likely the smallest of all six since `src/input.css` is mostly token wiring.
+After sub-project 6 lands, the 6-sub-project decomposition is complete and the theme starter is at a known-clean baseline.
 
 ## Reference artifacts
 
@@ -91,5 +84,7 @@ Sub-project 6 (CSS / Tailwind 4) remains after that — likely the smallest of a
 - Sub-project 3 plan — [docs/superpowers/plans/2026-05-13-liquid-sections-cleanup.md](plans/2026-05-13-liquid-sections-cleanup.md)
 - Sub-project 4 spec — [docs/superpowers/specs/2026-05-13-liquid-snippets-cleanup-design.md](specs/2026-05-13-liquid-snippets-cleanup-design.md)
 - Sub-project 4 plan — [docs/superpowers/plans/2026-05-13-liquid-snippets-cleanup.md](plans/2026-05-13-liquid-snippets-cleanup.md)
+- Sub-project 5 spec — [docs/superpowers/specs/2026-05-13-templates-and-config-cleanup-design.md](specs/2026-05-13-templates-and-config-cleanup-design.md)
+- Sub-project 5 plan — [docs/superpowers/plans/2026-05-13-templates-and-config-cleanup.md](plans/2026-05-13-templates-and-config-cleanup.md)
 - Theme Check findings (pre-sub-project 3 baseline) — [docs/superpowers/notes/2026-05-09-theme-check-findings.md](notes/2026-05-09-theme-check-findings.md)
 - Blame-ignore file — [.git-blame-ignore-revs](../../.git-blame-ignore-revs)
