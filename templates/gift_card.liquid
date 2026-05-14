@@ -22,6 +22,8 @@
         <img
           src="{{ gift_card | qr_code }}"
           alt="Gift card QR code"
+          width="160"
+          height="160"
           class="mx-auto mb-6 w-40 h-40"
         >
 
@@ -56,6 +58,7 @@
             src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
             alt="Add to Apple Wallet"
             width="120"
+            height="44"
           >
         </a>
       {% endif %}
