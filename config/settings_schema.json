@@ -71,23 +71,6 @@
     ]
   },
   {
-    "name": "Colors",
-    "settings": [
-      {
-        "type": "color",
-        "id": "color_primary",
-        "label": "Primary color",
-        "default": "#111827"
-      },
-      {
-        "type": "color",
-        "id": "color_secondary",
-        "label": "Secondary color",
-        "default": "#2563eb"
-      }
-    ]
-  },
-  {
     "name": "Cart",
     "settings": [
       {
