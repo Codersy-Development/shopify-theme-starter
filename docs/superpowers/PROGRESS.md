@@ -1,6 +1,7 @@
 # Theme Cleanup — Progress Log
 
-Last updated: 2026-05-14
+Last updated: 2026-05-15
+**Status: COMPLETE — all 6 sub-projects merged.**
 
 ## The Plan
 
@@ -13,7 +14,7 @@ The user asked for a "full cleanup pass" of this Shopify starter theme. Decompos
 | 3   | **Liquid sections** (6 of 23 files touched)                | ✅ Merged 2026-05-13 | PR [#5](https://github.com/Codersy-Development/shopify-theme-starter/pull/5), merge commit `772536a` |
 | 4   | **Liquid snippets & layout** (5 files touched)             | ✅ Merged 2026-05-13 | PR [#6](https://github.com/Codersy-Development/shopify-theme-starter/pull/6), merge commit `38df66f` |
 | 5   | **Templates & config** (2 files touched)                   | ✅ Merged 2026-05-14 | PR [#7](https://github.com/Codersy-Development/shopify-theme-starter/pull/7), merge commit `a7fc069` |
-| 6   | CSS / Tailwind 4 (`src/input.css`)                         | ⬜ Not started       | —                                                                                                    |
+| 6   | **CSS / Tailwind 4** (3 files touched)                     | ✅ Merged 2026-05-15 | PR [#8](https://github.com/Codersy-Development/shopify-theme-starter/pull/8), merge commit `c6f27be` |
 
 ## Feature work landed alongside cleanup
 
@@ -62,13 +63,31 @@ Both shipped between sub-projects 2 and 3, off `main`, as separate PRs:
 - `templates/gift_card.liquid` — added `width="160" height="160"` to the QR code `<img>` (matches its `w-40 h-40` Tailwind class derivation: 10rem × 16px = 160px square) and `height="44"` to the Apple Wallet badge `<img>` (matches Apple's documented Add-to-Wallet badge aspect ratio at `width="120"`).
 - Total diff: 8 lines across 2 files.
 
-## Suggested next sub-project
+## What sub-project 6 produced (PR #8)
 
-**Sub-project 6 (CSS / Tailwind 4 in `src/input.css`).** The last remaining sub-project in the original decomposition. Tailwind 4 uses a CSS-first config — most theme-level customization (tokens, layer extensions, plugin invocations) lives in `src/input.css`. Worth auditing the file for stale or unused custom declarations, orphaned tokens that don't correspond to actual setting consumers, and any drift from Tailwind 4's recommended patterns.
+- `src/input.css` — removed the dead `a { @apply text-blue-600 hover:text-blue-800 transition-colors; }` rule from the `@layer base` block. The theme is gray-on-white; 44 anchors override the rule with `no-underline` + explicit `text-gray-*` classes, and the remaining 11 inherit a darker color cascade. The rule fired somewhere only theoretically. `@layer base` shrinks from 3 sub-rules to 2.
+- `config/settings_schema.json` — removed the entire `"Colors"` settings group (containing `color_primary` and `color_secondary`). Zero code anywhere in the theme referenced either setting; the theme customizer's color pickers did nothing.
+- `config/settings_data.json` — removed the corresponding persisted `color_primary` / `color_secondary` keys from `current`. Remaining keys: `cart_type`, `logo_max_width`.
+- Total diff: 23 line deletions across 3 files.
 
-To start: run `superpowers:brainstorming` and reference this progress file. The brainstorming step should produce a sub-project-6-specific spec at `docs/superpowers/specs/YYYY-MM-DD-css-tailwind-cleanup-design.md`.
+## Decomposition complete
 
-After sub-project 6 lands, the 6-sub-project decomposition is complete and the theme starter is at a known-clean baseline.
+The 6-sub-project cleanup the user asked for is done. Theme starter is at a known-clean baseline:
+
+- `npm run lint` exits 0 stably (format:check + theme:check both green).
+- Theme Check: 0 offenses across 57 files.
+- All hardcoded routes replaced with `routes.*` object equivalents.
+- Pagination is a shared snippet; search results have numbered pagination.
+- Free-shipping progress tracker and sticky mobile ATC ship as features.
+- No dead settings, no dead CSS rules.
+
+## Possible follow-up work (out of the original decomposition)
+
+- **Wire `npm run lint` into a CI gate.** Now that lint is stably green, a GitHub Actions workflow on `pull_request` events can fail builds on regressions. Husky pre-commit hook is an alternative but only runs on the committer's machine.
+- **Color customization story.** Currently the theme has hardcoded `#111827` / `#fff` / `#e5e7eb` etc. throughout `src/input.css` and templates. A real story would: add CSS variables in `layout/theme.liquid` (like `--page-width` is wired), refactor `src/input.css` to consume them, re-introduce schema settings that point to the variables.
+- **Pagination snippet UX polish.** Per sub-project 4 follow-up notes: the chevron Prev/Next buttons (`px-3 py-2`) are ~4px shorter than the page-number buttons (`w-10 h-10`). Worth a single-line class harmonization the next time `snippets/pagination.liquid` is touched.
+- **Locales sweep.** Hardcoded English in templates/sections/snippets ("Your cart is empty", "Continue shopping", "Here's your gift card!", etc.) could be migrated to translation keys to enable multi-locale stores. Separate, larger project.
+- **`config/settings_schema.json` audit.** Could verify every declared setting is consumed in code (already partially done for `color_primary`/`color_secondary`) or add `info` strings to settings that lack them.
 
 ## Reference artifacts
 
@@ -86,5 +105,7 @@ After sub-project 6 lands, the 6-sub-project decomposition is complete and the t
 - Sub-project 4 plan — [docs/superpowers/plans/2026-05-13-liquid-snippets-cleanup.md](plans/2026-05-13-liquid-snippets-cleanup.md)
 - Sub-project 5 spec — [docs/superpowers/specs/2026-05-13-templates-and-config-cleanup-design.md](specs/2026-05-13-templates-and-config-cleanup-design.md)
 - Sub-project 5 plan — [docs/superpowers/plans/2026-05-13-templates-and-config-cleanup.md](plans/2026-05-13-templates-and-config-cleanup.md)
+- Sub-project 6 spec — [docs/superpowers/specs/2026-05-14-css-tailwind-cleanup-design.md](specs/2026-05-14-css-tailwind-cleanup-design.md)
+- Sub-project 6 plan — [docs/superpowers/plans/2026-05-14-css-tailwind-cleanup.md](plans/2026-05-14-css-tailwind-cleanup.md)
 - Theme Check findings (pre-sub-project 3 baseline) — [docs/superpowers/notes/2026-05-09-theme-check-findings.md](notes/2026-05-09-theme-check-findings.md)
 - Blame-ignore file — [.git-blame-ignore-revs](../../.git-blame-ignore-revs)
