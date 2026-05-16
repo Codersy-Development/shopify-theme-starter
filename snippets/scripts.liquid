@@ -16,7 +16,8 @@
       "@theme/accordion": {{ 'accordion.js' | asset_url | json }},
       "@theme/price-range-slider": {{ 'price-range-slider.js' | asset_url | json }},
       "@theme/product-card": {{ 'product-card.js' | asset_url | json }},
-      "@theme/header-nav": {{ 'header-nav.js' | asset_url | json }}
+      "@theme/header-nav": {{ 'header-nav.js' | asset_url | json }},
+      "@theme/sticky-header": {{ 'sticky-header.js' | asset_url | json }}
     }
   }
 </script>
@@ -39,6 +40,7 @@
 {% endif %}
 <script type="module" src="{{ 'header-drawer.js' | asset_url }}"></script>
 <script type="module" src="{{ 'header-nav.js' | asset_url }}"></script>
+<script type="module" src="{{ 'sticky-header.js' | asset_url }}"></script>
 <script type="module" src="{{ 'cart-icon.js' | asset_url }}"></script>
 
 {% if settings.cart_type == 'drawer' %}
