@@ -92,9 +92,7 @@
           <!-- Active filter tags -->
           {% assign active_filters_count = 0 %}
           {% for filter in collection.filters %}
-            {% assign active_filters_count = active_filters_count
-              | plus: filter.active_values.size
-            %}
+            {% assign active_filters_count = active_filters_count | plus: filter.active_values.size %}
           {% endfor %}
 
           {% if active_filters_count > 0 %}
@@ -217,7 +215,6 @@
                           -%}
 
                           <price-range-slider
-                            data-range-max="{{ range_max_money }}"
                             data-currency="{{ cart.currency.symbol }}"
                             class="block"
                           >
@@ -225,7 +222,7 @@
                             <div data-range-slider class="mx-1 mb-3">
                               <div data-range-track></div>
                               <div data-range-min></div>
-                              <div data-range-max></div>
+                              <div data-range-max="{{ range_max_money }}"></div>
                             </div>
                             <div class="flex justify-between text-xs text-gray-500">
                               <span data-label-min>
@@ -302,10 +299,7 @@
                 </p>
                 <div data-product-grid class="grid grid-cols-2 md:grid-cols-3 gap-6">
                   {% for product in collection.products %}
-                    {% render 'product-card',
-                      product: product,
-                      show_swatches: section.settings.show_swatches
-                    %}
+                    {% render 'product-card', product: product, show_swatches: section.settings.show_swatches %}
                   {% endfor %}
                 </div>
               {% else %}
