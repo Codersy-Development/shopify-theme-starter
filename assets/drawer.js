@@ -101,7 +101,11 @@ class Drawer extends Component {
     };
 
     overlay?.addEventListener("click", close);
-    host.querySelectorAll("[data-close]").forEach((el) => el.addEventListener("click", close));
+    // Delegated so [data-close] elements inside re-rendered content
+    // (e.g. cart-drawer section refreshes) keep working.
+    host.addEventListener("click", (e) => {
+      if (e.target.closest("[data-close]")) close();
+    });
     document.addEventListener("keydown", (e) => {
       if (!isOpen()) return;
       if (e.key === "Escape") close();

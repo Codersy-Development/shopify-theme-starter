@@ -18,7 +18,9 @@ class CartIcon extends Component {
 
     if (this.countEl) {
       this.countEl.textContent = count;
-      this.countEl.hidden = count === 0;
+      // The badge is hidden via Tailwind's `hidden` class in Liquid, so toggle
+      // that class — the `hidden` DOM attribute loses to the badge's `flex` class.
+      this.countEl.classList.toggle("hidden", count === 0);
     }
 
     // Update aria-label with current count

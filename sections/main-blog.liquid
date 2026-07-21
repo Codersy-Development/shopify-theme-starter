@@ -1,31 +1,35 @@
-<section class="py-12">
-  <div class="page-width">
-    <h1 class="text-3xl font-bold mb-8">{{ blog.title }}</h1>
+{% paginate blog.articles by 12 %}
+  <section class="py-12">
+    <div class="page-width">
+      <h1 class="text-3xl font-bold mb-8">{{ blog.title }}</h1>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {% for article in blog.articles %}
-        <a href="{{ article.url }}" class="group no-underline">
-          {% if article.image %}
-            <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4">
-              {% render 'image',
-                image: article.image,
-                max_width: 800,
-                sizes: '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw',
-                alt: article.title,
-                class: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
-              %}
-            </div>
-          {% endif %}
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for article in blog.articles %}
+          <a href="{{ article.url }}" class="group no-underline">
+            {% if article.image %}
+              <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4">
+                {% render 'image',
+                  image: article.image,
+                  max_width: 800,
+                  sizes: '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw',
+                  alt: article.title,
+                  class: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+                %}
+              </div>
+            {% endif %}
 
-          <h2 class="text-lg font-semibold text-gray-900 group-hover:text-gray-600 mb-2">
-            {{ article.title }}
-          </h2>
-          <p class="text-sm text-gray-500">{{ article.published_at | date: '%B %d, %Y' }}</p>
-        </a>
-      {% endfor %}
+            <h2 class="text-lg font-semibold text-gray-900 group-hover:text-gray-600 mb-2">
+              {{ article.title }}
+            </h2>
+            <p class="text-sm text-gray-500">{{ article.published_at | date: '%B %d, %Y' }}</p>
+          </a>
+        {% endfor %}
+      </div>
+
+      {% render 'pagination', paginate: paginate %}
     </div>
-  </div>
-</section>
+  </section>
+{% endpaginate %}
 
 {% schema %}
 {

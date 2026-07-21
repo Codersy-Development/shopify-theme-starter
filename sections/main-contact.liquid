@@ -30,7 +30,7 @@
             type="text"
             id="contact-name"
             name="contact[name]"
-            value="{% if form.name %}{{ form.name }}{% endif %}"
+            value="{{ form.name | escape }}"
             required
             aria-required="true"
             autocomplete="name"
@@ -46,7 +46,7 @@
             type="email"
             id="contact-email"
             name="contact[email]"
-            value="{% if form.email %}{{ form.email }}{% endif %}"
+            value="{{ form.email | escape }}"
             required
             aria-required="true"
             autocomplete="email"
@@ -62,7 +62,7 @@
             type="tel"
             id="contact-phone"
             name="contact[phone]"
-            value="{% if form.phone %}{{ form.phone }}{% endif %}"
+            value="{{ form.phone | escape }}"
             autocomplete="tel"
             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
           >
@@ -79,7 +79,7 @@
             required
             aria-required="true"
             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent resize-y"
-          >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+          >{{ form.body | escape }}</textarea>
         </div>
 
         <button

@@ -1,25 +1,29 @@
-<section class="py-12">
-  <div class="page-width">
-    <h1 class="text-3xl font-bold mb-8">Collections</h1>
+{% paginate collections by 24 %}
+  <section class="py-12">
+    <div class="page-width">
+      <h1 class="text-3xl font-bold mb-8">Collections</h1>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-      {% for collection in collections %}
-        <a href="{{ collection.url }}" class="group no-underline">
-          <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
-            {% render 'image',
-              image: collection.image,
-              max_width: 600,
-              sizes: '(min-width: 768px) 33vw, 50vw',
-              alt: collection.title,
-              class: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
-            %}
-          </div>
-          <h2 class="text-sm font-medium text-gray-900">{{ collection.title }}</h2>
-        </a>
-      {% endfor %}
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+        {% for collection in collections %}
+          <a href="{{ collection.url }}" class="group no-underline">
+            <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
+              {% render 'image',
+                image: collection.image,
+                max_width: 600,
+                sizes: '(min-width: 768px) 33vw, 50vw',
+                alt: collection.title,
+                class: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+              %}
+            </div>
+            <h2 class="text-sm font-medium text-gray-900">{{ collection.title }}</h2>
+          </a>
+        {% endfor %}
+      </div>
+
+      {% render 'pagination', paginate: paginate %}
     </div>
-  </div>
-</section>
+  </section>
+{% endpaginate %}
 
 {% schema %}
 {

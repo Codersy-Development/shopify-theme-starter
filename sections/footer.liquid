@@ -57,6 +57,17 @@
           <p class="text-sm text-gray-500 mb-3">Subscribe for updates and promotions.</p>
           {% form 'customer' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
+            {% if form.posted_successfully? %}
+              <p class="bg-green-50 text-green-700 text-sm rounded-lg px-3 py-2 mb-3" role="status">
+                {{ 'newsletter.success' | t }}
+              </p>
+            {% endif %}
+            {% if form.errors %}
+              <p class="bg-red-50 text-red-600 text-sm rounded-lg px-3 py-2 mb-3" role="alert">
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}
+              </p>
+            {% endif %}
             <div class="flex gap-2">
               <label for="newsletter-email" class="visually-hidden">Email address</label>
               <input

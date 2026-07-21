@@ -24,7 +24,7 @@
                 {% if item.variant.title != 'Default Title' %}
                   <p class="text-sm text-gray-500 mt-1">{{ item.variant.title }}</p>
                 {% endif %}
-                <p class="text-sm text-gray-600 mt-1">{{ item.price | money }}</p>
+                <p class="text-sm text-gray-600 mt-1">{{ item.final_price | money }}</p>
               </div>
 
               <div class="flex items-center gap-2">

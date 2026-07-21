@@ -38,7 +38,7 @@
         {% paginate search.results by per_page %}
           <p class="text-sm text-gray-500 mb-6">
             {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for
-            &ldquo;{{ search.terms }}&rdquo;
+            &ldquo;{{ search.terms | escape }}&rdquo;
           </p>
 
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -62,7 +62,7 @@
         {% endpaginate %}
       {% else %}
         <p class="text-gray-500">
-          No results found for &ldquo;{{ search.terms }}&rdquo;. Please try another search.
+          No results found for &ldquo;{{ search.terms | escape }}&rdquo;. Please try another search.
         </p>
       {% endif %}
     {% endif %}

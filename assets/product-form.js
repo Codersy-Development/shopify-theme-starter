@@ -16,6 +16,15 @@ class ProductForm extends Component {
     this.form = this.$("form");
     this.submitButton = this.$('[type="submit"]');
     this.form?.addEventListener("submit", (e) => this.handleSubmit(e));
+
+    // Keep displayed prices (inline + sticky bar) in sync with the selected variant.
+    this.$('select[name="id"]')?.addEventListener("change", (e) => {
+      const price = e.target.selectedOptions[0]?.dataset.price;
+      if (!price) return;
+      document.querySelectorAll("[data-product-price]").forEach((el) => {
+        el.textContent = price;
+      });
+    });
   }
 
   async handleSubmit(e) {

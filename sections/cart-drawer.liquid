@@ -53,7 +53,7 @@
                   <p class="text-xs text-gray-500 mt-0.5">{{ item.variant.title }}</p>
                 {% endif %}
                 <p class="text-sm text-gray-600 mt-0.5">
-                  <span class="visually-hidden">Price:</span> {{ item.price | money }}
+                  <span class="visually-hidden">Price:</span> {{ item.final_price | money }}
                 </p>
 
                 <div class="flex items-center gap-3 mt-2">

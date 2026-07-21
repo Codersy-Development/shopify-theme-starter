@@ -11,19 +11,16 @@
     {%- if shop.description != blank -%}
       ,"description": {{ shop.description | json }}
     {%- endif -%}
-    {%- assign social_links = '' | split: '' -%}
-    {%- if settings.social_facebook_link != blank -%}{%- assign social_links = social_links | push: settings.social_facebook_link -%}{%- endif -%}
-    {%- if settings.social_instagram_link != blank -%}{%- assign social_links = social_links | push: settings.social_instagram_link -%}{%- endif -%}
-    {%- if settings.social_tiktok_link != blank -%}{%- assign social_links = social_links | push: settings.social_tiktok_link -%}{%- endif -%}
-    {%- if settings.social_x_link != blank -%}{%- assign social_links = social_links | push: settings.social_x_link -%}{%- endif -%}
-    {%- if settings.social_youtube_link != blank -%}{%- assign social_links = social_links | push: settings.social_youtube_link -%}{%- endif -%}
-    {%- if settings.social_pinterest_link != blank -%}{%- assign social_links = social_links | push: settings.social_pinterest_link -%}{%- endif -%}
-    {%- if social_links.size > 0 -%}
-      ,"sameAs": [
-        {%- for link in social_links -%}
-          {{ link | json }}{% unless forloop.last %},{% endunless %}
-        {%- endfor -%}
-      ]
+    {%- capture social_links_json -%}
+      {%- if settings.social_facebook_link != blank -%},{{ settings.social_facebook_link | json }}{%- endif -%}
+      {%- if settings.social_instagram_link != blank -%},{{ settings.social_instagram_link | json }}{%- endif -%}
+      {%- if settings.social_tiktok_link != blank -%},{{ settings.social_tiktok_link | json }}{%- endif -%}
+      {%- if settings.social_x_link != blank -%},{{ settings.social_x_link | json }}{%- endif -%}
+      {%- if settings.social_youtube_link != blank -%},{{ settings.social_youtube_link | json }}{%- endif -%}
+      {%- if settings.social_pinterest_link != blank -%},{{ settings.social_pinterest_link | json }}{%- endif -%}
+    {%- endcapture -%}
+    {%- if social_links_json != blank -%}
+      ,"sameAs": [{{ social_links_json | remove_first: ',' }}]
     {%- endif -%}
   }
 </script>
@@ -47,64 +44,37 @@
 </script>
 
 {%- comment -%} BreadcrumbList {%- endcomment -%}
-{%- assign crumbs = '' | split: '' -%}
-
-{%- case request.page_type -%}
-  {%- when 'product' -%}
-    {%- if product.collections.size > 0 -%}
+{%- capture crumb_items_json -%}
+  {%- case request.page_type -%}
+    {%- when 'product' -%}
       {%- assign primary_collection = product.collections | first -%}
-      {%- assign crumbs = crumbs
-        | push: shop.name
-        | push: primary_collection.title
-        | push: product.title
-      -%}
-      {%- assign crumb_urls = ''
-        | split: ''
-        | push: shop.url
-        | push: primary_collection.url
-        | push: product.url
-      -%}
-    {%- else -%}
-      {%- assign crumbs = crumbs | push: shop.name | push: product.title -%}
-      {%- assign crumb_urls = '' | split: '' | push: shop.url | push: product.url -%}
-    {%- endif -%}
+      {%- if primary_collection -%}
+        ,{ "@type": "ListItem", "position": 2, "name": {{ primary_collection.title | json }}, "item": {{ shop.url | append: primary_collection.url | json }} }
+        ,{ "@type": "ListItem", "position": 3, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
+      {%- else -%}
+        ,{ "@type": "ListItem", "position": 2, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
+      {%- endif -%}
 
-  {%- when 'collection' -%}
-    {%- assign crumbs = crumbs | push: shop.name | push: collection.title -%}
-    {%- assign crumb_urls = '' | split: '' | push: shop.url | push: collection.url -%}
+    {%- when 'collection' -%}
+      ,{ "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ shop.url | append: collection.url | json }} }
 
-  {%- when 'article' -%}
-    {%- assign crumbs = crumbs
-      | push: shop.name
-      | push: article.blog.title
-      | push: article.title
-    -%}
-    {%- assign crumb_urls = ''
-      | split: ''
-      | push: shop.url
-      | push: article.blog.url
-      | push: article.url
-    -%}
+    {%- when 'article' -%}
+      ,{ "@type": "ListItem", "position": 2, "name": {{ article.blog.title | json }}, "item": {{ shop.url | append: article.blog.url | json }} }
+      ,{ "@type": "ListItem", "position": 3, "name": {{ article.title | json }}, "item": {{ shop.url | append: article.url | json }} }
 
-  {%- when 'page' -%}
-    {%- assign crumbs = crumbs | push: shop.name | push: page.title -%}
-    {%- assign crumb_urls = '' | split: '' | push: shop.url | push: page.url -%}
-{%- endcase -%}
+    {%- when 'page' -%}
+      ,{ "@type": "ListItem", "position": 2, "name": {{ page.title | json }}, "item": {{ shop.url | append: page.url | json }} }
+  {%- endcase -%}
+{%- endcapture -%}
 
-{%- if crumbs.size > 1 -%}
+{%- if crumb_items_json != blank -%}
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        {%- for crumb in crumbs -%}
-          {
-            "@type": "ListItem",
-            "position": {{ forloop.index }},
-            "name": {{ crumb | json }},
-            "item": {{ shop.url | append: crumb_urls[forloop.index0] | json }}
-          }{% unless forloop.last %},{% endunless %}
-        {%- endfor -%}
+        { "@type": "ListItem", "position": 1, "name": {{ shop.name | json }}, "item": {{ shop.url | json }} }
+        {{ crumb_items_json }}
       ]
     }
   </script>

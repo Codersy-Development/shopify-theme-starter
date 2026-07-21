@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @source "../layout/*.liquid";
 @source "../templates/*.liquid";
@@ -7,12 +8,15 @@
 @source "../assets/*.js";
 
 /* ── Global container ── */
-.page-width {
-  max-width: var(--page-width);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--padding-inline);
-  padding-right: var(--padding-inline);
+/* Lives in the components layer so utilities (e.g. max-w-3xl) can narrow it. */
+@layer components {
+  .page-width {
+    max-width: var(--page-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--padding-inline);
+    padding-right: var(--padding-inline);
+  }
 }
 
 /* Custom theme styles */
@@ -100,6 +104,31 @@ header-drawer [data-panel] {
 
 header-drawer [data-panel].is-open {
   transform: translateX(0);
+}
+
+/* ── Sticky header (hide on scroll down, show on scroll up) ── */
+/* position: sticky must sit on Shopify's .shopify-section wrapper — on the
+   section root itself there is no room to move inside that wrapper, so it
+   never sticks. The hide/show animates `top` rather than transform: a
+   transform (or will-change: transform) here would become the containing
+   block for the fixed-position mobile menu / search panels rendered inside
+   the header and clip them to the header box. */
+.shopify-section:has(sticky-header) {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  transition: top 0.3s ease;
+}
+
+/* Header box height: h-16 row + 1px bottom border. */
+.shopify-section:has(sticky-header[data-hidden]) {
+  top: calc(-4rem - 1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shopify-section:has(sticky-header) {
+    transition: none;
+  }
 }
 
 /* ── Desktop dropdown & mega menu ── */

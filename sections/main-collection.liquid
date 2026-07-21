@@ -25,7 +25,6 @@
               data-toggle-filters
               class="flex items-center gap-2 text-sm font-medium uppercase tracking-wider cursor-pointer"
             >
-              <span data-filters-label>Show Filters</span>
               <svg
                 class="w-4 h-4"
                 fill="none"
@@ -34,8 +33,13 @@
                 stroke-width="2"
                 aria-hidden="true"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                />
               </svg>
+              <span data-filters-label>Show Filters</span>
             </button>
 
             <div class="flex items-center gap-4">
@@ -69,9 +73,13 @@
 
               <!-- Sort -->
               <div class="flex items-center gap-2">
-                <span class="text-sm text-gray-500 hidden sm:inline">Sort by:</span>
+                <label for="sort-by-select" class="text-sm text-gray-500 hidden sm:inline">
+                  Sort by:
+                </label>
                 <select
+                  id="sort-by-select"
                   name="sort_by"
+                  aria-label="Sort by"
                   class="text-sm font-medium border-0 bg-transparent cursor-pointer pr-6 focus:ring-0 focus:outline-none"
                 >
                   {% for option in collection.sort_options %}
@@ -119,7 +127,7 @@
               {% endfor %}
               <a
                 href="{{ collection.url }}"
-                class="text-xs text-gray-500 hover:text-gray-900 no-underline underline ml-1"
+                class="text-xs text-gray-500 hover:text-gray-900 underline ml-1"
                 >Clear all</a
               >
             </div>
@@ -131,23 +139,7 @@
             <aside data-filters class="bg-white z-50 flex flex-col md:w-56 md:shrink-0 md:block">
               <!-- Mobile drawer header -->
               <div class="md:hidden flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                <button
-                  type="button"
-                  data-toggle-filters
-                  class="flex items-center gap-2 text-sm font-medium uppercase tracking-wider cursor-pointer"
-                >
-                  Hide Filter
-                  <svg
-                    class="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    aria-hidden="true"
-                  >
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
-                  </svg>
-                </button>
+                <span class="text-sm font-medium uppercase tracking-wider">Filters</span>
                 <button
                   type="button"
                   data-close-filters
@@ -162,7 +154,7 @@
                     stroke-width="2"
                     aria-hidden="true"
                   >
-                    <path stroke-linecap="round" d="M5 12h14" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
@@ -209,9 +201,11 @@
 
                         {% when 'price_range' %}
                           {%- liquid
-                            assign range_max_money = filter.range_max | money_without_currency | replace: ',', ''
-                            assign min_money = filter.min_value.value | default: 0 | money_without_currency | replace: ',', ''
-                            assign max_money = filter.max_value.value | default: filter.range_max | money_without_currency | replace: ',', ''
+                            # Filter values are in cents; divide instead of parsing
+                            # money strings so locale formatting can't break the math.
+                            assign range_max_money = filter.range_max | divided_by: 100.0 | ceil
+                            assign min_money = filter.min_value.value | default: 0 | divided_by: 100.0 | floor
+                            assign max_money = filter.max_value.value | default: filter.range_max | divided_by: 100.0 | ceil
                           -%}
 
                           <price-range-slider

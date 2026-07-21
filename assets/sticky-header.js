@@ -1,7 +1,8 @@
 /**
  * Hide-on-scroll-down, show-on-scroll-up sticky header.
  *
- * The header element itself owns `position: sticky` + transition classes;
+ * Positioning and the hide/show animation live in CSS on the
+ * `.shopify-section` wrapper (see the sticky header block in src/input.css);
  * this component just flips a `data-hidden` attribute based on scroll
  * direction. Pauses while a nav dropdown / mega menu / predictive-search
  * panel is open, and while the theme editor is active.

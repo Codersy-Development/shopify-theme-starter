@@ -86,7 +86,9 @@
       <!-- Product Info -->
       <div>
         <h1 class="text-3xl font-bold mb-4">{{ product.title }}</h1>
-        <p class="text-2xl text-gray-700 mb-6">{{ product.price | money }}</p>
+        <p class="text-2xl text-gray-700 mb-6" data-product-price>
+          {{ product.selected_or_first_available_variant.price | money }}
+        </p>
 
         {% if product.description != blank %}
           <div class="prose text-gray-600 mb-8">
@@ -98,26 +100,33 @@
           {% form 'product', product %}
             {% if product.variants.size > 1 %}
               <div class="mb-6">
-                {% for option in product.options_with_values %}
-                  <label class="block text-sm font-medium text-gray-700 mb-2">
-                    {{ option.name }}
-                  </label>
-                  <select
-                    name="id"
-                    class="block w-full border border-gray-300 rounded-lg px-4 py-2 mb-4"
-                  >
-                    {% for variant in product.variants %}
-                      <option
-                        value="{{ variant.id }}"
-                        {% if variant == product.selected_or_first_available_variant %}
-                          selected
-                        {% endif %}
-                      >
-                        {{ variant.title }} — {{ variant.price | money }}
-                      </option>
-                    {% endfor %}
-                  </select>
-                {% endfor %}
+                <label
+                  for="variant-select-{{ section.id }}"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  {{ product.options | join: ' / ' }}
+                </label>
+                <select
+                  id="variant-select-{{ section.id }}"
+                  name="id"
+                  class="block w-full border border-gray-300 rounded-lg px-4 py-2"
+                >
+                  {% for variant in product.variants %}
+                    <option
+                      value="{{ variant.id }}"
+                      data-price="{{ variant.price | money }}"
+                      {% unless variant.available %}
+                        disabled
+                      {% endunless %}
+                      {% if variant == product.selected_or_first_available_variant %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ variant.title }} — {{ variant.price | money -}}
+                      {% unless variant.available %} (Sold out){% endunless %}
+                    </option>
+                  {% endfor %}
+                </select>
               </div>
             {% else %}
               <input
@@ -169,7 +178,9 @@
 
       <div class="flex-1 min-w-0">
         <p class="text-sm font-medium text-gray-900 truncate">{{ product.title }}</p>
-        <p class="text-sm text-gray-600">{{ product.price | money }}</p>
+        <p class="text-sm text-gray-600" data-product-price>
+          {{ product.selected_or_first_available_variant.price | money }}
+        </p>
       </div>
 
       <button
