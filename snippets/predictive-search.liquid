@@ -2,7 +2,7 @@
   <button
     type="button"
     class="text-gray-700 hover:text-gray-900 cursor-pointer"
-    aria-label="Search"
+    aria-label="{{ 'general.search.title' | t }}"
     data-open-search
   >
     <svg
@@ -21,16 +21,16 @@
   <div
     class="predictive-search-results fixed inset-0 z-50 bg-white flex flex-col md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 md:w-96 md:max-h-[80vh] md:rounded-xl md:shadow-2xl md:border md:border-gray-200 overflow-hidden"
     role="listbox"
-    aria-label="Search suggestions"
+    aria-label="{{ 'general.search.suggestions' | t }}"
   >
     <!-- Mobile header -->
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 md:hidden">
-      <span class="text-lg font-semibold">Search</span>
+      <span class="text-lg font-semibold">{{ 'general.search.title' | t }}</span>
       <button
         type="button"
         data-close-search
         class="text-gray-400 hover:text-gray-600 cursor-pointer p-1"
-        aria-label="Close search"
+        aria-label="{{ 'general.search.close' | t }}"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -64,12 +64,14 @@
         >
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <label for="predictive-search-input" class="visually-hidden">Search</label>
+        <label for="predictive-search-input" class="visually-hidden">
+          {{- 'general.search.title' | t -}}
+        </label>
         <input
           type="search"
           id="predictive-search-input"
           name="q"
-          placeholder="Search..."
+          placeholder="{{ 'general.search.placeholder' | t }}"
           autocomplete="off"
           data-search-input
           class="w-full py-4 md:py-3 text-base md:text-sm bg-transparent border-0 focus:outline-none focus:ring-0 appearance-none"
@@ -79,7 +81,7 @@
           type="button"
           data-close-search
           class="hidden md:block text-gray-400 hover:text-gray-600 cursor-pointer shrink-0"
-          aria-label="Close search"
+          aria-label="{{ 'general.search.close' | t }}"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +99,9 @@
     </form>
 
     <div data-search-results class="flex-1 overflow-y-auto md:max-h-96">
-      <div class="px-4 py-8 text-center text-sm text-gray-400">Start typing to search...</div>
+      <div class="px-4 py-8 text-center text-sm text-gray-400">
+        {{ 'general.search.start_typing' | t }}
+      </div>
     </div>
   </div>
 </predictive-search>

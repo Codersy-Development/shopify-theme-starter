@@ -5,16 +5,16 @@
     data-panel
     role="dialog"
     aria-modal="true"
-    aria-label="Shopping cart"
+    aria-label="{{ 'cart.drawer_title' | t }}"
     class="fixed top-0 right-0 h-full w-full sm:max-w-md bg-white shadow-xl flex flex-col z-50"
   >
     <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold">Cart</h2>
+      <h2 class="text-lg font-semibold">{{ 'cart.drawer_title' | t }}</h2>
       <button
         data-close
         type="button"
         class="text-gray-400 hover:text-gray-600 cursor-pointer"
-        aria-label="Close cart"
+        aria-label="{{ 'cart.close' | t }}"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +53,8 @@
                   <p class="text-xs text-gray-500 mt-0.5">{{ item.variant.title }}</p>
                 {% endif %}
                 <p class="text-sm text-gray-600 mt-0.5">
-                  <span class="visually-hidden">Price:</span> {{ item.final_price | money }}
+                  <span class="visually-hidden">{{ 'cart.price' | t }}:</span>
+                  {{ item.final_price | money }}
                 </p>
 
                 <div class="flex items-center gap-3 mt-2">
@@ -61,7 +62,7 @@
                     <button
                       type="button"
                       class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-900 cursor-pointer"
-                      aria-label="Decrease quantity for {{ item.product.title }}"
+                      aria-label="{{ 'cart.decrease_quantity' | t: title: item.product.title | escape }}"
                       data-change-qty
                       data-line="{{ forloop.index }}"
                       data-qty="{{ item.quantity | minus: 1 }}"
@@ -79,14 +80,14 @@
                     </button>
                     <span
                       class="w-8 text-center text-sm"
-                      aria-label="Quantity: {{ item.quantity }}"
+                      aria-label="{{ 'cart.quantity' | t }}: {{ item.quantity }}"
                     >
                       {{- item.quantity -}}
                     </span>
                     <button
                       type="button"
                       class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-900 cursor-pointer"
-                      aria-label="Increase quantity for {{ item.product.title }}"
+                      aria-label="{{ 'cart.increase_quantity' | t: title: item.product.title | escape }}"
                       data-change-qty
                       data-line="{{ forloop.index }}"
                       data-qty="{{ item.quantity | plus: 1 }}"
@@ -107,12 +108,12 @@
                   <button
                     type="button"
                     class="text-xs text-gray-400 hover:text-red-600 cursor-pointer transition-colors"
-                    aria-label="Remove {{ item.product.title }} from cart"
+                    aria-label="{{ 'cart.remove_item' | t: title: item.product.title | escape }}"
                     data-change-qty
                     data-line="{{ forloop.index }}"
                     data-qty="0"
                   >
-                    Remove
+                    {{ 'cart.remove' | t }}
                   </button>
                 </div>
               </div>
@@ -121,13 +122,13 @@
         </ul>
       {% else %}
         <div class="flex flex-col items-center justify-center h-full text-center px-6">
-          <p class="text-gray-500 mb-4">Your cart is empty.</p>
+          <p class="text-gray-500 mb-4">{{ 'cart.empty' | t }}</p>
           <a
             href="{{ routes.all_products_collection_url }}"
             class="text-sm font-medium text-gray-900 underline"
             data-close
           >
-            Continue shopping
+            {{ 'cart.continue_shopping' | t }}
           </a>
         </div>
       {% endif %}
@@ -137,7 +138,7 @@
       <div data-cart-drawer-footer class="border-t border-gray-200 px-6 py-4">
         {% render 'free-shipping-tracker' %}
         <div class="flex items-center justify-between mb-4">
-          <span class="text-sm font-semibold">Subtotal</span>
+          <span class="text-sm font-semibold">{{ 'cart.subtotal' | t }}</span>
           <span class="text-sm font-semibold">{{ cart.total_price | money }}</span>
         </div>
 
@@ -145,14 +146,14 @@
           href="/checkout"
           class="block w-full bg-gray-900 text-white text-center font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors no-underline"
         >
-          Checkout
+          {{ 'cart.checkout' | t }}
         </a>
 
         <a
           href="{{ routes.cart_url }}"
           class="block w-full text-center text-sm text-gray-600 mt-2 hover:text-gray-900 no-underline"
         >
-          View cart
+          {{ 'cart.view_cart' | t }}
         </a>
       </div>
     {% endif %}

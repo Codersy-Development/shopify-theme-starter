@@ -70,7 +70,10 @@ class CollectionFilters extends Component {
   #updateLabel() {
     if (!this.label) return;
     const showing = this.mdQuery.matches ? this.desktopVisible : this.drawer.isOpen;
-    this.label.textContent = showing ? "Hide Filters" : "Show Filters";
+    const strings = window.themeStrings ?? {};
+    this.label.textContent = showing
+      ? (strings.hideFilters ?? "Hide Filters")
+      : (strings.showFilters ?? "Show Filters");
   }
 }
 

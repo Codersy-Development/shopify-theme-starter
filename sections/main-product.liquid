@@ -46,7 +46,7 @@
               class="flex gap-2 mt-3 overflow-x-auto"
               data-thumbnails
               role="listbox"
-              aria-label="Product images"
+              aria-label="{{ 'products.product.gallery_label' | t }}"
             >
               {% for image in product.images %}
                 <button
@@ -60,7 +60,7 @@
                   {% else %}
                     aria-selected="false"
                   {% endif %}
-                  aria-label="Product image {{ forloop.index }}"
+                  aria-label="{{ 'products.product.image_label' | t: index: forloop.index }}"
                 >
                   {% render 'image',
                     image: image,
@@ -123,7 +123,9 @@
                       {% endif %}
                     >
                       {{ variant.title }} — {{ variant.price | money -}}
-                      {% unless variant.available %} (Sold out){% endunless %}
+                      {% unless variant.available %}
+                        ({{ 'products.product.sold_out' | t }})
+                      {%- endunless %}
                     </option>
                   {% endfor %}
                 </select>
@@ -144,9 +146,9 @@
               {% endunless %}
             >
               {% if product.available %}
-                Add to cart
+                {{ 'products.product.add_to_cart' | t }}
               {% else %}
-                Sold out
+                {{ 'products.product.sold_out' | t }}
               {% endif %}
             </button>
           {% endform %}
@@ -192,9 +194,9 @@
         {% endunless %}
       >
         {% if product.available %}
-          Add to cart
+          {{ 'products.product.add_to_cart' | t }}
         {% else %}
-          Sold out
+          {{ 'products.product.sold_out' | t }}
         {% endif %}
       </button>
     </div>

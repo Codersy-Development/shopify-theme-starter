@@ -10,7 +10,7 @@
  * Liquid markup; this JS only drives the slide-in attribute toggle.
  */
 import { Component } from "@theme/component";
-import { addToCart, announceCartStatus } from "@theme/cart-add";
+import { addToCart, announceCartStatus, themeString } from "@theme/cart-add";
 
 class StickyAtc extends Component {
   static ERROR_RESET_MS = 2000;
@@ -44,15 +44,15 @@ class StickyAtc extends Component {
     const originalText = this.button.textContent;
     this.button.disabled = true;
     this.button.setAttribute("aria-busy", "true");
-    this.button.textContent = "Adding...";
+    this.button.textContent = themeString("adding", "Adding...");
 
     try {
       await addToCart({ id, quantity: 1 });
       this.#restoreButton(originalText);
     } catch (error) {
       console.error("Sticky add to cart error:", error);
-      this.button.textContent = "Error — try again";
-      announceCartStatus("Failed to add item to cart. Please try again.");
+      this.button.textContent = themeString("addError", "Error — try again");
+      announceCartStatus(themeString("addFailed", "Failed to add item to cart. Please try again."));
       setTimeout(() => this.#restoreButton(originalText), StickyAtc.ERROR_RESET_MS);
     }
   }

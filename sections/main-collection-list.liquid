@@ -1,7 +1,7 @@
 {% paginate collections by 24 %}
   <section class="py-12">
     <div class="page-width">
-      <h1 class="text-3xl font-bold mb-8">Collections</h1>
+      <h1 class="text-3xl font-bold mb-8">{{ 'collections.list_title' | t }}</h1>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
         {% for collection in collections %}

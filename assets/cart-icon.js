@@ -3,6 +3,7 @@
  * Listens for cart:updated events to keep the count in sync.
  */
 import { Component } from "@theme/component";
+import { themeString, itemsWord } from "@theme/cart-add";
 
 class CartIcon extends Component {
   setup() {
@@ -25,7 +26,9 @@ class CartIcon extends Component {
 
     // Update aria-label with current count
     if (this.trigger) {
-      const label = count === 1 ? "Cart, 1 item" : `Cart, ${count} items`;
+      const label = themeString("cartLabel", "Cart, [count] [items]")
+        .replace("[count]", count)
+        .replace("[items]", itemsWord(count));
       this.trigger.setAttribute("aria-label", label);
     }
   }

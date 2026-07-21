@@ -35,7 +35,7 @@
         <header-nav>
           <nav
             class="hidden md:flex items-center justify-center gap-6"
-            aria-label="Main navigation"
+            aria-label="{{ 'nav.main_navigation' | t }}"
           >
             {% for link in linklists[section.settings.menu].links %}
               {% liquid
@@ -206,7 +206,7 @@
             <a
               href="{{ routes.search_url }}"
               class="text-gray-700 hover:text-gray-900 no-underline"
-              aria-label="Search"
+              aria-label="{{ 'general.search.title' | t }}"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -228,7 +228,7 @@
                 type="button"
                 class="text-gray-700 hover:text-gray-900 cursor-pointer relative"
                 onclick="document.dispatchEvent(new CustomEvent('cart:open'))"
-                aria-label="Cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}"
+                aria-label="{{ 'cart.item_count_label' | t: count: cart.item_count }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -253,7 +253,7 @@
               <a
                 href="{{ routes.cart_url }}"
                 class="text-gray-700 hover:text-gray-900 no-underline relative"
-                aria-label="Cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}"
+                aria-label="{{ 'cart.item_count_label' | t: count: cart.item_count }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

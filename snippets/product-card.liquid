@@ -37,7 +37,7 @@
 
       {% if on_sale %}
         <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-medium px-2 py-0.5 rounded">
-          Sale
+          {{ 'products.product.on_sale' | t }}
         </span>
       {% endif %}
     </div>
@@ -83,7 +83,7 @@
           data-image-src="{{ swatch_image | image_url: width: 600 }}"
           data-image-srcset="{{ swatch_image | image_url: width: 400 }} 400w, {{ swatch_image | image_url: width: 600 }} 600w"
           data-url="{{ product.url }}?variant={{ swatch_variant_id }}"
-          style="background-color: {{ value | downcase }}"
+          style="background-color: {{ value | downcase | replace: ' ', '' }}"
           class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer transition-shadow hover:ring-2 hover:ring-offset-1 hover:ring-gray-400 {% if forloop.first %}ring-2 ring-offset-1 ring-gray-900{% endif %}"
           aria-label="{{ value }}"
           title="{{ value }}"

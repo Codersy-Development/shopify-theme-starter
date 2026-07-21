@@ -1,6 +1,6 @@
 <section class="py-12">
   <div class="page-width max-w-3xl">
-    <h1 class="text-3xl font-bold mb-8">Your Cart</h1>
+    <h1 class="text-3xl font-bold mb-8">{{ 'cart.title' | t }}</h1>
 
     {% if cart.item_count > 0 %}
       <form action="{{ routes.cart_url }}" method="post">
@@ -42,7 +42,7 @@
 
         <div class="border-t border-gray-200 pt-6 mt-6">
           <div class="flex items-center justify-between mb-6">
-            <span class="text-lg font-semibold">Total</span>
+            <span class="text-lg font-semibold">{{ 'cart.total' | t }}</span>
             <span class="text-lg font-semibold">{{ cart.total_price | money }}</span>
           </div>
 
@@ -52,26 +52,26 @@
               name="update"
               class="w-full border border-gray-300 font-semibold px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >
-              Update cart
+              {{ 'cart.update' | t }}
             </button>
             <button
               type="submit"
               name="checkout"
               class="w-full bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
             >
-              Checkout
+              {{ 'cart.checkout' | t }}
             </button>
           </div>
         </div>
       </form>
     {% else %}
       <div class="text-center py-12">
-        <p class="text-gray-500 mb-6">Your cart is empty.</p>
+        <p class="text-gray-500 mb-6">{{ 'cart.empty' | t }}</p>
         <a
           href="{{ routes.all_products_collection_url }}"
           class="inline-block bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors no-underline"
         >
-          Continue shopping
+          {{ 'cart.continue_shopping' | t }}
         </a>
       </div>
     {% endif %}

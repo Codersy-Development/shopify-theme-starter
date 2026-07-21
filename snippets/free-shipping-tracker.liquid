@@ -26,9 +26,10 @@
   <div class="mb-4" data-free-shipping-tracker>
     <p class="text-sm text-gray-600 mb-2">
       {%- if remaining_cents > 0 -%}
-        Add {{ remaining_cents | money }} more for free shipping
+        {%- assign remaining_money = remaining_cents | money -%}
+        {{ 'cart.free_shipping_remaining' | t: amount: remaining_money }}
       {%- else -%}
-        You qualify for free shipping!
+        {{ 'cart.free_shipping_qualified' | t }}
       {%- endif -%}
     </p>
     <div
@@ -37,7 +38,7 @@
       aria-valuemin="0"
       aria-valuemax="100"
       aria-valuenow="{{ progress_pct }}"
-      aria-label="Free shipping progress"
+      aria-label="{{ 'cart.free_shipping_progress' | t }}"
     >
       <div
         class="h-full bg-gray-900 transition-all duration-300"

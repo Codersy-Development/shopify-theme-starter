@@ -32,9 +32,9 @@
 
       <div>
         <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
-          Quick links
+          {{ 'footer.quick_links' | t }}
         </h3>
-        <nav class="space-y-2" aria-label="Footer navigation">
+        <nav class="space-y-2" aria-label="{{ 'footer.navigation_label' | t }}">
           {% for link in linklists[section.settings.menu].links %}
             <a
               href="{{ link.url }}"
@@ -52,9 +52,9 @@
             id="newsletter-heading"
             class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4"
           >
-            Stay in touch
+            {{ 'footer.newsletter_heading' | t }}
           </h3>
-          <p class="text-sm text-gray-500 mb-3">Subscribe for updates and promotions.</p>
+          <p class="text-sm text-gray-500 mb-3">{{ 'footer.newsletter_text' | t }}</p>
           {% form 'customer' %}
             <input type="hidden" name="contact[tags]" value="newsletter">
             {% if form.posted_successfully? %}
@@ -69,12 +69,14 @@
               </p>
             {% endif %}
             <div class="flex gap-2">
-              <label for="newsletter-email" class="visually-hidden">Email address</label>
+              <label for="newsletter-email" class="visually-hidden">
+                {{- 'newsletter.label' | t -}}
+              </label>
               <input
                 type="email"
                 id="newsletter-email"
                 name="contact[email]"
-                placeholder="Your email"
+                placeholder="{{ 'newsletter.placeholder' | t }}"
                 required
                 aria-required="true"
                 autocomplete="email"
@@ -84,7 +86,7 @@
                 type="submit"
                 class="bg-gray-900 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
               >
-                Subscribe
+                {{ 'newsletter.submit' | t }}
               </button>
             </div>
           {% endform %}
@@ -95,7 +97,8 @@
     <div class="border-t border-gray-200 pt-8 flex flex-col sm:flex-row items-center justify-between gap-2">
       <p class="text-sm text-gray-400">
         &copy; {{ 'now' | date: '%Y' }}
-        {{ shop.name }}. All rights reserved.
+        {{ shop.name }}.
+        {{ 'footer.rights' | t }}
       </p>
       <p class="text-sm text-gray-400">
         Shopify theme by

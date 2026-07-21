@@ -10,8 +10,8 @@
 
     {% form 'contact' %}
       {% if form.posted_successfully? %}
-        <div class="bg-green-50 text-green-700 text-sm rounded-lg px-4 py-3 mb-6">
-          Thanks for your message! We'll get back to you as soon as possible.
+        <div class="bg-green-50 text-green-700 text-sm rounded-lg px-4 py-3 mb-6" role="status">
+          {{ 'contact.success' | t }}
         </div>
       {% endif %}
 
@@ -23,8 +23,9 @@
 
       <div class="space-y-4">
         <div>
-          <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1"
-            >Name <span aria-hidden="true">*</span></label
+          <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1">
+            {{- 'contact.name' | t }}
+            <span aria-hidden="true">*</span></label
           >
           <input
             type="text"
@@ -39,8 +40,9 @@
         </div>
 
         <div>
-          <label for="contact-email" class="block text-sm font-medium text-gray-700 mb-1"
-            >Email <span aria-hidden="true">*</span></label
+          <label for="contact-email" class="block text-sm font-medium text-gray-700 mb-1">
+            {{- 'contact.email' | t }}
+            <span aria-hidden="true">*</span></label
           >
           <input
             type="email"
@@ -55,9 +57,9 @@
         </div>
 
         <div>
-          <label for="contact-phone" class="block text-sm font-medium text-gray-700 mb-1"
-            >Phone (optional)</label
-          >
+          <label for="contact-phone" class="block text-sm font-medium text-gray-700 mb-1">
+            {{- 'contact.phone' | t -}}
+          </label>
           <input
             type="tel"
             id="contact-phone"
@@ -69,8 +71,9 @@
         </div>
 
         <div>
-          <label for="contact-body" class="block text-sm font-medium text-gray-700 mb-1"
-            >Message <span aria-hidden="true">*</span></label
+          <label for="contact-body" class="block text-sm font-medium text-gray-700 mb-1">
+            {{- 'contact.message' | t }}
+            <span aria-hidden="true">*</span></label
           >
           <textarea
             id="contact-body"
@@ -86,7 +89,7 @@
           type="submit"
           class="w-full bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
         >
-          Send message
+          {{ 'contact.send' | t }}
         </button>
       </div>
     {% endform %}

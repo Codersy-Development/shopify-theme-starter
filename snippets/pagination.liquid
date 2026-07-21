@@ -12,13 +12,13 @@
 {%- if paginate.pages > 1 -%}
   <nav
     class="flex justify-center items-center flex-wrap gap-1 mt-12"
-    aria-label="Pagination"
+    aria-label="{{ 'general.pagination.label' | t }}"
   >
     {%- if paginate.previous -%}
       <a
         href="{{ paginate.previous.url }}"
         class="px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 no-underline text-gray-700 text-sm"
-        aria-label="Previous page"
+        aria-label="{{ 'general.pagination.previous' | t }}"
       >
         <svg
           class="w-4 h-4"
@@ -63,7 +63,7 @@
       <a
         href="{{ paginate.next.url }}"
         class="px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 no-underline text-gray-700 text-sm"
-        aria-label="Next page"
+        aria-label="{{ 'general.pagination.next' | t }}"
       >
         <svg
           class="w-4 h-4"

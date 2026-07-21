@@ -7,7 +7,7 @@
  * → restore after 2s).
  */
 import { Component } from "@theme/component";
-import { addToCart, announceCartStatus } from "@theme/cart-add";
+import { addToCart, announceCartStatus, themeString } from "@theme/cart-add";
 
 class ProductForm extends Component {
   static ERROR_RESET_MS = 2000;
@@ -33,7 +33,7 @@ class ProductForm extends Component {
     const originalText = this.submitButton.textContent;
     this.submitButton.disabled = true;
     this.submitButton.setAttribute("aria-busy", "true");
-    this.submitButton.textContent = "Adding...";
+    this.submitButton.textContent = themeString("adding", "Adding...");
 
     try {
       // Only id+quantity are forwarded; if line-item properties or selling-plan
@@ -43,8 +43,8 @@ class ProductForm extends Component {
       this.#restoreButton(originalText);
     } catch (error) {
       console.error("Add to cart error:", error);
-      this.submitButton.textContent = "Error — try again";
-      announceCartStatus("Failed to add item to cart. Please try again.");
+      this.submitButton.textContent = themeString("addError", "Error — try again");
+      announceCartStatus(themeString("addFailed", "Failed to add item to cart. Please try again."));
       setTimeout(() => this.#restoreButton(originalText), ProductForm.ERROR_RESET_MS);
     }
   }

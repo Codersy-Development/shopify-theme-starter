@@ -11,6 +11,19 @@ export function announceCartStatus(text) {
 }
 
 /**
+ * Translated strings injected by snippets/scripts.liquid, with English
+ * fallbacks. [bracket] tokens are replaced by the caller.
+ */
+export function themeString(key, fallback) {
+  return window.themeStrings?.[key] ?? fallback;
+}
+
+/** "item" / "items" for the given count, translated. */
+export function itemsWord(count) {
+  return count === 1 ? themeString("itemsOne", "item") : themeString("itemsOther", "items");
+}
+
+/**
  * Add an item to the cart via Shopify's AJAX API and broadcast the
  * resulting state. Returns the added item object on success.
  *
@@ -44,7 +57,10 @@ export async function addToCart({ id, quantity = 1 }) {
   document.dispatchEvent(new CustomEvent("cart:open"));
 
   announceCartStatus(
-    `Added ${addedItem.product_title} to cart. Cart now has ${cart.item_count} ${cart.item_count === 1 ? "item" : "items"}.`,
+    themeString("addedToCart", "Added [title] to cart. Cart now has [count] [items].")
+      .replace("[title]", addedItem.product_title)
+      .replace("[count]", cart.item_count)
+      .replace("[items]", itemsWord(cart.item_count)),
   );
 
   return addedItem;

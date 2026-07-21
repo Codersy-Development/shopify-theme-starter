@@ -2,37 +2,156 @@
   "general": {
     "404": {
       "title": "Page not found",
-      "subtext": "The page you requested does not exist."
+      "subtext": "The page you requested does not exist.",
+      "back_home": "Go home"
     },
+    "skip_to_content": "Skip to content",
     "search": {
       "title": "Search",
       "placeholder": "Search our store...",
-      "no_results": "No results found",
-      "results_count": {
-        "one": "{{ count }} result",
-        "other": "{{ count }} results"
+      "submit": "Search",
+      "close": "Close search",
+      "suggestions": "Search suggestions",
+      "start_typing": "Start typing to search...",
+      "no_results_for": "No results found for “{{ terms }}”. Please try another search.",
+      "results_with_terms": {
+        "one": "{{ count }} result for “{{ terms }}”",
+        "other": "{{ count }} results for “{{ terms }}”"
       }
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter store password",
+      "submit": "Enter",
+      "coming_soon": "We're getting things ready. Come back soon!"
     }
   },
-  "gift_cards": {
-    "issued": {
-      "title": "Gift card"
-    }
+  "nav": {
+    "menu": "Menu",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu",
+    "mobile_menu": "Mobile menu",
+    "mobile_navigation": "Mobile navigation",
+    "main_navigation": "Main navigation",
+    "expand_item": "Expand {{ title }}"
   },
   "cart": {
     "title": "Your cart",
-    "empty": "Your cart is empty",
+    "drawer_title": "Cart",
+    "close": "Close cart",
+    "empty": "Your cart is empty.",
     "continue_shopping": "Continue shopping",
     "subtotal": "Subtotal",
+    "total": "Total",
     "checkout": "Checkout",
-    "update": "Update cart"
+    "update": "Update cart",
+    "view_cart": "View cart",
+    "price": "Price",
+    "quantity": "Quantity",
+    "remove": "Remove",
+    "decrease_quantity": "Decrease quantity for {{ title }}",
+    "increase_quantity": "Increase quantity for {{ title }}",
+    "remove_item": "Remove {{ title }} from cart",
+    "item_count_label": {
+      "one": "Cart, {{ count }} item",
+      "other": "Cart, {{ count }} items"
+    },
+    "free_shipping_remaining": "Add {{ amount }} more for free shipping",
+    "free_shipping_qualified": "You qualify for free shipping!",
+    "free_shipping_progress": "Free shipping progress"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "on_sale": "Sale",
+      "gallery_label": "Product images",
+      "image_label": "Product image {{ index }}"
+    }
+  },
+  "collections": {
+    "list_title": "Collections",
+    "products_count": {
+      "one": "{{ count }} product",
+      "other": "{{ count }} products"
+    },
+    "sorting": {
+      "label": "Sort by:"
+    },
+    "grid": {
+      "label": "Grid columns",
+      "columns": "{{ count }} columns"
+    },
+    "filters": {
+      "title": "Filters",
+      "show": "Show Filters",
+      "hide": "Hide Filters",
+      "close": "Close filters",
+      "apply": "Apply",
+      "clear_all": "Clear all",
+      "no_products": "No products match your filters.",
+      "clear_all_filters": "Clear all filters"
+    }
+  },
+  "footer": {
+    "quick_links": "Quick links",
+    "navigation_label": "Footer navigation",
+    "newsletter_heading": "Stay in touch",
+    "newsletter_text": "Subscribe for updates and promotions.",
+    "rights": "All rights reserved."
+  },
+  "newsletter": {
+    "label": "Email address",
+    "placeholder": "Your email",
+    "submit": "Subscribe",
+    "success": "Thanks for subscribing!"
+  },
+  "contact": {
+    "success": "Thanks for your message! We'll get back to you as soon as possible.",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "message": "Message",
+    "send": "Send message"
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Gift card",
+      "subtext": "Here's your gift card!",
+      "initial_value": "Initial value: {{ value }}",
+      "expired_on": "Expired on {{ date }}",
+      "expires_on": "Expires on {{ date }}",
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "shop_link": "Shop now"
+    }
   },
   "breadcrumb": {
     "home": "Home"
   },
-  "newsletter": {
-    "label": "Email",
-    "submit": "Subscribe",
-    "success": "Thanks for subscribing!"
+  "js": {
+    "adding": "Adding...",
+    "add_error": "Error — try again",
+    "add_failed": "Failed to add item to cart. Please try again.",
+    "added_to_cart": "Added [title] to cart. Cart now has [count] [items].",
+    "cart_updated": "Cart updated. [count] [items] in cart.",
+    "item_removed": "Item removed from cart.",
+    "cart_label": "Cart, [count] [items]",
+    "items_one": "item",
+    "items_other": "items",
+    "show_filters": "Show Filters",
+    "hide_filters": "Hide Filters",
+    "search_start": "Start typing to search...",
+    "searching": "Searching...",
+    "search_error": "Something went wrong. Try again.",
+    "search_no_results": "No results for “[query]”",
+    "search_products": "Products",
+    "search_pages": "Pages",
+    "search_articles": "Articles",
+    "search_view_all": "View all results"
   }
 }

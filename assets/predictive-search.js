@@ -6,16 +6,23 @@
 import { Component } from "@theme/component";
 
 class PredictiveSearch extends Component {
-  static EMPTY_HTML =
-    '<div class="px-4 py-8 text-center text-sm text-gray-400">Start typing to search...</div>';
-
-  static LOADING_HTML =
-    '<div class="px-4 py-6 text-center text-sm text-gray-400">Searching...</div>';
-
-  static ERROR_HTML =
-    '<div class="px-4 py-6 text-center text-sm text-gray-500">Something went wrong. Try again.</div>';
-
   static DEBOUNCE_MS = 300;
+
+  static string(key, fallback) {
+    return window.themeStrings?.[key] ?? fallback;
+  }
+
+  static get EMPTY_HTML() {
+    return `<div class="px-4 py-8 text-center text-sm text-gray-400">${PredictiveSearch.string("searchStart", "Start typing to search...")}</div>`;
+  }
+
+  static get LOADING_HTML() {
+    return `<div class="px-4 py-6 text-center text-sm text-gray-400">${PredictiveSearch.string("searching", "Searching...")}</div>`;
+  }
+
+  static get ERROR_HTML() {
+    return `<div class="px-4 py-6 text-center text-sm text-gray-500">${PredictiveSearch.string("searchError", "Something went wrong. Try again.")}</div>`;
+  }
 
   setup() {
     this.openBtn = this.$("[data-open-search]");
@@ -80,7 +87,10 @@ class PredictiveSearch extends Component {
       const articles = data.resources?.results?.articles || [];
 
       if (products.length === 0 && pages.length === 0 && articles.length === 0) {
-        this.resultsContainer.innerHTML = `<div class="px-4 py-6 text-center text-sm text-gray-500">No results for &ldquo;${this.#escape(query)}&rdquo;</div>`;
+        const noResults = this.#escape(
+          PredictiveSearch.string("searchNoResults", "No results for “[query]”"),
+        ).replace("[query]", this.#escape(query));
+        this.resultsContainer.innerHTML = `<div class="px-4 py-6 text-center text-sm text-gray-500">${noResults}</div>`;
         return;
       }
 
@@ -88,8 +98,7 @@ class PredictiveSearch extends Component {
 
       if (products.length > 0) {
         html += '<div class="py-2">';
-        html +=
-          '<p class="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Products</p>';
+        html += `<p class="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">${this.#escape(PredictiveSearch.string("searchProducts", "Products"))}</p>`;
         for (const product of products) {
           const title = this.#escape(product.title);
           const url = this.#escape(product.url);
@@ -112,8 +121,7 @@ class PredictiveSearch extends Component {
 
       if (pages.length > 0) {
         html += '<div class="py-2 border-t border-gray-100">';
-        html +=
-          '<p class="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Pages</p>';
+        html += `<p class="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">${this.#escape(PredictiveSearch.string("searchPages", "Pages"))}</p>`;
         for (const page of pages) {
           const title = this.#escape(page.title);
           const url = this.#escape(page.url);
@@ -124,8 +132,7 @@ class PredictiveSearch extends Component {
 
       if (articles.length > 0) {
         html += '<div class="py-2 border-t border-gray-100">';
-        html +=
-          '<p class="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Articles</p>';
+        html += `<p class="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">${this.#escape(PredictiveSearch.string("searchArticles", "Articles"))}</p>`;
         for (const article of articles) {
           const title = this.#escape(article.title);
           const url = this.#escape(article.url);
@@ -135,7 +142,7 @@ class PredictiveSearch extends Component {
       }
 
       const viewAllUrl = this.#escape(`/search?q=${encodeURIComponent(query)}`);
-      html += `<a href="${viewAllUrl}" class="block px-4 py-3 text-center text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 no-underline border-t border-gray-200 transition-colors">View all results</a>`;
+      html += `<a href="${viewAllUrl}" class="block px-4 py-3 text-center text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 no-underline border-t border-gray-200 transition-colors">${this.#escape(PredictiveSearch.string("searchViewAll", "View all results"))}</a>`;
 
       this.resultsContainer.innerHTML = html;
     } catch (error) {

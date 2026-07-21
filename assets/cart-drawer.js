@@ -7,6 +7,7 @@
  * refresh logic.
  */
 import { Drawer } from "@theme/drawer";
+import { themeString, itemsWord } from "@theme/cart-add";
 
 class CartDrawer extends Drawer {
   setup() {
@@ -53,8 +54,10 @@ class CartDrawer extends Drawer {
       if (status) {
         status.textContent =
           quantity === 0
-            ? "Item removed from cart."
-            : `Cart updated. ${cart.item_count} ${cart.item_count === 1 ? "item" : "items"} in cart.`;
+            ? themeString("itemRemoved", "Item removed from cart.")
+            : themeString("cartUpdated", "Cart updated. [count] [items] in cart.")
+                .replace("[count]", cart.item_count)
+                .replace("[items]", itemsWord(cart.item_count));
       }
 
       await this.refresh();

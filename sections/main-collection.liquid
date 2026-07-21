@@ -39,7 +39,7 @@
                   d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
                 />
               </svg>
-              <span data-filters-label>Show Filters</span>
+              <span data-filters-label>{{ 'collections.filters.show' | t }}</span>
             </button>
 
             <div class="flex items-center gap-4">
@@ -47,13 +47,13 @@
               <grid-switcher
                 class="hidden md:flex items-center gap-1"
                 role="radiogroup"
-                aria-label="Grid columns"
+                aria-label="{{ 'collections.grid.label' | t }}"
               >
                 <button
                   type="button"
                   data-grid="3"
                   class="p-1.5 rounded hover:bg-gray-100 transition-colors cursor-pointer"
-                  aria-label="3 columns"
+                  aria-label="{{ 'collections.grid.columns' | t: count: 3 }}"
                 >
                   <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
                     <rect x="1" y="2" width="5" height="16" rx="1"/><rect x="8" y="2" width="5" height="16" rx="1"/><rect x="15" y="2" width="4" height="16" rx="1"/>
@@ -63,7 +63,7 @@
                   type="button"
                   data-grid="4"
                   class="p-1.5 rounded hover:bg-gray-100 transition-colors cursor-pointer"
-                  aria-label="4 columns"
+                  aria-label="{{ 'collections.grid.columns' | t: count: 4 }}"
                 >
                   <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
                     <rect x="1" y="2" width="3.5" height="16" rx="1"/><rect x="6" y="2" width="3.5" height="16" rx="1"/><rect x="11" y="2" width="3.5" height="16" rx="1"/><rect x="16" y="2" width="3" height="16" rx="1"/>
@@ -74,12 +74,12 @@
               <!-- Sort -->
               <div class="flex items-center gap-2">
                 <label for="sort-by-select" class="text-sm text-gray-500 hidden sm:inline">
-                  Sort by:
+                  {{ 'collections.sorting.label' | t }}
                 </label>
                 <select
                   id="sort-by-select"
                   name="sort_by"
-                  aria-label="Sort by"
+                  aria-label="{{ 'collections.sorting.label' | t }}"
                   class="text-sm font-medium border-0 bg-transparent cursor-pointer pr-6 focus:ring-0 focus:outline-none"
                 >
                   {% for option in collection.sort_options %}
@@ -100,7 +100,9 @@
           <!-- Active filter tags -->
           {% assign active_filters_count = 0 %}
           {% for filter in collection.filters %}
-            {% assign active_filters_count = active_filters_count | plus: filter.active_values.size %}
+            {% assign active_filters_count = active_filters_count
+              | plus: filter.active_values.size
+            %}
           {% endfor %}
 
           {% if active_filters_count > 0 %}
@@ -128,8 +130,9 @@
               <a
                 href="{{ collection.url }}"
                 class="text-xs text-gray-500 hover:text-gray-900 underline ml-1"
-                >Clear all</a
               >
+                {{- 'collections.filters.clear_all' | t -}}
+              </a>
             </div>
           {% endif %}
 
@@ -139,12 +142,14 @@
             <aside data-filters class="bg-white z-50 flex flex-col md:w-56 md:shrink-0 md:block">
               <!-- Mobile drawer header -->
               <div class="md:hidden flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                <span class="text-sm font-medium uppercase tracking-wider">Filters</span>
+                <span class="text-sm font-medium uppercase tracking-wider">
+                  {{- 'collections.filters.title' | t -}}
+                </span>
                 <button
                   type="button"
                   data-close-filters
                   class="text-gray-400 hover:text-gray-600 cursor-pointer"
-                  aria-label="Close filters"
+                  aria-label="{{ 'collections.filters.close' | t }}"
                 >
                   <svg
                     class="w-5 h-5"
@@ -209,6 +214,7 @@
                           -%}
 
                           <price-range-slider
+                            data-range-max="{{ range_max_money }}"
                             data-currency="{{ cart.currency.symbol }}"
                             class="block"
                           >
@@ -216,7 +222,7 @@
                             <div data-range-slider class="mx-1 mb-3">
                               <div data-range-track></div>
                               <div data-range-min></div>
-                              <div data-range-max="{{ range_max_money }}"></div>
+                              <div data-range-max></div>
                             </div>
                             <div class="flex justify-between text-xs text-gray-500">
                               <span data-label-min>
@@ -273,13 +279,13 @@
                   href="{{ collection.url }}"
                   class="flex-1 text-center border border-gray-900 py-3 text-sm font-medium uppercase tracking-wider no-underline text-gray-900 hover:bg-gray-50 transition-colors"
                 >
-                  Clear All
+                  {{ 'collections.filters.clear_all' | t }}
                 </a>
                 <button
                   type="submit"
                   class="flex-1 bg-gray-900 text-white py-3 text-sm font-medium uppercase tracking-wider cursor-pointer hover:bg-gray-800 transition-colors"
                 >
-                  Apply
+                  {{ 'collections.filters.apply' | t }}
                 </button>
               </div>
             </aside>
@@ -288,20 +294,25 @@
             <div class="flex-1 min-w-0">
               {% if collection.products.size > 0 %}
                 <p class="text-sm text-gray-500 mb-4">
-                  {{ collection.products_count }}
-                  {{ collection.products_count | pluralize: 'product', 'products' }}
+                  {{ 'collections.products_count' | t: count: collection.products_count }}
                 </p>
                 <div data-product-grid class="grid grid-cols-2 md:grid-cols-3 gap-6">
                   {% for product in collection.products %}
-                    {% render 'product-card', product: product, show_swatches: section.settings.show_swatches %}
+                    {% render 'product-card',
+                      product: product,
+                      show_swatches: section.settings.show_swatches
+                    %}
                   {% endfor %}
                 </div>
               {% else %}
                 <div class="text-center py-16">
-                  <p class="text-gray-500 mb-4">No products match your filters.</p>
-                  <a href="{{ collection.url }}" class="text-sm font-medium text-gray-900 underline"
-                    >Clear all filters</a
+                  <p class="text-gray-500 mb-4">{{ 'collections.filters.no_products' | t }}</p>
+                  <a
+                    href="{{ collection.url }}"
+                    class="text-sm font-medium text-gray-900 underline"
                   >
+                    {{- 'collections.filters.clear_all_filters' | t -}}
+                  </a>
                 </div>
               {% endif %}
             </div>
