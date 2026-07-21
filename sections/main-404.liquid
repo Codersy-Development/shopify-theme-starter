@@ -1,13 +1,51 @@
 <section class="py-24">
-  <div class="page-width max-w-3xl text-center">
+  <div class="page-width max-w-xl text-center">
     <h1 class="text-6xl font-bold text-gray-900 mb-4">404</h1>
-    <p class="text-xl text-gray-600 mb-8">{{ 'general.404.title' | t }}</p>
-    <a
-      href="{{ routes.root_url }}"
-      class="inline-block bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors no-underline"
+    <p class="text-xl text-gray-600 mb-2">{{ 'general.404.title' | t }}</p>
+    <p class="text-sm text-gray-500 mb-8">{{ 'general.404.subtext' | t }}</p>
+
+    <form
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      aria-label="{{ 'general.search.title' | t }}"
+      class="mb-8"
     >
-      {{ 'general.404.back_home' | t }}
-    </a>
+      <div class="flex gap-2">
+        <label for="search-404-input" class="visually-hidden">
+          {{- 'general.search.title' | t -}}
+        </label>
+        <input
+          type="search"
+          id="search-404-input"
+          name="q"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          autocomplete="off"
+          class="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+        >
+        <button
+          type="submit"
+          class="bg-gray-900 text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+        >
+          {{ 'general.search.submit' | t }}
+        </button>
+      </div>
+    </form>
+
+    <div class="flex flex-col sm:flex-row justify-center gap-3">
+      <a
+        href="{{ routes.root_url }}"
+        class="inline-block bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors no-underline"
+      >
+        {{ 'general.404.back_home' | t }}
+      </a>
+      <a
+        href="{{ routes.all_products_collection_url }}"
+        class="inline-block border border-gray-900 text-gray-900 font-semibold px-8 py-3 rounded-lg hover:bg-gray-900 hover:text-white transition-colors no-underline"
+      >
+        {{ 'general.404.browse_products' | t }}
+      </a>
+    </div>
   </div>
 </section>
 

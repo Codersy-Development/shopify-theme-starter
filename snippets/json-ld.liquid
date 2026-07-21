@@ -47,16 +47,28 @@
 {%- capture crumb_items_json -%}
   {%- case request.page_type -%}
     {%- when 'product' -%}
-      {%- assign primary_collection = product.collections | first -%}
-      {%- if primary_collection -%}
-        ,{ "@type": "ListItem", "position": 2, "name": {{ primary_collection.title | json }}, "item": {{ shop.url | append: primary_collection.url | json }} }
-        ,{ "@type": "ListItem", "position": 3, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
-      {%- else -%}
-        ,{ "@type": "ListItem", "position": 2, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
+      {%- comment -%} Mirrors snippets/breadcrumbs.liquid: metafield first, then first collection {%- endcomment -%}
+      {%- assign crumb_pos = 2 -%}
+      {%- assign product_category = product.metafields.breadcrumb.category.value | default: product.collections.first -%}
+      {%- if product_category -%}
+        ,{ "@type": "ListItem", "position": {{ crumb_pos }}, "name": {{ product_category.title | json }}, "item": {{ shop.url | append: product_category.url | json }} }
+        {%- assign crumb_pos = crumb_pos | plus: 1 -%}
+        {%- assign product_subcategory = product.metafields.breadcrumb.subcategory.value -%}
+        {%- if product_subcategory -%}
+          ,{ "@type": "ListItem", "position": {{ crumb_pos }}, "name": {{ product_subcategory.title | json }}, "item": {{ shop.url | append: product_subcategory.url | json }} }
+          {%- assign crumb_pos = crumb_pos | plus: 1 -%}
+        {%- endif -%}
       {%- endif -%}
+      ,{ "@type": "ListItem", "position": {{ crumb_pos }}, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
 
     {%- when 'collection' -%}
-      ,{ "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ shop.url | append: collection.url | json }} }
+      {%- assign crumb_pos = 2 -%}
+      {%- assign collection_category = collection.metafields.breadcrumb.category.value -%}
+      {%- if collection_category -%}
+        ,{ "@type": "ListItem", "position": {{ crumb_pos }}, "name": {{ collection_category.title | json }}, "item": {{ shop.url | append: collection_category.url | json }} }
+        {%- assign crumb_pos = crumb_pos | plus: 1 -%}
+      {%- endif -%}
+      ,{ "@type": "ListItem", "position": {{ crumb_pos }}, "name": {{ collection.title | json }}, "item": {{ shop.url | append: collection.url | json }} }
 
     {%- when 'article' -%}
       ,{ "@type": "ListItem", "position": 2, "name": {{ article.blog.title | json }}, "item": {{ shop.url | append: article.blog.url | json }} }
@@ -81,93 +93,41 @@
 {%- endif -%}
 
 {%- comment -%} Product {%- endcomment -%}
+{%- comment -%}
+  Shopify's structured_data filter emits Google's current Product schema
+  (ProductGroup with per-variant offers for multi-variant products) and is
+  kept up to date by Shopify. Review apps inject their own rating schema.
+{%- endcomment -%}
 {%- if request.page_type == 'product' -%}
-  {%- assign current_variant = product.selected_or_first_available_variant -%}
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": {{ product.title | json }},
-      "url": {{ shop.url | append: product.url | json }},
-      "description": {{ product.description | strip_html | truncate: 5000 | json }}
-      {%- if product.featured_image -%}
-        ,"image": [
-          {%- for image in product.images limit: 5 -%}
-            {{ image | image_url: width: 1200 | prepend: 'https:' | json }}{% unless forloop.last %},{% endunless %}
-          {%- endfor -%}
-        ]
-      {%- endif -%}
-      {%- if current_variant.sku != blank -%}
-        ,"sku": {{ current_variant.sku | json }}
-      {%- endif -%}
-      {%- if current_variant.barcode != blank -%}
-        ,"gtin": {{ current_variant.barcode | json }}
-      {%- endif -%}
-      ,"brand": {
-        "@type": "Brand",
-        "name": {{ product.vendor | json }}
-      }
-      {%- if product.metafields.reviews.rating.value != blank -%}
-        {%- assign rating_value = product.metafields.reviews.rating.value -%}
-        {%- assign rating_count = product.metafields.reviews.rating_count.value -%}
-        ,"aggregateRating": {
+    {{ product | structured_data }}
+  </script>
+
+  {%- if product.metafields.reviews.rating.value != blank -%}
+    {%- assign rating_value = product.metafields.reviews.rating.value -%}
+    {%- assign rating_count = product.metafields.reviews.rating_count.value -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "@id": {{ product.url | append: '#product' | json }},
+        "name": {{ product.title | json }},
+        "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": {{ rating_value.rating | json }},
           "bestRating": {{ rating_value.scale_max | json }},
           "worstRating": {{ rating_value.scale_min | json }},
           "ratingCount": {{ rating_count | json }}
         }
-      {%- endif -%}
-      ,"offers": {
-        "@type": "AggregateOffer",
-        "url": {{ shop.url | append: product.url | json }},
-        "priceCurrency": {{ cart.currency.iso_code | json }},
-        "lowPrice": {{ product.price_min | money_without_currency | strip_html | json }},
-        "highPrice": {{ product.price_max | money_without_currency | strip_html | json }},
-        "offerCount": {{ product.variants.size }},
-        "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
       }
-    }
-  </script>
+    </script>
+  {%- endif -%}
 {%- endif -%}
 
-{%- comment -%} BlogPosting {%- endcomment -%}
+{%- comment -%} Article — native filter, kept current by Shopify {%- endcomment -%}
 {%- if request.page_type == 'article' -%}
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": {{ shop.url | append: article.url | json }}
-      },
-      "headline": {{ article.title | truncate: 110 | json }},
-      "description": {{ article.excerpt_or_content | strip_html | truncate: 300 | json }}
-      {%- if article.image -%}
-        ,"image": {
-          "@type": "ImageObject",
-          "url": {{ article.image | image_url: width: 1200 | prepend: 'https:' | json }},
-          "width": {{ article.image.width }},
-          "height": {{ article.image.height }}
-        }
-      {%- endif -%}
-      ,"author": {
-        "@type": "Person",
-        "name": {{ article.author | json }}
-      }
-      ,"publisher": {
-        "@type": "Organization",
-        "name": {{ shop.name | json }}
-        {%- if settings.logo != blank -%}
-          ,"logo": {
-            "@type": "ImageObject",
-            "url": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}
-          }
-        {%- endif -%}
-      }
-      ,"datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }}
-      ,"dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }}
-    }
+    {{ article | structured_data }}
   </script>
 {%- endif -%}
 

@@ -3,7 +3,8 @@
     "404": {
       "title": "Page not found",
       "subtext": "The page you requested does not exist.",
-      "back_home": "Go home"
+      "back_home": "Go home",
+      "browse_products": "Browse products"
     },
     "skip_to_content": "Skip to content",
     "search": {
