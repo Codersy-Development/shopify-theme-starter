@@ -35,6 +35,8 @@
 
 {%- elsif request.page_type == 'search' -%}
   <meta name="robots" content="noindex, nofollow">
+{%- elsif request.page_type == 'cart' -%}
+  <meta name="robots" content="noindex, follow">
 {%- else -%}
   <meta name="robots" content="index, follow">
 {%- endif -%}

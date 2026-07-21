@@ -31,9 +31,9 @@
       </div>
 
       <div>
-        <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+        <p class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
           {{ 'footer.quick_links' | t }}
-        </h3>
+        </p>
         <nav class="space-y-2" aria-label="{{ 'footer.navigation_label' | t }}">
           {% for link in linklists[section.settings.menu].links %}
             <a
@@ -48,12 +48,12 @@
 
       {% if section.settings.show_newsletter %}
         <div>
-          <h3
+          <p
             id="newsletter-heading"
             class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4"
           >
             {{ 'footer.newsletter_heading' | t }}
-          </h3>
+          </p>
           <p class="text-sm text-gray-500 mb-3">{{ 'footer.newsletter_text' | t }}</p>
           {% form 'customer' %}
             <input type="hidden" name="contact[tags]" value="newsletter">

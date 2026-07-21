@@ -157,6 +157,12 @@
         "id": "seo_google_site_verification",
         "label": "Google site verification",
         "info": "Content value from Google Search Console meta tag"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Default social share image",
+        "info": "Shown when a page has no image of its own (1200x630px recommended)"
       }
     ]
   }

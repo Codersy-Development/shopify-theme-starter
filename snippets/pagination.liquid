@@ -15,8 +15,17 @@
     aria-label="{{ 'general.pagination.label' | t }}"
   >
     {%- if paginate.previous -%}
+      {%- liquid
+        # Page 1 links go to the clean base URL, not ?page=1 — avoids a
+        # duplicate-content URL for the first page. Only applied to URLs we
+        # know point at page 1, so page=1x params can't be corrupted.
+        assign prev_url = paginate.previous.url
+        if paginate.current_page == 2
+          assign prev_url = prev_url | replace: '?page=1&', '?' | replace: '&page=1', '' | replace: '?page=1', ''
+        endif
+      -%}
       <a
-        href="{{ paginate.previous.url }}"
+        href="{{ prev_url }}"
         class="px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 no-underline text-gray-700 text-sm"
         aria-label="{{ 'general.pagination.previous' | t }}"
       >
@@ -36,8 +45,14 @@
     {%- assign current_page_str = paginate.current_page | append: '' -%}
     {%- for part in paginate.parts -%}
       {%- if part.is_link -%}
+        {%- liquid
+          assign part_url = part.url
+          if part.title == '1'
+            assign part_url = part_url | replace: '?page=1&', '?' | replace: '&page=1', '' | replace: '?page=1', ''
+          endif
+        -%}
         <a
-          href="{{ part.url }}"
+          href="{{ part_url }}"
           class="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-lg hover:bg-gray-50 no-underline text-gray-700 text-sm"
         >
           {{- part.title -}}
